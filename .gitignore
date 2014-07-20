@@ -1,0 +1,7 @@
+.settings
+bin
+gen
+.classpath
+Debug.win32
+obj
+cocos2d
