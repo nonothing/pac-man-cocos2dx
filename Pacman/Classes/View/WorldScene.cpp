@@ -13,8 +13,16 @@ Scene* WorldScene::createScene()
 }
 
 void WorldScene::update(float dt){
-	
-		world->tryToPlayerGo(LEFT);		
+	//const string s = "You: " + std::to_string(world->getScore());;
+	ostringstream convert;   // stream used for the conversion
+     convert << world->getScore();      // insert the textual representation of 'Number' in the characters in the stream
+
+	labelScore->setString("You: " + convert.str() );
+	world->tryToPlayerGo(direction);	
+
+	for(int i=0; i < 4; i++){	
+			world->spirits->get(i)->go(world);
+		}
 }
 
 bool WorldScene::init()
@@ -23,14 +31,17 @@ bool WorldScene::init()
     {
         return false;
     }
+	direction = LEFT;
 	readLevel = new ReadLevel();
 	readLevel->readFile("level_1.txt", map);
 	int size = readLevel->level->bricks->size();
 
 	world = new World(readLevel->level);
-	
+
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(WorldScene::TouchMoved, this);
+	touchListener->onTouchEnded = CC_CALLBACK_2(WorldScene::TouchEnded,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -42,9 +53,10 @@ bool WorldScene::init()
     labelRecord->setPosition(Point(100,436));
 	labelRecord->setColor(Color3B::YELLOW);
 
-	auto labelScore = LabelTTF::create("You: ", FONT_EMULOGIC , 14);
+	labelScore = LabelTTF::create("You: ", FONT_EMULOGIC , 14);
     labelScore->setPosition(Point(610,436));
 	labelScore->setColor(Color3B::YELLOW);
+	
 
 	for(int i=0; i < size; i++){
 		this->addChild(readLevel->level->bricks->get(i)->getTexture(), 0);
@@ -63,8 +75,34 @@ bool WorldScene::init()
 
 bool WorldScene::TouchBegan(Touch *touch, Event *event)
 {
-	CCLOG("x=%f  y=%f", touch->getLocation().x, touch->getLocation().y);
+	touchX = touch->getLocation().x;
+	touchY = touch->getLocation().y;
     return true;
+}
+
+ void WorldScene::TouchMoved(Touch* touch, CCEvent* event){
+	 int x = touch->getLocation().x;
+	 int y = touch->getLocation().y;
+	 if (touchX > x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
+			direction = LEFT;
+		if (touchX < x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
+			direction = RIGHT;
+		if (touchY > y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
+			direction = DOWN;
+		if (touchY < y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
+			direction = UP;
+}
+ void WorldScene::TouchEnded(Touch* touch, Event* event){
+	 int x = touch->getLocation().x;
+	 int y = touch->getLocation().y;
+	 if (touchX > x && abs(y - touchY) < 60)
+			direction = LEFT;
+		if (touchX < x && abs(y - touchY) < 60)
+			direction = RIGHT;
+		if (touchY > y && abs(x - touchX) < 60)
+			direction = DOWN;
+		if (touchY < y && abs(x - touchX) < 60)
+			direction = UP;
 }
 
 void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){

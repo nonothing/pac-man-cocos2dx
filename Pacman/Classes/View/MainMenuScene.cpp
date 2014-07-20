@@ -135,7 +135,5 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 
 bool MainMenuScene::TouchBegan(Touch *touch, Event *event)
 {
-	CCLOG("x=%f  y=%f", touch->getLocation().x, touch->getLocation().y);
-    CCLOG("dasdsa");
     return true;
 }

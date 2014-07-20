@@ -52,7 +52,7 @@ class World {
      Player* getPlayer() ;
      int getRecord();
      void setRecord(int newRecord);
-     int getScore();
+	 int getScore(){return score;};
      int leftSpirit;
      void setScore(int score);
 //     Fruit getFruit();

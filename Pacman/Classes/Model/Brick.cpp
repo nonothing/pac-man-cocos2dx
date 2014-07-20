@@ -6,7 +6,7 @@ Brick::Brick(PPoint* position, string texture, int width, int height) :
 }
 
 bool Brick::tryToBonus(PRectangle* rectangle){
-	  if (bounds->intersects(rectangle) && getTextureName() == "point") {
+	  if (bounds->intersects(rectangle) && getTextureName() == "bonus") {
 	            setTexture("background");
 	            return true;
 	        }
@@ -14,7 +14,7 @@ bool Brick::tryToBonus(PRectangle* rectangle){
 }
 
 bool Brick::tryToEat(PRectangle* rectangle) {
-	if (bounds->intersects(rectangle) && getTextureName() == "bonus") {
+	if (bounds->intersects(rectangle) && getTextureName() == "point") {
 		setTexture("background");
 		return true;
 	}

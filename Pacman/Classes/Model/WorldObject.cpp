@@ -54,7 +54,8 @@ using namespace std;
 
     void WorldObject::setTexture(string texture) {
 		this->textureName = texture;
-		//this->sprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(texture + ".png"));
+		Texture2D *t= Director::getInstance()->getTextureCache()->addImage(texture + ".png");
+		this->sprite->setTexture(t);
     }
 
     void WorldObject::setPositionPoint(PPoint* point){

@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Model\ReadLevel.h"
 #include "Model\World.h"
+#include "Model\Direction.h"
 #define FONT_EMULOGIC "fonts/emulogic.ttf"
 using namespace std;
 
@@ -13,12 +14,17 @@ class WorldScene : public cocos2d::Layer
 	int map[25][15];
 	ReadLevel* readLevel; 
 	World* world;
-
+	int touchX;
+	int touchY;
+	Direction direction;
+	LabelTTF* labelScore;
 public:
 
     static cocos2d::Scene* createScene();
     virtual bool init();  
-	virtual bool TouchBegan(Touch* touch, Event* event);
+	virtual bool TouchBegan(Touch* touch, Event* event);;
+	virtual void TouchMoved(Touch* touch, Event* event);
+	virtual void TouchEnded(Touch* touch, Event* event);
 
     CREATE_FUNC(WorldScene);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);

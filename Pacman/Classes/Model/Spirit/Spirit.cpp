@@ -6,6 +6,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
 
 		setState(ATTACK);
 		setCountStep(0);
+		createMap(25, 15);
 	}
 
      void Spirit::refresh(World* world) {
@@ -15,8 +16,9 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
     }
 
      void Spirit::go(World* world) {
-        createMap(25, 15);
+        clearMap();
         ai(world);
+		sprite->setPosition(position->getX() + 15,position->getY() + 15);
     }
 
      void Spirit::onLoadImageAttack() {
@@ -35,6 +37,14 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
             break;
         }
     }
+
+	 void Spirit::clearMap(){
+		for (int row = 0; row < 25; row++) {
+		  for (int column = 0; column < 15; column++) {
+			  map[row][column] = 0;
+		  }
+		}
+	 }
 
      void Spirit::onLoadImageDead() {
         switch (direction) {
@@ -90,7 +100,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
         potencialMap(point, spirit, world->bricks);
         if (getCountStep() >= (30 / SPEED)) {
             int ** map = getMap();
-
+			
             int step = map[getPointX()][getPointY()];
 
             if (map[getPointX() - 1][getPointY()] < step + 1) {
@@ -100,10 +110,10 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
                 setDirection(RIGHT);
             }
             if (map[getPointX()][getPointY() - 1] < step + 1) {
-                setDirection(UP);
+				setDirection(DOWN);
             }
             if (map[getPointX()][getPointY() + 1] < step + 1) {
-                setDirection(DOWN);
+				setDirection(UP);
             }
 
             setCountStep(0);
@@ -135,7 +145,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
             int count = 0;
             step = 2;
 
-            map[point->getX() / 30 ][point->getY() / 30 ] = 1;
+            map[point->getX() / 30][point->getY() / 30] = 1;
 
             if (spirit->getState() != DEAD) {
                 changeMap(spirit);
@@ -173,7 +183,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
             }
 
         }
-
+	 
          void Spirit::changeMap(Spirit* spirit) {
             if (spirit->getDirection() == LEFT) {
                 map[(spirit->getPointX()) + 1][spirit->getPointY()] = WALL;
@@ -183,11 +193,11 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
                 map[(spirit->getPointX()) - 1][spirit->getPointY()] = WALL;
             }
 
-            if (spirit->getDirection() == UP) {
+            if (spirit->getDirection() == DOWN) {
                 map[spirit->getPointX()][(spirit->getPointY()) + 1] = WALL;
             }
 
-            if (spirit->getDirection() == DOWN) {
+            if (spirit->getDirection() == UP) {
                 map[spirit->getPointX()][(spirit->getPointY()) - 1] = WALL;
             }
         }

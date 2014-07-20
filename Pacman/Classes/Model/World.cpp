@@ -38,7 +38,7 @@ void World::tryToPlayerGo(int direction){
 		player->getTexture()->setPosition(player->getPosition()->getX()  + 15, player->getPosition()->getY() + 15);
 	}
 	eatBonus();
-
+	eatPoint();
 }
 
 Player* World::getPlayer(){
