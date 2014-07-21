@@ -18,8 +18,14 @@ class WorldScene : public cocos2d::Layer
 	int touchY;
 	Direction direction;
 	LabelTTF* labelScore;
+	LabelTTF* labelRecord;
+	int record;
 public:
 	bool isSound;
+	bool isPause;
+	int seconds;
+	bool isDefenceSpirit;
+	void onPause();
     static cocos2d::Scene* createScene();
     virtual bool init();  
 	virtual bool TouchBegan(Touch* touch, Event* event);
@@ -27,7 +33,10 @@ public:
 	virtual void TouchEnded(Touch* touch, Event* event);
     CREATE_FUNC(WorldScene);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
-	void update(float dt);
+	void updatePlayer(float dt);
+	void updateWorld(float dt);
+	void timerTask(float dt);
+	void speedTask(float dt);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

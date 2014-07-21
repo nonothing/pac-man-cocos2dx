@@ -16,9 +16,8 @@ World::World(Level* level){
 	spirits->append(new Inky(level->pointInky));
 	spirits->append(new Pinky(level->pointPinky));
 	bricks = level->bricks;
-	generationPoint();
 	score = 0;
-	countPoint = 0;
+	countPoint = generationPoint();
 	leftSpirit=3;
 	if(isSound){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/pacman_coinin.wav");
@@ -62,6 +61,7 @@ int World::generationPoint(){
 		
 		}
 	}
+	countPoint += result;
 	return result;
 }
 
@@ -81,6 +81,7 @@ bool World::eatBonus(){
         if (player->eatBonus(bricks)) {
             score += 500;
             defenceNPC();
+			isDefenceSpirit = true;
 			if(isSound){
 				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
 			}
@@ -169,13 +170,30 @@ bool World::eatFruit(){
  }
 
  void World::startPointPlayer(){
-	 player = new Player(new PPoint(10,9),"pacmanUpOpen",30,30);
-	 player->setDirection(LEFT);
+	 player->setState(DEFENCE);
+	 player->setPosition(new PRectangle(300,270,30,30));
+	 player->setDirection(RIGHT);
+	 
  }
 
  void World::createSpirit(){
 	 for(int i=0; i < spirits->size(); i++){
+					spirits->get(i)->setDirection(DOWN);
 	 	            spirits->get(i)->setPositionPoint(spirits->get(i)->getStartPoint());
 	 	            spirits->get(i)->setCountStep(0);
 	 }
  }
+
+bool World::isVictory(){
+	if(countPoint <= 0 )
+		return true;
+            
+        return false;
+}
+    
+bool World::isGameOver(){
+	if(player->getLife() <= 0 )
+		return true;
+        
+	return false;
+}

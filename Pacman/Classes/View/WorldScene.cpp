@@ -14,25 +14,72 @@ Scene* WorldScene::createScene()
     return scene;
 }
 
-void WorldScene::update(float dt){
-	ostringstream convert;   
-    convert << world->getScore();    
+void WorldScene::updatePlayer(float dt){
+	ostringstream convertScore;   
+    convertScore << world->getScore();    
+	labelScore->setString("You: " + convertScore.str() );
 
-	labelScore->setString("You: " + convert.str() );
-	world->tryToPlayerGo(direction);	
+	if(world->getScore() > record){
+		record = world->getScore();
+		CCUserDefault::sharedUserDefault()->setIntegerForKey("RECORD", world->getScore());
+		CCUserDefault::sharedUserDefault()->flush();
+	}
+	ostringstream convertRecord;  
+	convertRecord<<record;
+	labelRecord->setString("Record: " + convertRecord.str());
 
-	for(int i=0; i < 4; i++){	
+	if(!isPause){
+		world->tryToPlayerGo(direction);
+	}
+		
+}
+	
+
+void WorldScene::updateWorld(float dt){
+	if(!isPause){
+		for(int i=0; i < world->spirits->size(); i++){	
+			if(world->spirits->get(i)->getState() == DEFENCE)
+				world->spirits->get(i)->setDefence(isDefenceSpirit);
 			world->spirits->get(i)->go(world);
 		}
+		world->deadPlayer();
+		world->deadSpirit();
+		 if (world->isGameOver() || world->isVictory()) {
+            onPause();
+        }
+
+		if (world->getPlayer()->getState() == DEAD || world->isVictory()) {
+			world->createSpirit();
+			world->startPointPlayer();
+			world->getPlayer()->setLife(3);
+			world->generationPoint();
+			world->setScore(0);
+			isPause = false;
+			
+        }
+        
+       
+	}
+
 }
 
+void WorldScene::onPause(){
+	if(isPause){
+		isPause = false;
+	} else {
+		isPause = true;
+	}
+}
 bool WorldScene::init()
 {
     if ( !Layer::init() )
     {
         return false;
     }
+	seconds =0;
 	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	record = CCUserDefault::sharedUserDefault()->getIntegerForKey("RECORD",0);
+
 	if(isSound){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/sirensound.wav");
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/sirensound.wav", true);
@@ -40,6 +87,7 @@ bool WorldScene::init()
 	
 
 	direction = LEFT;
+	isPause = false;
 
 	readLevel = new ReadLevel();
 	readLevel->readFile("level_1.txt", map);
@@ -58,7 +106,7 @@ bool WorldScene::init()
 	setTouchMode(kCCTouchesOneByOne);
  
 
-    auto labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
+    labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
     labelRecord->setPosition(Point(100,436));
 	labelRecord->setColor(Color3B::YELLOW);
 
@@ -78,8 +126,41 @@ bool WorldScene::init()
 	}
 
     this->setKeyboardEnabled(true);
-    this->schedule(schedule_selector(WorldScene::update),0.05f);
+    this->schedule(schedule_selector(WorldScene::updatePlayer),0.05f);
+	this->schedule(schedule_selector(WorldScene::updateWorld),0.07f);
+	this->schedule(schedule_selector(WorldScene::timerTask),1.0f);
+	this->schedule(schedule_selector(WorldScene::speedTask),0.03f);
     return true;
+}
+
+void WorldScene::timerTask(float dt){
+	if(!isPause){
+		if(world->isDefence()){
+			seconds++;
+                    if (seconds >= 8 && seconds % 2 == 0) {
+                        isDefenceSpirit = true;
+                    } else {
+                        isDefenceSpirit = false;
+                    }
+
+                    if (seconds == 12) {
+                        world->attackNPC();
+						isDefenceSpirit = false;
+                        seconds = 0;
+						world->setDefenceSpirit(false);
+                    }
+		}
+			
+	}
+}
+
+void WorldScene::speedTask(float dt){
+	if(!isPause){
+		for(int i=0; i < world->spirits->size(); i++){	
+			if(world->spirits->get(i)->getState() == DEAD)
+				world->spirits->get(i)->go(world);
+		}
+	}
 }
 
 bool WorldScene::TouchBegan(Touch *touch, Event *event)
