@@ -22,11 +22,26 @@ Inky::Inky(PPoint* point) :
 
      PPoint* Inky::doubleVectorBetweenTwoPoints(PPoint* point1, PPoint* point2) {
 
-        int aMatrix[] = { point2->getX() / getWidth(), point2->getY() / getHeight(), 1 };
-        int bMatrix[3][3] = { { -1, 0, 0 }, { 0, -1, 0 },
-                { 2 * (point1->getX() / getWidth()), 2 * (point1->getY() / getHeight()), 1 } };
+         aMatrix[0] = point2->getX() / getWidth();
+		 aMatrix[1] = point2->getY() / getHeight();
+		 aMatrix[2] = 1;
+		 
+		bMatrix[0][1] = -1;
+		bMatrix[0][2] = 0;
+		bMatrix[0][3] = 0;
 
-        int point [3];
+		bMatrix[1][1] = 0;
+		bMatrix[1][2] = -1;
+		bMatrix[1][3] = 0;
+
+		bMatrix[2][1] = 2 * (point1->getX() / getWidth());
+		bMatrix[2][2] = 2 * (point1->getY() / getHeight());
+		bMatrix[2][3] = 1;
+
+       
+		 point[0] =0;
+		 point[1] =0;
+		 point[2] =0;
 
         for (int column = 0; column < 3; column++) {
             for (int inner = 0; inner < 3; inner++) {
@@ -34,7 +49,6 @@ Inky::Inky(PPoint* point) :
             }
 
         }
-
         if (point[X] >= 25) {
             point[X] = 24;
         }

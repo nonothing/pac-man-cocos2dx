@@ -1,112 +1,142 @@
 #include "MainMenuScene.h"
 #include "View\WorldScene.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
-USING_NS_CC;
-#include <fstream>
 using namespace std;
+USING_NS_CC;
 
 Scene* MainMenuScene::createScene()
 {
-
-	//int w = 960;
-	//int h = 640;
-
-    // 'scene' is an autorelease object
     auto scene = Scene::create();
 	auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
-    // 'layer' is an autorelease object
     auto layer = MainMenuScene::create();
-	CCLOG("w=%f h=%f", glview->getFrameSize().width,glview->getFrameSize().height); 
-	//float scaleX = (float)glview->getFrameSize().width/w;
-	//float scaleY = (float)glview->getFrameSize().height/h;
-		
     scene->addChild(layer);
 
     return scene;
 }
 
-void MainMenuScene::update(float dt){
-	//CCLOG("%f", x);
-
-	//sprite.position = ccp(sprite.x + x, sprite.y);
-
-}
-
-// on "init" you need to initialize your instance
 bool MainMenuScene::init()
 {
-
-    // 1. super init first
     if ( !Layer::init() )
     {
         return false;
     }
-
-	auto touchListener = EventListenerTouchOneByOne::create();
+	isSound =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	if(isSound){
+		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
+		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
+	}
+	touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(MainMenuScene::TouchBegan,this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(MainMenuScene::TouchMoved, this);
+	touchListener->onTouchEnded = CC_CALLBACK_2(MainMenuScene::TouchEnded,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
 	setTouchMode(kCCTouchesOneByOne);
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
     
-	closeItem->setPosition(Point(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
+    auto labelName = LabelTTF::create("PAC-MAN", "fonts/emulogic.ttf", 56);
+	labelName->setColor(Color3B::YELLOW);
+	labelName->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height - labelName->getContentSize().height));
+    this->addChild(labelName, 1);
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu, 1);
+	buttonPlay = LabelTTF::create("Play", "fonts/emulogic.ttf", 26);
+	buttonPlay->setColor(Color3B::YELLOW);
+	buttonPlay->setPosition(Point(300, 300));
+    this->addChild(buttonPlay, 1);
 
-    /////////////////////////////
-    // 3. add your codes below...
+	buttonLevel = LabelTTF::create("Select level", "fonts/emulogic.ttf", 26);
+	buttonLevel->setColor(Color3B::YELLOW);
+	buttonLevel->setPosition(Point(402, 250));
+    this->addChild(buttonLevel, 1);
 
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = LabelTTF::create("PAC-MAN", "fonts/PacFont.ttf", 24);
-	label->setColor(Color3B::YELLOW);
-    
-    // position the label on the center of the screen
-    label->setPosition(Point(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
+	buttonSound = LabelTTF::create("sound on", "fonts/emulogic.ttf", 26);
+	buttonSound->setColor(Color3B::YELLOW);
+	buttonSound->setPosition(Point(350, 200));
+	if(!isSound){
+		buttonSound->setString("Sound off");
+		buttonSound->setPosition(Point(363, 200));
+	} 
+    this->addChild(buttonSound, 1);
 
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-
-    // add "HelloWorld" splash screen"
-    background = Sprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
-    background->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(background, 0);
-	//auto action = MoveBy::create(1, Point(100,3));
-	//sprite->runAction(action);
-
-	auto playButton = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(MainMenuScene::playButtonCallback, this));
-	playButton->setPosition(100,100);
-
-	auto playButtonMenu = Menu::create(playButton, NULL);
-	playButtonMenu->setPosition(Point::ZERO);
-	this->addChild(playButtonMenu,1);
-
+	buttonExit = LabelTTF::create("exit", "fonts/emulogic.ttf", 26);
+	buttonExit->setColor(Color3B::YELLOW);
+	buttonExit->setPosition(Point(300, 150));
+    this->addChild(buttonExit, 1);
+  
 	this->setKeyboardEnabled(true);
-
-    this->scheduleUpdate();
     return true;
+}
+
+void MainMenuScene::setBooleanForKey(const char* key, bool obj){
+
+}
+
+void MainMenuScene::selectMenuItem(int y, bool isTouch){
+	int item = 0;
+	if(y >= 150 && y < 200){
+		buttonExit->setColor(Color3B::RED);
+		item = 4;
+	} else {
+		buttonExit->setColor(Color3B::YELLOW);
+	}
+	if(y >= 200 && y < 250){
+		item = 3;
+		buttonSound->setColor(Color3B::RED);
+	} else {
+		buttonSound->setColor(Color3B::YELLOW);
+	}
+	if(y >= 250 && y < 300){
+		item = 2;
+		buttonLevel->setColor(Color3B::RED);
+	} else {
+		buttonLevel->setColor(Color3B::YELLOW);
+	}
+	if(y >= 300 && y < 350){
+		item = 1;
+		buttonPlay->setColor(Color3B::RED);
+	} else {
+		buttonPlay->setColor(Color3B::YELLOW);
+	}
+
+	if(!isTouch){
+		switch (item)
+		{
+		case 1:
+			getEventDispatcher()->removeEventListener(touchListener);
+			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+			Director::getInstance()->pushScene(WorldScene::createScene());
+			break;
+		case 2: break;
+        case 3: 
+			if(isSound){
+				isSound = false;
+				buttonSound->setString("Sound off");
+				buttonSound->setPosition(Point(363, 200));
+				CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+				CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
+				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",false);
+				CCUserDefault::sharedUserDefault()->flush();
+			} else {
+				isSound = true;
+				buttonSound->setString("Sound on");
+				buttonSound->setPosition(Point(350, 200));
+				CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
+				CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
+				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
+				CCUserDefault::sharedUserDefault()->flush();
+			}
+			break;
+		case 4:
+			Director::getInstance()->end();
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
@@ -115,25 +145,15 @@ void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
 	}
 }
 
-void MainMenuScene::playButtonCallback(Ref* pSender){
-	Director::getInstance()->pushScene(WorldScene::createScene());
-}
-
-void MainMenuScene::menuCloseCallback(Ref* pSender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
-
-    Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-}
-
 bool MainMenuScene::TouchBegan(Touch *touch, Event *event)
 {
+	selectMenuItem(touch->getLocation().y, true);
     return true;
+}
+
+void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
+	selectMenuItem(touch->getLocation().y, true);
+}
+ void MainMenuScene::TouchEnded(Touch* touch, Event* event){
+	selectMenuItem(touch->getLocation().y, false);
 }

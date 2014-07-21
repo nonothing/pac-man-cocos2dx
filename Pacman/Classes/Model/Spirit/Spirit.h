@@ -53,6 +53,7 @@ protected:
      void inverseMap(List<Brick*>* bricks);
      void createMap(int width, int height);
      void potencialMap(PPoint* point, Spirit* spirit, List<Brick*>* bricks);
+	 void clearMap();
      int ** getMap();
 
 };

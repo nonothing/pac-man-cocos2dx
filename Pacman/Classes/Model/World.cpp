@@ -3,8 +3,11 @@
 #include "model/Spirit/Clyde.h"
 #include "model/Spirit/Inky.h"
 #include "model/Spirit/Pinky.h"
+#include "SimpleAudioEngine.h"
+
 
 World::World(Level* level){
+	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	player = new Player(new PPoint(10, 9),"pacmanUpOpen",30,30);
 	player->setDirection(LEFT);
 	spirits = new List<Spirit*>();
@@ -17,6 +20,11 @@ World::World(Level* level){
 	score = 0;
 	countPoint = 0;
 	leftSpirit=3;
+	if(isSound){
+		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/pacman_coinin.wav");
+		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatfruit.wav");	
+		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatspirit.wav");	
+	}
 }
 
 World::~World(){
@@ -51,6 +59,7 @@ int World::generationPoint(){
 		if(bricks->get(i)->getTextureName() == "background"){
 			bricks->get(i)->setTexture("point");
 			result++;
+		
 		}
 	}
 	return result;
@@ -60,6 +69,9 @@ bool World::eatPoint(){
 	  if (player->eatPoint(bricks)) {
 		  	  	  countPoint--;
 		  	  	  score += 50;
+				  if(isSound){
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/pacman_coinin.wav");
+				  }
 	            return true;
 	        }
 	        return false;
@@ -69,6 +81,9 @@ bool World::eatBonus(){
         if (player->eatBonus(bricks)) {
             score += 500;
             defenceNPC();
+			if(isSound){
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
+			}
             return true;
         }
         return false;
@@ -98,6 +113,9 @@ bool World::deadSpirit(){
                 if (player->getState() == ATTACK && spirits->get(i)->getState() != DEAD){
                     score += 1000;
                     spirits->get(i)->setState(DEAD);
+					if(isSound){
+						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatspirit.wav");	
+					}
                     return true;
                 }
             }

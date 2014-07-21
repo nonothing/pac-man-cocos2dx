@@ -6,25 +6,22 @@
 USING_NS_CC;
 class MainMenuScene : public cocos2d::Layer
 {
-	Sprite* background;
-	char* token;
+	LabelTTF* buttonPlay;
+	LabelTTF* buttonLevel;
+	LabelTTF* buttonSound;
+	LabelTTF* buttonExit;
+	EventListenerTouchOneByOne* touchListener;
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
+	bool isSound;
     static cocos2d::Scene* createScene();
-	
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
-	
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-
     virtual bool TouchBegan(Touch* touch, Event* event);
-
-
-    // implement the "static create()" method manually
+	virtual void TouchMoved(Touch* touch, Event* event);
+	virtual void TouchEnded(Touch* touch, Event* event);
+	static bool getBooleanForKey(const char* key);
+    static void setBooleanForKey(const char* key, bool obj);
+	void selectMenuItem(int y, bool isTouch);
     CREATE_FUNC(MainMenuScene);
-	void playButtonCallback(Ref* pSender);
-	void update(float dt);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 };
 

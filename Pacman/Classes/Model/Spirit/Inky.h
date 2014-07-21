@@ -11,7 +11,9 @@ private:
 	 static const int X = 0;
 	 PPoint* doubleVectorBetweenTwoPoints(PPoint* point1, PPoint* point2);
 	 PPoint* findPathTwoStep(World* world);
-
+	 int aMatrix[3];
+     int bMatrix[3][3];
+	 int point[3];
 public:
 	Inky();
 	Inky(PPoint* point);

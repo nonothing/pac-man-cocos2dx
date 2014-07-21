@@ -1,5 +1,7 @@
 #include "View\WorldScene.h"
 #include "Model\ReadLevel.h"
+#include "SimpleAudioEngine.h"
+#include "MainMenuScene.h"
 
 using namespace cocos2d;
 USING_NS_CC;
@@ -13,9 +15,8 @@ Scene* WorldScene::createScene()
 }
 
 void WorldScene::update(float dt){
-	//const string s = "You: " + std::to_string(world->getScore());;
-	ostringstream convert;   // stream used for the conversion
-     convert << world->getScore();      // insert the textual representation of 'Number' in the characters in the stream
+	ostringstream convert;   
+    convert << world->getScore();    
 
 	labelScore->setString("You: " + convert.str() );
 	world->tryToPlayerGo(direction);	
@@ -31,7 +32,15 @@ bool WorldScene::init()
     {
         return false;
     }
+	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	if(isSound){
+		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/sirensound.wav");
+		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/sirensound.wav", true);
+	}
+	
+
 	direction = LEFT;
+
 	readLevel = new ReadLevel();
 	readLevel->readFile("level_1.txt", map);
 	int size = readLevel->level->bricks->size();
@@ -107,6 +116,8 @@ bool WorldScene::TouchBegan(Touch *touch, Event *event)
 
 void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
 	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-		Director::getInstance()->popScene();
+		CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
+		Director::getInstance()->pushScene(MainMenuScene::createScene());
 	}
 }
