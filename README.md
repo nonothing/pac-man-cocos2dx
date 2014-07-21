@@ -1,2 +1,1 @@
-pac-man-cocos2dx
-================
+Pacman: Test task from KEVURU GAMES.
