@@ -13,7 +13,7 @@ class World {
     
  private:
 	 Player* player;
-
+ bool isSound;
   int  width;
   int  height;
   int countPoint;

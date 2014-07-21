@@ -19,13 +19,12 @@ class WorldScene : public cocos2d::Layer
 	Direction direction;
 	LabelTTF* labelScore;
 public:
-
+	bool isSound;
     static cocos2d::Scene* createScene();
     virtual bool init();  
-	virtual bool TouchBegan(Touch* touch, Event* event);;
+	virtual bool TouchBegan(Touch* touch, Event* event);
 	virtual void TouchMoved(Touch* touch, Event* event);
 	virtual void TouchEnded(Touch* touch, Event* event);
-
     CREATE_FUNC(WorldScene);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	void update(float dt);
