@@ -14,87 +14,31 @@ Scene* WorldScene::createScene()
     return scene;
 }
 
-void WorldScene::updatePlayer(float dt){
-	ostringstream convertScore;   
-    convertScore << world->getScore();    
-	labelScore->setString("You: " + convertScore.str() );
-
-	if(world->getScore() > record){
-		record = world->getScore();
-		CCUserDefault::sharedUserDefault()->setIntegerForKey("RECORD", world->getScore());
-		CCUserDefault::sharedUserDefault()->flush();
-	}
-	ostringstream convertRecord;  
-	convertRecord<<record;
-	labelRecord->setString("Record: " + convertRecord.str());
-
-	if(!isPause){
-		world->tryToPlayerGo(direction);
-	}
-		
-}
-	
-
-void WorldScene::updateWorld(float dt){
-	if(!isPause){
-		for(int i=0; i < world->spirits->size(); i++){	
-			if(world->spirits->get(i)->getState() == DEFENCE)
-				world->spirits->get(i)->setDefence(isDefenceSpirit);
-			world->spirits->get(i)->go(world);
-		}
-		world->deadPlayer();
-		world->deadSpirit();
-		 if (world->isGameOver() || world->isVictory()) {
-            onPause();
-        }
-
-		if (world->getPlayer()->getState() == DEAD || world->isVictory()) {
-			world->createSpirit();
-			world->startPointPlayer();
-			world->getPlayer()->setLife(3);
-			world->generationPoint();
-			world->setScore(0);
-			isPause = false;
-			
-        }
-        
-       
-	}
-
-}
-
-void WorldScene::onPause(){
-	if(isPause){
-		isPause = false;
-	} else {
-		isPause = true;
-	}
-}
 bool WorldScene::init()
 {
     if ( !Layer::init() )
     {
         return false;
     }
-	seconds =0;
+	worldController = new WorldController();
+
 	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	record = CCUserDefault::sharedUserDefault()->getIntegerForKey("RECORD",0);
+	worldController->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey("RECORD",0));
 
 	if(isSound){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/sirensound.wav");
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/sirensound.wav", true);
 	}
 	
-
-	direction = LEFT;
+	worldController->setDirection(LEFT);
 	isPause = false;
 
 	readLevel = new ReadLevel();
-	readLevel->readFile("level_1.txt", map);
+	readLevel->readFile("level_1.txt");
 	int size = readLevel->level->bricks->size();
 
 	world = new World(readLevel->level);
-
+	worldController->init(world);
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
 	touchListener->onTouchMoved = CC_CALLBACK_2(WorldScene::TouchMoved, this);
@@ -105,21 +49,11 @@ bool WorldScene::init()
     Point origin = Director::getInstance()->getVisibleOrigin();
 	setTouchMode(kCCTouchesOneByOne);
  
-
-    labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
-    labelRecord->setPosition(Point(100,436));
-	labelRecord->setColor(Color3B::YELLOW);
-
-	labelScore = LabelTTF::create("You: ", FONT_EMULOGIC , 14);
-    labelScore->setPosition(Point(610,436));
-	labelScore->setColor(Color3B::YELLOW);
-	
-
 	for(int i=0; i < size; i++){
 		this->addChild(readLevel->level->bricks->get(i)->getTexture(), 0);
 	}
-    this->addChild(labelRecord, 1);
-	this->addChild(labelScore, 1);
+	this->addChild(worldController->getLabelRecord(), 1);
+	this->addChild(worldController->getLabelScore(), 1);
 	this->addChild(world->getPlayer()->getTexture(),2);
 	for(int i=0; i < world->spirits->size(); i++){
 		this->addChild(world->spirits->get(i)->getTexture(),2);
@@ -134,65 +68,31 @@ bool WorldScene::init()
 }
 
 void WorldScene::timerTask(float dt){
-	if(!isPause){
-		if(world->isDefence()){
-			seconds++;
-                    if (seconds >= 8 && seconds % 2 == 0) {
-                        isDefenceSpirit = true;
-                    } else {
-                        isDefenceSpirit = false;
-                    }
-
-                    if (seconds == 12) {
-                        world->attackNPC();
-						isDefenceSpirit = false;
-                        seconds = 0;
-						world->setDefenceSpirit(false);
-                    }
-		}
-			
-	}
+	worldController->timerTask(dt);
 }
 
 void WorldScene::speedTask(float dt){
-	if(!isPause){
-		for(int i=0; i < world->spirits->size(); i++){	
-			if(world->spirits->get(i)->getState() == DEAD)
-				world->spirits->get(i)->go(world);
-		}
-	}
+	worldController->speedTask(dt);
 }
 
-bool WorldScene::TouchBegan(Touch *touch, Event *event)
-{
-	touchX = touch->getLocation().x;
-	touchY = touch->getLocation().y;
+void WorldScene::updatePlayer(float dt){
+	worldController->updatePlayer(dt);
+}	
+
+void WorldScene::updateWorld(float dt){
+	worldController->updateWorld(dt);
+}
+
+bool WorldScene::TouchBegan(Touch *touch, Event *event){
+	worldController->setTouch(touch->getLocation().x, touch->getLocation().y);
     return true;
 }
 
  void WorldScene::TouchMoved(Touch* touch, CCEvent* event){
-	 int x = touch->getLocation().x;
-	 int y = touch->getLocation().y;
-	 if (touchX > x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
-			direction = LEFT;
-		if (touchX < x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
-			direction = RIGHT;
-		if (touchY > y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
-			direction = DOWN;
-		if (touchY < y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
-			direction = UP;
+	 worldController->TouchMoved(touch->getLocation().x,touch->getLocation().y);
 }
  void WorldScene::TouchEnded(Touch* touch, Event* event){
-	 int x = touch->getLocation().x;
-	 int y = touch->getLocation().y;
-	 if (touchX > x && abs(y - touchY) < 60)
-			direction = LEFT;
-		if (touchX < x && abs(y - touchY) < 60)
-			direction = RIGHT;
-		if (touchY > y && abs(x - touchX) < 60)
-			direction = DOWN;
-		if (touchY < y && abs(x - touchX) < 60)
-			direction = UP;
+	 worldController->TouchEnded(touch->getLocation().x,touch->getLocation().y);
 }
 
 void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){

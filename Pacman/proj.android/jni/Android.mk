@@ -23,6 +23,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/Model/Spirit/Pinky.cpp\
 				   ../../Classes/Model/Spirit/Inky.cpp\
 				   ../../Classes/Model/Spirit/Clyde.cpp\
+				   ../../Classes/Controller\WorldController.cpp\
+				   ../../Classes/Controller\MenuController.cpp\
 				   
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 

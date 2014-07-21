@@ -23,6 +23,8 @@ bool MainMenuScene::init()
     {
         return false;
     }
+	menuController = new MenuController();
+	menuController->init();
 	isSound =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	if(isSound){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
@@ -42,68 +44,36 @@ bool MainMenuScene::init()
 	labelName->setColor(Color3B::YELLOW);
 	labelName->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height - labelName->getContentSize().height));
     this->addChild(labelName, 1);
-
-	buttonPlay = LabelTTF::create("Play", "fonts/emulogic.ttf", 26);
-	buttonPlay->setColor(Color3B::YELLOW);
-	buttonPlay->setPosition(Point(300, 300));
-    this->addChild(buttonPlay, 1);
-
-	buttonLevel = LabelTTF::create("Select level", "fonts/emulogic.ttf", 26);
-	buttonLevel->setColor(Color3B::YELLOW);
-	buttonLevel->setPosition(Point(402, 250));
-    this->addChild(buttonLevel, 1);
-
-	buttonSound = LabelTTF::create("sound on", "fonts/emulogic.ttf", 26);
-	buttonSound->setColor(Color3B::YELLOW);
-	buttonSound->setPosition(Point(350, 200));
-	if(!isSound){
-		buttonSound->setString("Sound off");
-		buttonSound->setPosition(Point(363, 200));
-	} 
-    this->addChild(buttonSound, 1);
-
-	buttonExit = LabelTTF::create("exit", "fonts/emulogic.ttf", 26);
-	buttonExit->setColor(Color3B::YELLOW);
-	buttonExit->setPosition(Point(300, 150));
-    this->addChild(buttonExit, 1);
+	this->addChild(menuController->getButtonPlay(), 1);
+	this->addChild(menuController->getButtonLevel(), 1);
+	this->addChild(menuController->getButtonSound(), 1);
+	this->addChild(menuController->getButtonExit(), 1);
   
 	this->setKeyboardEnabled(true);
     return true;
 }
 
-void MainMenuScene::setBooleanForKey(const char* key, bool obj){
-
+void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
+	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+		Director::getInstance()->end();
+	}
 }
 
-void MainMenuScene::selectMenuItem(int y, bool isTouch){
-	int item = 0;
-	if(y >= 150 && y < 200){
-		buttonExit->setColor(Color3B::RED);
-		item = 4;
-	} else {
-		buttonExit->setColor(Color3B::YELLOW);
-	}
-	if(y >= 200 && y < 250){
-		item = 3;
-		buttonSound->setColor(Color3B::RED);
-	} else {
-		buttonSound->setColor(Color3B::YELLOW);
-	}
-	if(y >= 250 && y < 300){
-		item = 2;
-		buttonLevel->setColor(Color3B::RED);
-	} else {
-		buttonLevel->setColor(Color3B::YELLOW);
-	}
-	if(y >= 300 && y < 350){
-		item = 1;
-		buttonPlay->setColor(Color3B::RED);
-	} else {
-		buttonPlay->setColor(Color3B::YELLOW);
-	}
+bool MainMenuScene::TouchBegan(Touch *touch, Event *event)
+{
+	setMenu(menuController->selectMenuItem(touch->getLocation().y, true));
+    return true;
+}
 
-	if(!isTouch){
-		switch (item)
+void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
+	setMenu(menuController->selectMenuItem(touch->getLocation().y, true));
+}
+ void MainMenuScene::TouchEnded(Touch* touch, Event* event){
+	 setMenu(menuController->selectMenuItem(touch->getLocation().y, false));
+}
+
+ void MainMenuScene::setMenu(int item){
+ switch (item)
 		{
 		case 1:
 			getEventDispatcher()->removeEventListener(touchListener);
@@ -114,16 +84,16 @@ void MainMenuScene::selectMenuItem(int y, bool isTouch){
         case 3: 
 			if(isSound){
 				isSound = false;
-				buttonSound->setString("Sound off");
-				buttonSound->setPosition(Point(363, 200));
+				menuController->getButtonSound()->setString("Sound off");
+				menuController->getButtonSound()->setPosition(Point(363, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",false);
 				CCUserDefault::sharedUserDefault()->flush();
 			} else {
 				isSound = true;
-				buttonSound->setString("Sound on");
-				buttonSound->setPosition(Point(350, 200));
+				menuController->getButtonSound()->setString("Sound on");
+				menuController->getButtonSound()->setPosition(Point(350, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
 				CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
@@ -136,24 +106,4 @@ void MainMenuScene::selectMenuItem(int y, bool isTouch){
 		default:
 			break;
 		}
-	}
-}
-
-void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
-	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-		Director::getInstance()->end();
-	}
-}
-
-bool MainMenuScene::TouchBegan(Touch *touch, Event *event)
-{
-	selectMenuItem(touch->getLocation().y, true);
-    return true;
-}
-
-void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
-	selectMenuItem(touch->getLocation().y, true);
-}
- void MainMenuScene::TouchEnded(Touch* touch, Event* event){
-	selectMenuItem(touch->getLocation().y, false);
-}
+ }

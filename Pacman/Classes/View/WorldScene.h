@@ -5,27 +5,21 @@
 #include "Model\ReadLevel.h"
 #include "Model\World.h"
 #include "Model\Direction.h"
-#define FONT_EMULOGIC "fonts/emulogic.ttf"
+#include "Controller\WorldController.h"
+
 using namespace std;
 
 USING_NS_CC;
 class WorldScene : public cocos2d::Layer
 {
-	int map[25][15];
+	WorldController* worldController;
 	ReadLevel* readLevel; 
 	World* world;
-	int touchX;
-	int touchY;
-	Direction direction;
-	LabelTTF* labelScore;
-	LabelTTF* labelRecord;
-	int record;
+
 public:
 	bool isSound;
 	bool isPause;
-	int seconds;
 	bool isDefenceSpirit;
-	void onPause();
     static cocos2d::Scene* createScene();
     virtual bool init();  
 	virtual bool TouchBegan(Touch* touch, Event* event);

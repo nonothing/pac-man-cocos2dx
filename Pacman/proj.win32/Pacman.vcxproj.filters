@@ -19,6 +19,9 @@
     <Filter Include="Classes\Model\Spirit">
       <UniqueIdentifier>{a2d89035-edac-4553-9b37-d644b6bf7aab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Controller">
+      <UniqueIdentifier>{acb385e5-da05-4a11-a07c-4f2626f7f5f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Model\Player.cpp">
       <Filter>Classes\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\MenuController.cpp">
+      <Filter>Classes\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\WorldController.cpp">
+      <Filter>Classes\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Model\Player.h">
       <Filter>Classes\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\MenuController.h">
+      <Filter>Classes\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\WorldController.h">
+      <Filter>Classes\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

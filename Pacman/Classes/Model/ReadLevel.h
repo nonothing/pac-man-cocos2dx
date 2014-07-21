@@ -18,7 +18,7 @@ public:
 		level = new Level();
 	}
 
-	void readFile(std:: string fileName, int map[][15]){
+	void readFile(std:: string fileName){
 		List<Brick*>* bricks = new List<Brick*>();
      int maxR = 25;
 	string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(fileName.c_str());
@@ -29,9 +29,8 @@ public:
 	int number;
 	int x =0,y =0;
 	while(strValue>>number){
-		map[x][y] = number;
 
-		switch (map[x][y]) {
+		switch (number) {
 					            case 1:
 					            	bricks->append(new Brick(new PPoint(x, y), "point",30,30));
 					                break;
