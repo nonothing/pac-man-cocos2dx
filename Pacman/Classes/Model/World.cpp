@@ -171,7 +171,7 @@ bool World::eatFruit(){
 
  void World::startPointPlayer(){
 	 player->setState(DEFENCE);
-	 player->setPosition(new PRectangle(300,270,30,30));
+	 player->setPosition(new PRectangle(360,270,30,30));
 	 player->setDirection(RIGHT);
 	 
  }
