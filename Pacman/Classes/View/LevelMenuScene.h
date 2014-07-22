@@ -4,18 +4,24 @@
 #include "cocos2d.h"
 #include "Model\List.h"
 #include "Model\LevelMenu.h"
+#include "Model\Rectangle.h"
 
 USING_NS_CC;
-class LevelMenuScene : public cocos2d::Layer
+class LevelMenuScene : public Layer
 {
 	EventListenerTouchOneByOne* touchListener;
 	List<LevelMenu*>* levels;
+	PRectangle* rectangle;
 
 public:
-    static cocos2d::Scene* createScene();
+    static Scene* createScene();
     virtual bool init();  
     virtual bool TouchBegan(Touch* touch, Event* event);
+	virtual void TouchMoved(Touch* touch, Event* event);
+	virtual void TouchEnded(Touch* touch, Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
+	string parseLevel(int number);
+
 	LevelMenu* createLevel(int x, int y);
 
     CREATE_FUNC(LevelMenuScene);

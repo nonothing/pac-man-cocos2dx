@@ -8,7 +8,7 @@
 
 World::World(Level* level){
 	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	player = new Player(new PPoint(10, 9),"pacmanUpOpen",30,30);
+	player = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
 	player->setDirection(LEFT);
 	spirits = new List<Spirit*>();
 	spirits->append(new Blinky(level->pointBlinky));

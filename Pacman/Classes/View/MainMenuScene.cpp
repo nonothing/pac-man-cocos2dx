@@ -70,15 +70,16 @@ void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
 	setMenu(menuController->selectMenuItem(touch->getLocation().y, true));
 }
  void MainMenuScene::TouchEnded(Touch* touch, Event* event){
-	 setMenu(menuController->selectMenuItem(touch->getLocation().y, false));
+	setMenu(menuController->selectMenuItem(touch->getLocation().y, false));	
 }
-
+ string levelName;
  void MainMenuScene::setMenu(int item){
  switch (item)
 		{
 		case 1:
 			getEventDispatcher()->removeEventListener(touchListener);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+			levelName = "lvl_01.txt";
 			Director::getInstance()->pushScene(WorldScene::createScene());
 			break;
 		case 2:
@@ -92,7 +93,7 @@ void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
 				menuController->getButtonSound()->setPosition(Point(363, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
-				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",false);
+				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND", false);
 				CCUserDefault::sharedUserDefault()->flush();
 			} else {
 				isSound = true;

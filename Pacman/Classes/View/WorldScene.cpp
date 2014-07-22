@@ -13,7 +13,7 @@ Scene* WorldScene::createScene()
     scene->addChild(layer);
     return scene;
 }
-
+extern string levelName;
 bool WorldScene::init()
 {
     if ( !Layer::init() )
@@ -34,7 +34,7 @@ bool WorldScene::init()
 	isPause = false;
 
 	readLevel = new ReadLevel();
-	readLevel->readFile("level_1.txt");
+	readLevel->readFile(levelName);
 	int size = readLevel->level->bricks->size();
 
 	world = new World(readLevel->level);
@@ -45,8 +45,7 @@ bool WorldScene::init()
 	touchListener->onTouchEnded = CC_CALLBACK_2(WorldScene::TouchEnded,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Point origin = Director::getInstance()->getVisibleOrigin();
+
 	setTouchMode(kCCTouchesOneByOne);
  
 	for(int i=0; i < size; i++){

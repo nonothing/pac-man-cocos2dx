@@ -17,6 +17,7 @@ class WorldScene : public cocos2d::Layer
 	World* world;
 
 public:
+	
 	bool isSound;
 	bool isPause;
 	bool isDefenceSpirit;
@@ -32,5 +33,4 @@ public:
 	void timerTask(float dt);
 	void speedTask(float dt);
 };
-
 #endif // __HELLOWORLD_SCENE_H__

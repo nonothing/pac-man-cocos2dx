@@ -48,6 +48,7 @@ void WorldController::updateWorld(float dt){
 		if (touchY < y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
 			setDirection(UP);
 }
+
  void WorldController::TouchEnded(int x, int y){
 
 	 if (touchX > x && abs(y - touchY) < 60)

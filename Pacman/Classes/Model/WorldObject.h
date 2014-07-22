@@ -31,6 +31,8 @@ public:
     Sprite* getTexture() ;
 	string getTextureName();
     PRectangle* getBounds();
+	int getSpriteX(){ return sprite->getPositionX(); }
+	int getSpriteY(){ return sprite->getPositionY(); }
     void setBounds(int x, int y, int width, int height);
     void setTexture(string texture);
     virtual void animate() {

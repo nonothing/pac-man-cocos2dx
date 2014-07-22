@@ -29,5 +29,6 @@ public:
 	void setTouch(int x, int y){touchX = x;	touchY = y;}
 	void TouchMoved(int x, int y);
 	void TouchEnded(int x, int y);
+	World* getWorld(){ return world; }
 };
 #endif /* WORLD_CONTROLLER_H_ */
