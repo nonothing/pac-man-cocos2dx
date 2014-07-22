@@ -14,6 +14,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/Model/Brick.cpp\
 				   ../../Classes/Model/Player.cpp\
 				   ../../Classes/Model/Point.cpp\
+				   ../../Classes/Model/PButton.cpp\
 				   ../../Classes/Model/Rectangle.cpp\
 				   ../../Classes/Model/World.cpp\
 				   ../../Classes/Model/LevelMenu.cpp\

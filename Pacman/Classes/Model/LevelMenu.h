@@ -11,6 +11,9 @@ class LevelMenu :public WorldObject{
 
 	int level;
 	int score;
+	int spX;
+	int offsetX;
+
 public:
 	LevelMenu(){};
 	LevelMenu(PPoint* position, string texture,int level, int score, int width, int height);
@@ -19,6 +22,8 @@ public:
 	int getRecord(){ return score; }
 	void setScore(int record){ score = record; }
 	PRectangle* getRect();
+	void setOffsetX(int x);
+
 };
 
 

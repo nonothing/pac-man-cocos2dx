@@ -84,6 +84,9 @@
     <ClCompile Include="..\Classes\Model\LevelMenu.cpp">
       <Filter>Classes\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\PButton.cpp">
+      <Filter>Classes\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -159,6 +162,9 @@
       <Filter>Classes\Controller</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\LevelMenu.h">
+      <Filter>Classes\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\PButton.h">
       <Filter>Classes\Model</Filter>
     </ClInclude>
   </ItemGroup>

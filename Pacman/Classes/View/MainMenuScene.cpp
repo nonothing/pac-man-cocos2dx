@@ -5,6 +5,7 @@
 
 using namespace cocos2d;
 using namespace std;
+string levelName;
 USING_NS_CC;
 
 Scene* MainMenuScene::createScene()
@@ -72,7 +73,7 @@ void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
  void MainMenuScene::TouchEnded(Touch* touch, Event* event){
 	setMenu(menuController->selectMenuItem(touch->getLocation().y, false));	
 }
- string levelName;
+
  void MainMenuScene::setMenu(int item){
  switch (item)
 		{

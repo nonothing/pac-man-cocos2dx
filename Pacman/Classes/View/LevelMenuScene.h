@@ -5,6 +5,7 @@
 #include "Model\List.h"
 #include "Model\LevelMenu.h"
 #include "Model\Rectangle.h"
+#include "Model\PButton.h"
 
 USING_NS_CC;
 class LevelMenuScene : public Layer
@@ -12,13 +13,14 @@ class LevelMenuScene : public Layer
 	EventListenerTouchOneByOne* touchListener;
 	List<LevelMenu*>* levels;
 	PRectangle* rectangle;
+	PButton* buttonArrowLeft;
+	PButton* buttonArrowRight;
+	int page;
 
 public:
     static Scene* createScene();
     virtual bool init();  
     virtual bool TouchBegan(Touch* touch, Event* event);
-	virtual void TouchMoved(Touch* touch, Event* event);
-	virtual void TouchEnded(Touch* touch, Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	string parseLevel(int number);
 

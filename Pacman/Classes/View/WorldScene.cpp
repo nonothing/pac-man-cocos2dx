@@ -4,6 +4,7 @@
 #include "MainMenuScene.h"
 
 using namespace cocos2d;
+extern string levelName;
 USING_NS_CC;
 
 Scene* WorldScene::createScene()
@@ -13,7 +14,7 @@ Scene* WorldScene::createScene()
     scene->addChild(layer);
     return scene;
 }
-extern string levelName;
+
 bool WorldScene::init()
 {
     if ( !Layer::init() )

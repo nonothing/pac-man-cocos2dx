@@ -3,6 +3,7 @@
 #include "View\WorldScene.h"
 
 using namespace cocos2d;
+extern string levelName;
 USING_NS_CC;
 
 Scene* LevelMenuScene::createScene()
@@ -20,9 +21,14 @@ bool LevelMenuScene::init()
     {
         return false;
     }
+	page = 0;
+
+	buttonArrowLeft = new PButton(new PPoint(1, 1), "arrow_left", 65, 50);
+	buttonArrowRight = new PButton(new PPoint(23, 1), "arrow_right", 65, 50);
 
 	rectangle = new PRectangle(0, 0, 2, 2);
 	levels = new List<LevelMenu*>();
+	
 	levels->append(createLevel(1, 5));
 	levels->append(createLevel(7, 5));
 	levels->append(createLevel(13, 5));
@@ -56,14 +62,14 @@ bool LevelMenuScene::init()
 
 	touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(LevelMenuScene::TouchBegan,this);
-	touchListener->onTouchMoved = CC_CALLBACK_2(LevelMenuScene::TouchMoved, this);
-	touchListener->onTouchEnded = CC_CALLBACK_2(LevelMenuScene::TouchEnded, this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
 
 	for (int i = 0; i < levels->size(); i++){
 		this->addChild(levels->get(i)->getTexture(), 1);
 	}
 
+	this->addChild(buttonArrowLeft->getTexture(), 1);
+	this->addChild(buttonArrowRight->getTexture(), 1);
 	setTouchMode(kCCTouchesOneByOne);
 	this->setKeyboardEnabled(true);
     return true;
@@ -72,7 +78,7 @@ bool LevelMenuScene::init()
 LevelMenu* LevelMenuScene::createLevel(int x, int y){
 	return new LevelMenu(new PPoint(x, y), "lock_gold_star", levels->size(), 0, 80, 80);
 }
-extern string levelName;
+
 bool LevelMenuScene::TouchBegan(Touch *touch, Event *event)
 {
 
@@ -80,6 +86,21 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event)
 	int y = touch->getLocation().y;
 	
 	rectangle = new PRectangle(x, y, 20, 20);
+
+	if (buttonArrowLeft->getRect()->intersects(rectangle) && page > 0){
+		page--;
+		for (int i = 0; i < levels->size(); i++){
+			levels->get(i)->setOffsetX(780);
+		}
+	}
+
+	if (buttonArrowRight->getRect()->intersects(rectangle) && page < 2){
+		page++;
+		for (int i = 0; i < levels->size(); i++){
+			levels->get(i)->setOffsetX(-780);
+		}
+	}
+
 	for (int i = 0; i < levels->size(); i++){
 		if (levels->get(i)->getRect()->intersects(rectangle)){
 			levelName = parseLevel(i + 1);
@@ -103,14 +124,6 @@ string LevelMenuScene::parseLevel(int number){
 	}
 	return result + ".txt";
 }
-
-void LevelMenuScene::TouchMoved(Touch* touch, CCEvent* event){
-	
-}
-void LevelMenuScene::TouchEnded(Touch* touch, Event* event){
-
-}
-
 
 void LevelMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
