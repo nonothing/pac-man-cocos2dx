@@ -1,5 +1,6 @@
 #include "MainMenuScene.h"
 #include "View\WorldScene.h"
+#include "View\LevelMenuScene.h"
 #include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
@@ -80,7 +81,10 @@ void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			Director::getInstance()->pushScene(WorldScene::createScene());
 			break;
-		case 2: break;
+		case 2:
+			getEventDispatcher()->removeEventListener(touchListener);
+			Director::getInstance()->pushScene(LevelMenuScene::createScene());
+			break;
         case 3: 
 			if(isSound){
 				isSound = false;

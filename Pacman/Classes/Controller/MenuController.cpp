@@ -5,7 +5,7 @@ void MenuController::init(){
 	buttonPlay->setPosition(Point(300, 300));
 
 	buttonLevel = LabelTTF::create("Select level", "fonts/emulogic.ttf", 26);
-	buttonLevel->setColor(Color3B::GRAY);
+	buttonLevel->setColor(Color3B::YELLOW);
 	buttonLevel->setPosition(Point(402, 250));
 
 	buttonSound = LabelTTF::create("sound on", "fonts/emulogic.ttf", 26);
@@ -36,14 +36,12 @@ int MenuController::selectMenuItem(int y, bool isTouch){
 	} else {
 		buttonSound->setColor(Color3B::YELLOW);
 	}
-	/*//TODO 
 	if(y >= 230 && y < 280){
 		item = 2;
 		buttonLevel->setColor(Color3B::RED);
 	} else {
 		buttonLevel->setColor(Color3B::YELLOW);
 	}
-	*/
 	if(y >= 280 && y < 330){
 		item = 1;
 		buttonPlay->setColor(Color3B::RED);

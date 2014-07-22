@@ -2,27 +2,23 @@
 #define __LEVELMENU_SCENE_H__
 
 #include "cocos2d.h"
+#include "Model\List.h"
+#include "Model\LevelMenu.h"
 
 USING_NS_CC;
 class LevelMenuScene : public cocos2d::Layer
 {
-	Sprite* background;
+	EventListenerTouchOneByOne* touchListener;
+	List<LevelMenu*>* levels;
+
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
-	
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
-	
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-
     virtual bool TouchBegan(Touch* touch, Event* event);
+	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
+	LevelMenu* createLevel(int x, int y);
 
-    // implement the "static create()" method manually
     CREATE_FUNC(LevelMenuScene);
-
-	void update(float dt);
 };
 
 #endif // __LEVELMENU_SCENE_H__
