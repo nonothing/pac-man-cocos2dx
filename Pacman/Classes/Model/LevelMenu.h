@@ -13,7 +13,9 @@ class LevelMenu :public WorldObject{
 	int score;
 	int spX;
 	int offsetX;
-
+	LabelTTF* label;
+	string levelName;
+	void createLabel();
 public:
 	LevelMenu(){};
 	LevelMenu(PPoint* position, string texture,int level, int score, int width, int height);
@@ -23,7 +25,7 @@ public:
 	void setScore(int record){ score = record; }
 	PRectangle* getRect();
 	void setOffsetX(int x);
-
+	LabelTTF* getLabel(){return label;}
 };
 
 

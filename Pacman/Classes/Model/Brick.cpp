@@ -10,7 +10,7 @@ bool Brick::tryToBonus(PRectangle* rectangle){
 	            setTexture("background");
 	            return true;
 	        }
-	        return false;
+	  return false;
 }
 
 bool Brick::tryToEat(PRectangle* rectangle) {

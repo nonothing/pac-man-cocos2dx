@@ -19,6 +19,12 @@ WorldObject(position, texture, width, height) {
 	if (score < 100) setTexture("silver_stars");
 	if (score == 0) setTexture("lock");
 	spX = sprite->getPositionX();
+
+		stringstream ss;
+		ss << level+1;
+		levelName = ss.str();
+		createLabel();
+		
 }
 
 PRectangle* LevelMenu::getRect(){
@@ -28,4 +34,11 @@ PRectangle* LevelMenu::getRect(){
 void LevelMenu::setOffsetX(int x){
 	offsetX += x;
 	sprite->setPositionX(spX + offsetX);
+	createLabel();
+}
+
+void LevelMenu::createLabel(){
+		label = LabelTTF::create(levelName, "fonts/Mistral.ttf", 50);
+		label->setColor(Color3B(210, 160, 30));
+		label->setPosition(Point(getSpriteX()+10,getSpriteY()-10));
 }

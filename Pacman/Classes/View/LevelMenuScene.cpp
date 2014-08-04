@@ -63,9 +63,14 @@ bool LevelMenuScene::init()
 	touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(LevelMenuScene::TouchBegan,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
-
+	
 	for (int i = 0; i < levels->size(); i++){
 		this->addChild(levels->get(i)->getTexture(), 1);
+		
+		if(!levels->get(i)->getLock()){
+			this->addChild(levels->get(i)->getLabel(), 2);
+		}
+		
 	}
 
 	this->addChild(buttonArrowLeft->getTexture(), 1);
@@ -90,15 +95,29 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event)
 	if (buttonArrowLeft->getRect()->intersects(rectangle) && page > 0){
 		page--;
 		for (int i = 0; i < levels->size(); i++){
+			if(!levels->get(i)->getLock()){
+				this->removeChild(levels->get(i)->getLabel());
+			}
 			levels->get(i)->setOffsetX(780);
+			if(!levels->get(i)->getLock()){
+				this->addChild(levels->get(i)->getLabel(), 2);
+			}	
 		}
 	}
 
 	if (buttonArrowRight->getRect()->intersects(rectangle) && page < 2){
 		page++;
+
 		for (int i = 0; i < levels->size(); i++){
+			if(!levels->get(i)->getLock()){
+				this->removeChild(levels->get(i)->getLabel());
+			}
 			levels->get(i)->setOffsetX(-780);
+			if(!levels->get(i)->getLock()){
+				this->addChild(levels->get(i)->getLabel(), 2);
+			}	
 		}
+		
 	}
 
 	for (int i = 0; i < levels->size(); i++){
