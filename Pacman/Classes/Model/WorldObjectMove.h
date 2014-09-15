@@ -8,9 +8,9 @@ using namespace std;
 class WorldObjectMove: public WorldObject {
 
 protected:
-	int direction;
-	int SPEED;
-	int state;
+	int direction_;
+	int SPEED_;
+	int state_;
 
 public:
 	WorldObjectMove(PPoint* point, string texture, int width, int height);

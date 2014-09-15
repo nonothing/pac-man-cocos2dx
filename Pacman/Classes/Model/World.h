@@ -12,16 +12,11 @@ class Spirit;
 class World {
     
  private:
-  Player* player;
-  bool isSound;
-  int  width;
-  int  height;
-  int countPoint;
-  int record;
-  int score;
-  bool isDefenceSpirit;
-
-//  Fruit* fruit;
+  Player* player_;
+  bool isSound_;
+  int countPoint_;
+  int score_;
+  bool isDefenceSpirit_;
 
  public:
   World();
@@ -32,8 +27,8 @@ class World {
 	 List<Brick*>* bricks;
 	 List<Spirit*>* spirits;
 
-	 bool isDefence(){return isDefenceSpirit;}
-	 void setDefenceSpirit(bool is){ isDefenceSpirit = is;}
+	 bool isDefence(){return isDefenceSpirit_;}
+	 void setDefenceSpirit(bool is){ isDefenceSpirit_ = is;}
      void startPointPlayer();
      void createSpirit() ;
      void generateFruit();
@@ -56,9 +51,9 @@ class World {
 	 Player* getPlayer();
      int getRecord();
      void setRecord(int newRecord);
-	 int getScore(){return score;};
+	 int getScore(){return score_;};
      int leftSpirit;
-	 void setScore(int score){this->score = score;};
+	 void setScore(int score){this->score_ = score;};
 //     Fruit getFruit();
     
 };

@@ -4,63 +4,63 @@
 using namespace std;
 
     WorldObject::WorldObject(PPoint* point, string texture, int width, int height) {
-    	this->width = width;
-    	this->height = height;
-        position = new PPoint(point->getX(), point->getY(), width, height);
-        bounds = new PRectangle(position->getX(), position->getY(), width, height);
-		this->textureName = texture;
-        this->sprite = Sprite::create(texture + ".png");
-		this->sprite->setPosition(point->getX() * 30 + 15, point->getY() * 30 + 15);
+    	this->width_ = width;
+    	this->height_ = height;
+        position_ = new PPoint(point->getX(), point->getY(), width, height);
+        bounds_ = new PRectangle(position_->getX(), position_->getY(), width, height);
+		this->textureName_ = texture;
+        this->sprite_ = Sprite::create(texture + ".png");
+		this->sprite_->setPosition(point->getX() * 30 + 15, point->getY() * 30 + 15);
     }
 
      WorldObject::~WorldObject(){
-    	delete position;
-    	delete bounds;
+    	delete position_;
+    	delete bounds_;
     }
 
     int WorldObject::getWidth() {
-        return width;
+        return width_;
     }
     int WorldObject::getHeight() {
-        return height;
+        return height_;
     }
 
     void WorldObject::setWidth(int width){
-    	this->width = width;
+    	this->width_ = width;
     }
     void WorldObject::setHeight(int height){
-    	this->height = height;
+    	this->height_ = height;
     }
 
     PPoint* WorldObject::getPosition() {
-        return position;
+        return position_;
     }
 
     Sprite* WorldObject::getTexture() {
-        return sprite;
+        return sprite_;
     }
 
 	string WorldObject::getTextureName() {
-        return textureName;
+        return textureName_;
     }
 
     PRectangle* WorldObject::getBounds() {
-        return bounds;
+        return bounds_;
     }
 
     void WorldObject::setBounds(int x, int y,  int width, int height){
-        bounds = new PRectangle(x, y, width, height);
+        bounds_ = new PRectangle(x, y, width, height);
     }
 
     void WorldObject::setTexture(string texture) {
-		this->textureName = texture;
+		this->textureName_ = texture;
 		Texture2D *t= Director::getInstance()->getTextureCache()->addImage(texture + ".png");
-		this->sprite->setTexture(t);
+		this->sprite_->setTexture(t);
     }
 
     void WorldObject::setPositionPoint(PPoint* point){
-    	position = new PPoint(point->getX(), point->getY(), width, height);
-    	bounds = new PRectangle(position->getX(), position->getY(), width, height);
+    	position_ = new PPoint(point->getX(), point->getY(), width_, height_);
+    	bounds_ = new PRectangle(position_->getX(), position_->getY(), width_, height_);
     }
 
     int WorldObject::inverse(int count) {

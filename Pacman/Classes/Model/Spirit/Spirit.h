@@ -17,7 +17,7 @@ protected:
 public:
 	Spirit();
 	~Spirit(){
-		for (int i = 0; i < width; i++)
+		for (int i = 0; i < width_; i++)
 		  delete map[i];
 		delete map;
 	};
@@ -47,8 +47,8 @@ protected:
     static const int WALL = 200;
      int **map;
      int step;
-     int width;
-     int height;
+     int width_;
+     int height_;
      void changeMap(Spirit* spirit);
      void inverseMap(List<Brick*>* bricks);
      void createMap(int width, int height);

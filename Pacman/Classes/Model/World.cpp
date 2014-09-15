@@ -7,19 +7,19 @@
 
 
 World::World(Level* level){
-	isSound = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	player = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
-	player->setDirection(LEFT);
+	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	player_ = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
+	player_->setDirection(LEFT);
 	spirits = new List<Spirit*>();
 	spirits->append(new Blinky(level->pointBlinky));
 	spirits->append(new Clyde(level->pointClyde));
 	spirits->append(new Inky(level->pointInky));
 	spirits->append(new Pinky(level->pointPinky));
 	bricks = level->bricks;
-	score = 0;
-	countPoint = generationPoint();
+	score_ = 0;
+	countPoint_ = generationPoint();
 	leftSpirit=3;
-	if(isSound){
+	if(isSound_){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/pacman_coinin.wav");
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatfruit.wav");	
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatspirit.wav");	
@@ -27,29 +27,29 @@ World::World(Level* level){
 }
 
 World::~World(){
-	delete player;
+	delete player_;
 	delete bricks;
 	delete spirits;
 }
 
 void World::tryToPlayerGo(int direction){
-	player->onMove(direction);
+	player_->onMove(direction);
 	
-	if(!collidesWithLevel(player->getBounds())){
-		player->setDirection(direction);
+	if(!collidesWithLevel(player_->getBounds())){
+		player_->setDirection(direction);
 	}
-	player->onMove(player->getDirection());
-	if(!collidesWithLevel(player->getBounds())){
-		player->setPosition(player->getBounds());
-		player->animate();
-		player->getTexture()->setPosition(player->getPosition()->getX()  + 15, player->getPosition()->getY() + 15);
+	player_->onMove(player_->getDirection());
+	if(!collidesWithLevel(player_->getBounds())){
+		player_->setPosition(player_->getBounds());
+		player_->animate();
+		player_->getTexture()->setPosition(player_->getPosition()->getX()  + 15, player_->getPosition()->getY() + 15);
 	}
 	eatBonus();
 	eatPoint();
 }
 
 Player* World::getPlayer(){
-	return player;
+	return player_;
 }
 
 int World::generationPoint(){
@@ -61,15 +61,15 @@ int World::generationPoint(){
 		
 		}
 	}
-	countPoint += result;
+	countPoint_ += result;
 	return result;
 }
 
 bool World::eatPoint(){
-	  if (player->eatPoint(bricks)) {
-		  	  	  countPoint--;
-		  	  	  score += 50;
-				  if(isSound){
+	  if (player_->eatPoint(bricks)) {
+		  	  	  countPoint_--;
+		  	  	  score_ += 50;
+				  if(isSound_){
 					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/pacman_coinin.wav");
 				  }
 	            return true;
@@ -78,11 +78,11 @@ bool World::eatPoint(){
 }
 
 bool World::eatBonus(){
-        if (player->eatBonus(bricks)) {
-            score += 500;
+        if (player_->eatBonus(bricks)) {
+            score_ += 500;
             defenceNPC();
-			isDefenceSpirit = true;
-			if(isSound){
+			isDefenceSpirit_ = true;
+			if(isSound_){
 				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
 			}
             return true;
@@ -105,16 +105,16 @@ void World::attackNPC(){
 			spirits->get(i)->setState(ATTACK);
           }
       }
-      player->setState(DEFENCE);
+      player_->setState(DEFENCE);
 }
 
 bool World::deadSpirit(){
 	for(int i=0; i < spirits->size(); i++){
-            if ((spirits->get(i)->getBounds()->intersects(player->getBounds()))) {
-                if (player->getState() == ATTACK && spirits->get(i)->getState() != DEAD){
-                    score += 1000;
+            if ((spirits->get(i)->getBounds()->intersects(player_->getBounds()))) {
+                if (player_->getState() == ATTACK && spirits->get(i)->getState() != DEAD){
+                    score_ += 1000;
                     spirits->get(i)->setState(DEAD);
-					if(isSound){
+					if(isSound_){
 						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatspirit.wav");	
 					}
                     return true;
@@ -126,10 +126,10 @@ bool World::deadSpirit(){
 
 bool World::deadPlayer(){
 	for(int i=0; i < spirits->size(); i++){
-	            if ((spirits->get(i)->getBounds()->intersects(player->getBounds()))) {
+	            if ((spirits->get(i)->getBounds()->intersects(player_->getBounds()))) {
 	                if (spirits->get(i)->getState() == ATTACK){
-	                    player->setState(DEAD);
-	                    player->setLife(player->getLife() - 1);
+	                    player_->setState(DEAD);
+	                    player_->setLife(player_->getLife() - 1);
 	                    return true;
 	                }
 	            }
@@ -170,9 +170,9 @@ bool World::eatFruit(){
  }
 
  void World::startPointPlayer(){
-	 player->setState(DEFENCE);
-	 player->setPosition(new PRectangle(360,270,30,30));
-	 player->setDirection(RIGHT);
+	 player_->setState(DEFENCE);
+	 player_->setPosition(new PRectangle(360,270,30,30));
+	 player_->setDirection(RIGHT);
 	 
  }
 
@@ -185,14 +185,14 @@ bool World::eatFruit(){
  }
 
 bool World::isVictory(){
-	if(countPoint <= 0 )
+	if(countPoint_ <= 0 )
 		return true;
             
         return false;
 }
     
 bool World::isGameOver(){
-	if(player->getLife() <= 0 )
+	if(player_->getLife() <= 0 )
 		return true;
         
 	return false;

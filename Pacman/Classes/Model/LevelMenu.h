@@ -9,23 +9,23 @@ using namespace std;
 
 class LevelMenu :public WorldObject{
 
-	int level;
-	int score;
-	int spX;
-	int offsetX;
-	LabelTTF* label;
-	string levelName;
+private:
+	int spX_;
+	int offsetX_;
+	LabelTTF* label_;
+	string levelName_;
 	void createLabel();
 public:
 	LevelMenu(){};
 	LevelMenu(PPoint* position, string texture,int level, int score, int width, int height);
-	int getLevel() { return level; }
-	bool getLock(){ return (score == 0) ? true : false; }
-	int getRecord(){ return score; }
-	void setScore(int record){ score = record; }
+
+	CC_SYNTHESIZE(int, level_, Level);
+	CC_SYNTHESIZE(int, score_, Score);
+
+	bool getLock();
 	PRectangle* getRect();
 	void setOffsetX(int x);
-	LabelTTF* getLabel(){return label;}
+	LabelTTF* getLabel();
 };
 
 

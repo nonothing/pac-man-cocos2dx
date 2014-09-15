@@ -3,40 +3,34 @@
 #include "View\LevelMenuScene.h"
 #include "SimpleAudioEngine.h"
 
-using namespace cocos2d;
-using namespace std;
-string levelName;
-USING_NS_CC;
-
-Scene* MainMenuScene::createScene()
-{
-    auto scene = Scene::create();
-	auto director = Director::getInstance();
-    auto glview = director->getOpenGLView();
-    auto layer = MainMenuScene::create();
-    scene->addChild(layer);
-
-    return scene;
+MainMenuScene* MainMenuScene::create() {
+	MainMenuScene* scene = new MainMenuScene();
+	if(scene && scene->init()){
+		return (MainMenuScene*)scene->autorelease();
+	}
+	CC_SAFE_DELETE(scene);
+	return scene;
 }
 
-bool MainMenuScene::init()
-{
-    if ( !Layer::init() )
-    {
+bool MainMenuScene::init() {
+
+    if (!Layer::init()) {
         return false;
     }
-	menuController = new MenuController();
-	menuController->init();
-	isSound =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	if(isSound){
+
+	menuController_ = new MenuController();
+	menuController_->init();
+	isSound_ =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	if(isSound_){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
 	}
-	touchListener = EventListenerTouchOneByOne::create();
-	touchListener->onTouchBegan = CC_CALLBACK_2(MainMenuScene::TouchBegan,this);
-	touchListener->onTouchMoved = CC_CALLBACK_2(MainMenuScene::TouchMoved, this);
-	touchListener->onTouchEnded = CC_CALLBACK_2(MainMenuScene::TouchEnded,this);
-	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
+
+	touchListener_ = EventListenerTouchOneByOne::create();
+	touchListener_->onTouchBegan = CC_CALLBACK_2(MainMenuScene::TouchBegan,this);
+	touchListener_->onTouchMoved = CC_CALLBACK_2(MainMenuScene::TouchMoved, this);
+	touchListener_->onTouchEnded = CC_CALLBACK_2(MainMenuScene::TouchEnded,this);
+	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener_, 100);
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
@@ -46,12 +40,16 @@ bool MainMenuScene::init()
 	labelName->setColor(Color3B::YELLOW);
 	labelName->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height - labelName->getContentSize().height));
     this->addChild(labelName, 1);
-	this->addChild(menuController->getButtonPlay(), 1);
-	this->addChild(menuController->getButtonLevel(), 1);
-	this->addChild(menuController->getButtonSound(), 1);
-	this->addChild(menuController->getButtonExit(), 1);
+	this->addChild(menuController_->getButtonPlay(), 1);
+	this->addChild(menuController_->getButtonLevel(), 1);
+	this->addChild(menuController_->getButtonSound(), 1);
+	this->addChild(menuController_->getButtonExit(), 1);
   
 	this->setKeyboardEnabled(true);
+
+	scene_ = Scene::create();
+	scene_->addChild(this);
+
     return true;
 }
 
@@ -61,45 +59,43 @@ void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
 	}
 }
 
-bool MainMenuScene::TouchBegan(Touch *touch, Event *event)
-{
-	setMenu(menuController->selectMenuItem(touch->getLocation().y, true));
+bool MainMenuScene::TouchBegan(Touch *touch, Event *event) {
+	setMenu(menuController_->selectMenuItem(touch->getLocation().y, true));
     return true;
 }
 
-void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event){
-	setMenu(menuController->selectMenuItem(touch->getLocation().y, true));
+void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event) {
+	setMenu(menuController_->selectMenuItem(touch->getLocation().y, true));
 }
- void MainMenuScene::TouchEnded(Touch* touch, Event* event){
-	setMenu(menuController->selectMenuItem(touch->getLocation().y, false));	
+
+void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
+	setMenu(menuController_->selectMenuItem(touch->getLocation().y, false));	
 }
 
  void MainMenuScene::setMenu(int item){
- switch (item)
-		{
+ switch (item) {
 		case 1:
-			getEventDispatcher()->removeEventListener(touchListener);
+			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			levelName = "lvl_01.txt";
-			Director::getInstance()->pushScene(WorldScene::createScene());
+			Director::getInstance()->pushScene(WorldScene::create("lvl_01.txt")->getScene());
 			break;
 		case 2:
-			getEventDispatcher()->removeEventListener(touchListener);
-			Director::getInstance()->pushScene(LevelMenuScene::createScene());
+			getEventDispatcher()->removeEventListener(touchListener_);
+			Director::getInstance()->pushScene(LevelMenuScene::create()->getScene());
 			break;
         case 3: 
-			if(isSound){
-				isSound = false;
-				menuController->getButtonSound()->setString("Sound off");
-				menuController->getButtonSound()->setPosition(Point(363, 200));
+			if(isSound_){
+				isSound_ = false;
+				menuController_->getButtonSound()->setString("Sound off");
+				menuController_->getButtonSound()->setPosition(Point(363, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND", false);
 				CCUserDefault::sharedUserDefault()->flush();
 			} else {
-				isSound = true;
-				menuController->getButtonSound()->setString("Sound on");
-				menuController->getButtonSound()->setPosition(Point(350, 200));
+				isSound_ = true;
+				menuController_->getButtonSound()->setString("Sound on");
+				menuController_->getButtonSound()->setPosition(Point(350, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
 				CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);

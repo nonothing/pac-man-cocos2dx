@@ -3,13 +3,8 @@
 #include "SimpleAudioEngine.h"
 USING_NS_CC;
 
-AppDelegate::AppDelegate() {
-
-}
-
-AppDelegate::~AppDelegate() 
-{
-}
+AppDelegate::AppDelegate() {}
+AppDelegate::~AppDelegate() {}
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
@@ -28,11 +23,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-	auto scene = MainMenuScene::createScene();
+	MainMenuScene* mainMenu = MainMenuScene::create();
 	
     // run
-	Director::getInstance()->pushScene(scene);
-    director->runWithScene(scene);
+	Director::getInstance()->pushScene(mainMenu->getScene());
+    director->runWithScene(mainMenu->getScene());
 
     return true;
 }

@@ -9,14 +9,14 @@ using namespace std;
 
 class WorldObject {
 private:
-	string textureName;
-	int width;
-	int height;
+	string textureName_;
+	int width_;
+	int height_;
 
 protected:
-     PPoint* position;
-     PRectangle* bounds;
-	 Sprite* sprite;
+     PPoint* position_;
+     PRectangle* bounds_;
+	 Sprite* sprite_;
 
 public:
     WorldObject(){};
@@ -31,8 +31,8 @@ public:
     Sprite* getTexture() ;
 	string getTextureName();
     PRectangle* getBounds();
-	int getSpriteX(){ return sprite->getPositionX(); }
-	int getSpriteY(){ return sprite->getPositionY(); }
+	int getSpriteX(){ return sprite_->getPositionX(); }
+	int getSpriteY(){ return sprite_->getPositionY(); }
     void setBounds(int x, int y, int width, int height);
     void setTexture(string texture);
     virtual void animate() {

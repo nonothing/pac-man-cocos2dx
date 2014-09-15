@@ -18,11 +18,11 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
      void Spirit::go(World* world) {
         clearMap();
         ai(world);
-		sprite->setPosition(position->getX() + 15,position->getY() + 15);
+		sprite_->setPosition(position_->getX() + 15,position_->getY() + 15);
     }
 
      void Spirit::onLoadImageAttack() {
-        switch (direction) {
+        switch (direction_) {
         case LEFT:
             setTexture(left());
             break;
@@ -47,7 +47,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
 	 }
 
      void Spirit::onLoadImageDead() {
-        switch (direction) {
+        switch (direction_) {
         case LEFT:
             setTexture("orbLeft");
             break;
@@ -88,7 +88,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
     void Spirit::move(World* world) {
         onLoadImage();
         refresh(world);
-        onMove(direction);
+        onMove(direction_);
 
         if (!world->collidesWithLevel(getBounds())) {
             setPosition(getBounds());
@@ -98,7 +98,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
 
     void Spirit::findDirection(World* world, PPoint* point, Spirit* spirit) {
         potencialMap(point, spirit, world->bricks);
-        if (getCountStep() >= (30 / SPEED)) {
+        if (getCountStep() >= (30 / SPEED_)) {
             int ** map = getMap();
 			
             int step = map[getPointX()][getPointY()];
@@ -133,8 +133,8 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
     }
 
     void Spirit::createMap(int width, int height) {
-            this->width = width;
-            this->height = height;
+            this->width_ = width;
+            this->height_ = height;
             map = new int*[width];
                 for (int i=0; i<width; i++)
                     map[i] = new int[height];
@@ -152,15 +152,15 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
             }
 
             while (count < 40) {
-                for (int row = 0; row < width; row++) {
-                    for (int column = 0; column < height; column++) {
+                for (int row = 0; row < width_; row++) {
+                    for (int column = 0; column < height_; column++) {
                         if (map[row][column] == step - 1) {
                             if (row > 1) {
                                 if (map[row - 1][column] == 0) {
                                     map[row - 1][column] = step;
                                 }
                             }
-                            if (row < width - 1) {
+                            if (row < width_ - 1) {
                                 if (map[row + 1][column] == 0) {
                                     map[row + 1][column] = step;
                                 }
@@ -170,7 +170,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
                                     map[row][column - 1] = step;
                                 }
                             }
-                            if (column < height - 1) {
+                            if (column < height_ - 1) {
                                 if (map[row][column + 1] == 0) {
                                     map[row][column + 1] = step;
                                 }
@@ -215,11 +215,11 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height) :
                     map[row][column] = WALL;
                 }
                 row++;
-                if (row == width) {
+                if (row == width_) {
                     row = 0;
                     column++;
                 }
-                if (column == height) {
+                if (column == height_) {
                     column = 0;
                 }
             }

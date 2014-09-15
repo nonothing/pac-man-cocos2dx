@@ -11,8 +11,8 @@ class WorldController{
 	int seconds;
 	int record;
 	Direction direction;
-	LabelTTF* labelScore;
-	LabelTTF* labelRecord;
+	CCLabelTTF* labelScore;
+	CCLabelTTF* labelRecord;
 	int touchX;
 	int touchY;
 public:

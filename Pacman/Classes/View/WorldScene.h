@@ -1,32 +1,31 @@
 #ifndef __WORLD_SCENE_H__
 #define __WORLD_SCENE_H__
 
-#include "cocos2d.h"
+#include "View\AbstractScene.h"
 #include "Model\ReadLevel.h"
 #include "Model\World.h"
 #include "Model\Direction.h"
 #include "Controller\WorldController.h"
 
-using namespace std;
 
-USING_NS_CC;
-class WorldScene : public cocos2d::Layer
-{
-	WorldController* worldController;
-	ReadLevel* readLevel; 
-	World* world;
+class WorldScene : public AbstractScene {
+
+private:
+	WorldController* worldController_;
+	ReadLevel* readLevel_; 
+	World* world_;
 
 public:
-	
-	bool isSound;
-	bool isPause;
-	bool isDefenceSpirit;
-    static cocos2d::Scene* createScene();
-    virtual bool init();  
+	CC_SYNTHESIZE(bool, isSound_, Sound);
+	CC_SYNTHESIZE(bool, isPause_, Pause);
+	CC_SYNTHESIZE(bool, isDefenceSpirit_, DefenceSpirit);
+
+    static WorldScene* create(std::string levelName);
+    virtual bool init(std::string levelName);  
 	virtual bool TouchBegan(Touch* touch, Event* event);
 	virtual void TouchMoved(Touch* touch, Event* event);
 	virtual void TouchEnded(Touch* touch, Event* event);
-    CREATE_FUNC(WorldScene);
+
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	void updatePlayer(float dt);
 	void updateWorld(float dt);

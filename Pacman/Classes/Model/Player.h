@@ -8,9 +8,11 @@ using namespace std;
 
 class Player :public WorldObjectMove{
 private:
-	int life;
-	bool isOpen;
+
+	bool isOpen_;
 public:
+
+	CC_SYNTHESIZE(int, life_, Life);
 Player(PPoint* position , string texture ,int width, int height);
 ~Player(){
 };
@@ -18,8 +20,6 @@ Player(PPoint* position , string texture ,int width, int height);
     bool eatBonus(List<Brick*>* bricks);
 
     void animate();
-    int getLife();
-    void setLife(int life);
 
 };
 #endif /* Player_H_ */
