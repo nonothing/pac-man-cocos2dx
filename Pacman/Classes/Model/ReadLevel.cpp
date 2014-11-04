@@ -10,12 +10,15 @@ Level* ReadLevel::getLevel() const{
 
 void ReadLevel::readFile(std:: string fileName){
 	List<Brick*>* bricks = new List<Brick*>();
-	int maxR = 25;
+	
 	string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(fileName.c_str());
 	ssize_t fileSize = 0;
 	unsigned char * fileContents = CCFileUtils::sharedFileUtils( ) -> getFileData( fullPath.c_str() , "r", &fileSize );
 	stringstream strValue;
 	strValue<<fileContents;
+
+	int maxW = 0;
+	strValue>>maxW;
 	int number;
 	int x =0,y =0;
 	while(strValue>>number){
@@ -94,10 +97,12 @@ void ReadLevel::readFile(std:: string fileName){
 		}
 
 		x++;
-		if(x == maxR){
+		if(x == maxW){
 			x = 0;
 			y++;
 		}
 	}
 	level_->bricks = bricks;
+	level_->_width = maxW;
+	level_->_height = y;
 }
