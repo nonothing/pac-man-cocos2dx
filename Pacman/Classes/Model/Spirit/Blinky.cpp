@@ -1,7 +1,7 @@
 #include "model/Spirit/Blinky.h"
 
-Blinky::Blinky(PPoint* point) :
-		Spirit(point, "blinkyUp", 30, 30) {
+Blinky::Blinky(PPoint* point, Level* level) :
+		Spirit(point, "blinkyUp", 30, 30, level) {
 	START_POINT = new PPoint(point->getX(), point->getY());
 	DEFENCE_POINT = new PPoint(21, 1);
 }

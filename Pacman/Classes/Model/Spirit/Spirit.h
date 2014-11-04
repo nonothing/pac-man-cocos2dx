@@ -6,6 +6,7 @@
 #include "Model\List.h"
 #include "Model\Brick.h"
 #include "Model\World.h"
+#include "Model\Level.h"
 
 using namespace std;
 class World;
@@ -21,7 +22,7 @@ public:
 		  delete map[i];
 		delete map;
 	};
-	Spirit(PPoint* position , string texture ,int width, int height);
+	Spirit(PPoint* position , string texture ,int width, int height, Level* level);
 	virtual void ai(World* world){};
 	virtual string left(){return NULL;}
 	virtual string right(){return NULL;}

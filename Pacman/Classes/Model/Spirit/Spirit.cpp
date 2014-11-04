@@ -1,12 +1,12 @@
 #include "model/Spirit/Spirit.h"
 #include "model/World.h"
 
-Spirit::Spirit(PPoint* position, string texture, int width, int height) :
+Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* level) :
 		WorldObjectMove(position, texture, width, height) {
 
 		setState(ATTACK);
 		setCountStep(0);
-		createMap(25, 15);
+		createMap(level->_width, level->_height);
 	}
 
      void Spirit::refresh(World* world) {

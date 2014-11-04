@@ -1,7 +1,7 @@
 #include "Inky.h"
 
-Inky::Inky(PPoint* point) :
-		Spirit(point, "inkyUp", 30, 30) {
+Inky::Inky(PPoint* point, Level* level) :
+		Spirit(point, "inkyUp", 30, 30, level) {
 	START_POINT = new PPoint(point->getX(), point->getY());
 	DEFENCE_POINT = new PPoint(21, 13);
 }

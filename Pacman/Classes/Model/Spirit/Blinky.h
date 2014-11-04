@@ -9,7 +9,7 @@ class Blinky: public Spirit {
 
 public:
 	Blinky();
-	Blinky(PPoint* point);
+	Blinky(PPoint* point, Level* level);
 	void ai(World* world);
 	string left();
 	string right();

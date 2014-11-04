@@ -1,7 +1,7 @@
 #include "Pinky.h"
 
-Pinky::Pinky(PPoint* point) :
-		Spirit(point, "pinkyUp", 30, 30) {
+Pinky::Pinky(PPoint* point, Level* level) :
+		Spirit(point, "pinkyUp", 30, 30, level) {
 	START_POINT = new PPoint(point->getX(), point->getY());
 	DEFENCE_POINT =  new PPoint(1, 2);
 }

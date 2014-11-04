@@ -15,6 +15,13 @@ private:
 	ReadLevel* readLevel_; 
 	World* world_;
 
+	Layer* _worldLayer;
+	Size _size;
+	float _positionX;
+	float _positionY;
+	void updatePosition();
+
+
 public:
 	CC_SYNTHESIZE(bool, isSound_, Sound);
 	CC_SYNTHESIZE(bool, isPause_, Pause);

@@ -18,6 +18,11 @@ bool WorldScene::init(std::string levelName) {
     }
 
 	worldController_ = new WorldController();
+	_size = Director::getInstance()->getWinSize();
+	_worldLayer = Layer::create(); this->addChild(_worldLayer);
+	_positionX = 0;
+	_positionY = 0;
+
 
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey("RECORD",0));
@@ -46,13 +51,13 @@ bool WorldScene::init(std::string levelName) {
 	setTouchMode(kCCTouchesOneByOne);
  
 	for(int i=0; i < size; i++){
-		this->addChild(readLevel_->getLevel()->bricks->get(i)->getTexture(), 0);
+		_worldLayer->addChild(readLevel_->getLevel()->bricks->get(i)->getTexture(), 0);
 	}
 	this->addChild(worldController_->getLabelRecord(), 1);
 	this->addChild(worldController_->getLabelScore(), 1);
-	this->addChild(world_->getPlayer()->getTexture(),2);
+	_worldLayer->addChild(world_->getPlayer()->getTexture(),2);
 	for(int i=0; i < world_->spirits->size(); i++){
-		this->addChild(world_->spirits->get(i)->getTexture(),2);
+		_worldLayer->addChild(world_->spirits->get(i)->getTexture(),2);
 	}
 
     this->setKeyboardEnabled(true);
@@ -77,6 +82,7 @@ void WorldScene::speedTask(float dt){
 
 void WorldScene::updatePlayer(float dt){
 	worldController_->updatePlayer(dt);
+	updatePosition();
 }	
 
 void WorldScene::updateWorld(float dt){
@@ -101,4 +107,41 @@ void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
 		Director::getInstance()->pushScene(MainMenuScene::create()->getScene());
 	}
+}
+
+void WorldScene::updatePosition()
+{
+	float bufferWidth = _size.width*0.3;
+	float bufferHeight = _size.height*0.3;
+	float playerX = world_->getPlayer()->getTexture()->getPositionX();
+	float playerY = world_->getPlayer()->getTexture()->getPositionY();
+	float levelWidth = readLevel_->getLevel()->_width*30;
+	float levelHeight = readLevel_->getLevel()->_height*30;
+
+	if(playerX > (_size.width - bufferWidth) +  _positionX)
+	{
+		_positionX+=3;
+	} else
+	if(playerX < bufferWidth +  _positionX)
+	{
+		_positionX-=3;
+	}
+
+	if(playerY > (_size.height - bufferHeight) +  _positionY)
+	{
+		_positionY+=3;
+	} else
+	if(playerY < bufferHeight +  _positionY)
+	{
+		_positionY-=3;
+	}
+
+	//границы
+	if(_positionX < 0) _positionX = 0;
+	if(_positionX > levelWidth-_size.width) _positionX = levelWidth-_size.width;
+
+	if(_positionY < 0) _positionY = 0;
+	if(_positionY > levelHeight-_size.height) _positionY = levelHeight-_size.height;
+
+	_worldLayer->setPosition(-_positionX, -_positionY);
 }

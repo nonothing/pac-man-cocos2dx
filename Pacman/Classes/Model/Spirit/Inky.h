@@ -16,7 +16,7 @@ private:
 	 int point[3];
 public:
 	Inky();
-	Inky(PPoint* point);
+	Inky(PPoint* point, Level* level);
 	void ai(World* world);
 	string left();
 	string right();

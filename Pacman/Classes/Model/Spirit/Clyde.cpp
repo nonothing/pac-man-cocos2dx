@@ -1,6 +1,6 @@
 #include "model/Spirit/Clyde.h"
 
-     Clyde::Clyde(PPoint* point): Spirit(point, "clydeUp",30,30) {
+     Clyde::Clyde(PPoint* point, Level* level): Spirit(point, "clydeUp",30,30, level) {
         START_POINT = new PPoint(point->getX(), point->getY());
 		DEFENCE_POINT = new PPoint(2, 13);
     }

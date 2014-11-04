@@ -10,7 +10,7 @@ private:
 	PPoint* findPathFourStep(World* world);
 public:
 	Pinky();
-	Pinky(PPoint* point);
+	Pinky(PPoint* point, Level* level);
 	void ai(World* world);
 	string left();
 	string right();

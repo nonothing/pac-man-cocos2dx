@@ -9,7 +9,7 @@ class Clyde: public Spirit {
 
 public:
 	Clyde();
-	Clyde(PPoint* point);
+	Clyde(PPoint* point, Level* level);
 	void ai(World* world);
 	void AIattack(World* world);
 	string left();

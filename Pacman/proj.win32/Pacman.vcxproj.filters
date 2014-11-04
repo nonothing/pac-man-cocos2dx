@@ -87,6 +87,12 @@
     <ClCompile Include="..\Classes\Model\PButton.cpp">
       <Filter>Classes\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\ReadLevel.cpp">
+      <Filter>Classes\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\View\AbstractScene.cpp">
+      <Filter>Classes\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -166,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Model\PButton.h">
       <Filter>Classes\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\View\AbstractScene.h">
+      <Filter>Classes\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,10 @@ public:
 	  PPoint* pointInky;
 	  PPoint* pointPinky;
 	  PPoint* pointClyde;
+	  int _width;
+	  int _height;
+
+
 	  ~Level(){
 		  delete bricks;
 		  delete pointBlinky;

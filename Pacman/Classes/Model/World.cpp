@@ -11,10 +11,10 @@ World::World(Level* level){
 	player_ = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
 	player_->setDirection(LEFT);
 	spirits = new List<Spirit*>();
-	spirits->append(new Blinky(level->pointBlinky));
-	spirits->append(new Clyde(level->pointClyde));
-	spirits->append(new Inky(level->pointInky));
-	spirits->append(new Pinky(level->pointPinky));
+	spirits->append(new Blinky(level->pointBlinky, level));
+	spirits->append(new Clyde(level->pointClyde, level));
+	spirits->append(new Inky(level->pointInky, level));
+	spirits->append(new Pinky(level->pointPinky, level));
 	bricks = level->bricks;
 	score_ = 0;
 	countPoint_ = generationPoint();
