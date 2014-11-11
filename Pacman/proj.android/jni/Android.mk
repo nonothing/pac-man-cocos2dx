@@ -11,11 +11,13 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/View/LevelMenuScene.cpp\
 				   ../../Classes/View/MainMenuScene.cpp\
 				   ../../Classes/View/WorldScene.cpp\
+				   ../../Classes/View/AbstractScene.cpp\
 				   ../../Classes/Model/Brick.cpp\
 				   ../../Classes/Model/Player.cpp\
 				   ../../Classes/Model/Point.cpp\
 				   ../../Classes/Model/PButton.cpp\
 				   ../../Classes/Model/Rectangle.cpp\
+				   ../../Classes/Model/ReadLevel.cpp\
 				   ../../Classes/Model/World.cpp\
 				   ../../Classes/Model/LevelMenu.cpp\
 				   ../../Classes/Model/WorldObject.cpp\

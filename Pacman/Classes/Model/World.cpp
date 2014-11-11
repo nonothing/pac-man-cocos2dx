@@ -58,7 +58,6 @@ int World::generationPoint(){
 		if(bricks->get(i)->getTextureName() == "background"){
 			bricks->get(i)->setTexture("point");
 			result++;
-			break;
 		}
 	}
 	countPoint_ += result;

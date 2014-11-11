@@ -4,6 +4,7 @@
 
 void WorldController::init(World* world){
 	seconds = 0;
+	record = 0;
 	this->world = world;
 	labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
     labelRecord->setPosition(Point(100, 436));
@@ -27,6 +28,8 @@ void WorldController::updateWorld(float dt){
             onPause();
         }
 		if(world->isVictory()){
+			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
+			CCUserDefault::sharedUserDefault()->flush();
 			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1)->getScene());
 			clearWorld();
 		}
@@ -77,8 +80,7 @@ ostringstream convertScore;
 
 	if(world->getScore() > record){
 		record = world->getScore();
-		CCLOG("%i", record);
-		CCUserDefault::sharedUserDefault()->setIntegerForKey(world->getLevelName().c_str(), world->getScore());
+		CCUserDefault::sharedUserDefault()->setIntegerForKey(world->getLevelName().c_str(), record);
 		CCUserDefault::sharedUserDefault()->flush();
 	}
 	ostringstream convertRecord;  
