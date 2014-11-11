@@ -21,14 +21,13 @@ private:
 	float _positionY;
 	void updatePosition();
 
-
 public:
 	CC_SYNTHESIZE(bool, isSound_, Sound);
 	CC_SYNTHESIZE(bool, isPause_, Pause);
 	CC_SYNTHESIZE(bool, isDefenceSpirit_, DefenceSpirit);
 
-    static WorldScene* create(std::string levelName);
-    virtual bool init(std::string levelName);  
+    static WorldScene* create(std::string levelName, int currentLevel);
+    virtual bool init(std::string levelName, int currentLevel);  
 	virtual bool TouchBegan(Touch* touch, Event* event);
 	virtual void TouchMoved(Touch* touch, Event* event);
 	virtual void TouchEnded(Touch* touch, Event* event);
@@ -38,5 +37,6 @@ public:
 	void updateWorld(float dt);
 	void timerTask(float dt);
 	void speedTask(float dt);
+	
 };
 #endif // __HELLOWORLD_SCENE_H__

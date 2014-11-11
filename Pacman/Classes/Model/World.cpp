@@ -54,11 +54,11 @@ Player* World::getPlayer(){
 
 int World::generationPoint(){
 	int result=0;
-	for(int i=0; i < bricks->size()-1; i++){
+	for(int i=0; i < bricks->size(); i++){
 		if(bricks->get(i)->getTextureName() == "background"){
 			bricks->get(i)->setTexture("point");
 			result++;
-		
+			break;
 		}
 	}
 	countPoint_ += result;
@@ -149,8 +149,8 @@ bool World::eatFruit(){
  bool World::collidesWithLevel(PRectangle* rect) {
 	 for(int i=0; i < bricks->size(); i++){
             if (bricks->get(i)->getBounds()->intersects(rect)
-            		&& bricks->get(i)->getTextureName() !="background"
-            		&& bricks->get(i)->getTextureName() !="point"
+            		&& bricks->get(i)->getTextureName() != "background"
+            		&& bricks->get(i)->getTextureName() != "point"
 					&& bricks->get(i)->getTextureName() != "bonus"
                     && bricks->get(i)->getTextureName() != "none"
                     ) {
@@ -184,16 +184,10 @@ bool World::eatFruit(){
 	 }
  }
 
-bool World::isVictory(){
-	if(countPoint_ <= 0 )
-		return true;
-            
-        return false;
+bool World::isVictory() {
+        return countPoint_ > 0 ? false:true;
 }
     
-bool World::isGameOver(){
-	if(player_->getLife() <= 0 )
-		return true;
-        
-	return false;
+bool World::isGameOver() {
+	return player_->getLife() > 0? false:true;
 }

@@ -1,14 +1,16 @@
 #include "Controller\WorldController.h"
+#include "View\LevelMenuScene.h"
+#include "View\WorldScene.h"
 
 void WorldController::init(World* world){
-	seconds =0;
+	seconds = 0;
 	this->world = world;
 	labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
-    labelRecord->setPosition(Point(100,436));
+    labelRecord->setPosition(Point(100, 436));
 	labelRecord->setColor(Color3B::YELLOW);
 
 	labelScore = LabelTTF::create("You: ", FONT_EMULOGIC , 14);
-    labelScore->setPosition(Point(610,436));
+    labelScore->setPosition(Point(610, 436));
 	labelScore->setColor(Color3B::YELLOW);
 }
 
@@ -24,18 +26,25 @@ void WorldController::updateWorld(float dt){
 		 if (world->isGameOver() || world->isVictory()) {
             onPause();
         }
-
-		if (world->getPlayer()->getState() == DEAD || world->isVictory()) {
-			world->createSpirit();
-			world->startPointPlayer();
-			world->getPlayer()->setLife(3);
-			world->generationPoint();
-			world->setScore(0);
-			isPause = false;
-			
+		if(world->isVictory()){
+			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1)->getScene());
+			clearWorld();
+		}
+		 
+		if (world->getPlayer()->getState() == DEAD) {
+			clearWorld();
         }
 	}
 
+}
+
+void WorldController::clearWorld() {
+	world->createSpirit();
+	world->startPointPlayer();
+	world->getPlayer()->setLife(3);
+	world->generationPoint();
+	world->setScore(0);
+	isPause = false;
 }
 
  void WorldController::TouchMoved(int x, int y){
@@ -68,14 +77,15 @@ ostringstream convertScore;
 
 	if(world->getScore() > record){
 		record = world->getScore();
-		CCUserDefault::sharedUserDefault()->setIntegerForKey("RECORD", world->getScore());
+		CCLOG("%i", record);
+		CCUserDefault::sharedUserDefault()->setIntegerForKey(world->getLevelName().c_str(), world->getScore());
 		CCUserDefault::sharedUserDefault()->flush();
 	}
 	ostringstream convertRecord;  
 	convertRecord<<record;
 	labelRecord->setString("Record: " + convertRecord.str());
 
-	if(!isPause){
+	if (!isPause) {
 		world->tryToPlayerGo(direction);
 	}
 }
@@ -102,7 +112,7 @@ void WorldController::timerTask(float dt){
 }
 
 void WorldController::speedTask(float dt){
-	if(!isPause){
+	if (!isPause) {
 		for(int i=0; i < world->spirits->size(); i++){	
 			if(world->spirits->get(i)->getState() == DEAD)
 				world->spirits->get(i)->go(world);
@@ -117,3 +127,5 @@ void WorldController::onPause(){
 		isPause = true;
 	}
 }
+
+

@@ -37,6 +37,7 @@ public:
 	PPoint* getStartPoint(){return START_POINT;}
 
 private:
+	Level* level_;
 	int countStep;
 	bool leftDefence;
 	void refresh(World* world);

@@ -3,10 +3,10 @@
 
 Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* level) :
 		WorldObjectMove(position, texture, width, height) {
-
+		level_ = level;
 		setState(ATTACK);
 		setCountStep(0);
-		createMap(level->_width, level->_height);
+		createMap(level_->_width, level_->_height);
 	}
 
      void Spirit::refresh(World* world) {
@@ -39,8 +39,8 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* l
     }
 
 	 void Spirit::clearMap(){
-		for (int row = 0; row < 25; row++) {
-		  for (int column = 0; column < 15; column++) {
+		for (int row = 0; row < level_->_width; row++) {
+		  for (int column = 0; column < level_->_height; column++) {
 			  map[row][column] = 0;
 		  }
 		}

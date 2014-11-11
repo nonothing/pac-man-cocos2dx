@@ -17,11 +17,13 @@ class World {
   int countPoint_;
   int score_;
   bool isDefenceSpirit_;
+  std::string levelName_;
 
  public:
   World();
   World(Level* level);
   ~World();
+  CC_SYNTHESIZE(int, currentLevel_, CurrentLevel);
 //     void startPointSpirit(Level level) ;
 //     void nextLevel(Level level, int record);
 	 List<Brick*>* bricks;
@@ -54,6 +56,8 @@ class World {
 	 int getScore(){return score_;};
      int leftSpirit;
 	 void setScore(int score){this->score_ = score;};
+	 std::string getLevelName(){ return levelName_; }
+	 
 //     Fruit getFruit();
     
 };

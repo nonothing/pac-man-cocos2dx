@@ -3,30 +3,31 @@
 #include "SimpleAudioEngine.h"
 #include "MainMenuScene.h"
 
-WorldScene* WorldScene::create(std::string levelName) {
+WorldScene* WorldScene::create(std::string levelName, int currentLevel) {
 	WorldScene* scene = new WorldScene();
-	if(scene && scene->init(levelName)){
+	if(scene && scene->init(levelName, currentLevel)){
 		return (WorldScene*)scene->autorelease();
 	}
 	CC_SAFE_DELETE(scene);
 	return scene;
 }
 
-bool WorldScene::init(std::string levelName) {
+bool WorldScene::init(std::string levelName, int currentLevel) {
     if ( !Layer::init() ) {
         return false;
     }
 
 	worldController_ = new WorldController();
 	_size = Director::getInstance()->getWinSize();
-	_worldLayer = Layer::create(); this->addChild(_worldLayer);
+	_worldLayer = Layer::create();
+	this->addChild(_worldLayer);
 	_positionX = 0;
 	_positionY = 0;
 
 
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey("RECORD",0));
-
+	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey(levelName.c_str(), 0));
+	
 	if(isSound_){
 		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/sirensound.wav");
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/sirensound.wav", true);
@@ -40,6 +41,7 @@ bool WorldScene::init(std::string levelName) {
 	int size = readLevel_->getLevel()->bricks->size();
 
 	world_ = new World(readLevel_->getLevel());
+	world_->setCurrentLevel(currentLevel);
 	worldController_->init(world_);
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
@@ -53,9 +55,11 @@ bool WorldScene::init(std::string levelName) {
 	for(int i=0; i < size; i++){
 		_worldLayer->addChild(readLevel_->getLevel()->bricks->get(i)->getTexture(), 0);
 	}
+
 	this->addChild(worldController_->getLabelRecord(), 1);
 	this->addChild(worldController_->getLabelScore(), 1);
 	_worldLayer->addChild(world_->getPlayer()->getTexture(),2);
+
 	for(int i=0; i < world_->spirits->size(); i++){
 		_worldLayer->addChild(world_->spirits->get(i)->getTexture(),2);
 	}
@@ -101,42 +105,35 @@ bool WorldScene::TouchBegan(Touch *touch, Event *event){
 	 worldController_->TouchEnded(touch->getLocation().x,touch->getLocation().y);
 }
 
-void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
-	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event) {
+	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)) {
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
 		Director::getInstance()->pushScene(MainMenuScene::create()->getScene());
 	}
 }
 
-void WorldScene::updatePosition()
-{
-	float bufferWidth = _size.width*0.3;
-	float bufferHeight = _size.height*0.3;
+void WorldScene::updatePosition() {
+
+	float bufferWidth = _size.width * 0.3;
+	float bufferHeight = _size.height * 0.3;
 	float playerX = world_->getPlayer()->getTexture()->getPositionX();
 	float playerY = world_->getPlayer()->getTexture()->getPositionY();
-	float levelWidth = readLevel_->getLevel()->_width*30;
-	float levelHeight = readLevel_->getLevel()->_height*30;
+	float levelWidth = readLevel_->getLevel()->_width * 30;
+	float levelHeight = readLevel_->getLevel()->_height * 30;
 
-	if(playerX > (_size.width - bufferWidth) +  _positionX)
-	{
-		_positionX+=3;
-	} else
-	if(playerX < bufferWidth +  _positionX)
-	{
-		_positionX-=3;
+	if(playerX > (_size.width - bufferWidth) +  _positionX)	{
+		_positionX += 5;
+	} else if(playerX < bufferWidth +  _positionX)	{
+		_positionX -= 5;
 	}
 
-	if(playerY > (_size.height - bufferHeight) +  _positionY)
-	{
-		_positionY+=3;
-	} else
-	if(playerY < bufferHeight +  _positionY)
-	{
-		_positionY-=3;
+	if(playerY > (_size.height - bufferHeight) +  _positionY) {
+		_positionY += 5;
+	} else if(playerY < bufferHeight +  _positionY)	{
+		_positionY -= 5;
 	}
 
-	//границы
 	if(_positionX < 0) _positionX = 0;
 	if(_positionX > levelWidth-_size.width) _positionX = levelWidth-_size.width;
 

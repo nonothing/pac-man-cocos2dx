@@ -1,6 +1,7 @@
 #include "LevelMenuScene.h"
 #include "View\MainMenuScene.h"
 #include "View\WorldScene.h"
+#define SCALE 1.5f
 
 LevelMenuScene* LevelMenuScene::create() {
 	LevelMenuScene* scene = new LevelMenuScene();
@@ -13,9 +14,9 @@ LevelMenuScene* LevelMenuScene::create() {
 
 bool LevelMenuScene::init() {
 
-    if (!Layer::init()) {
-        return false;
-    }
+	if (!Layer::init()) {
+		return false;
+	}
 
 	page_ = 0;
 
@@ -24,49 +25,49 @@ bool LevelMenuScene::init() {
 
 	rectangle_ = new PRectangle(0, 0, 2, 2);
 	levels_ = new List<LevelMenu*>();
-	
-	levels_->append(createLevel(1, 5));
-	levels_->append(createLevel(7, 5));
-	levels_->append(createLevel(13, 5));
-	levels_->append(createLevel(19, 5));
-	
-	levels_->append(createLevel(1, 11));
-	levels_->append(createLevel(7, 11));
-	levels_->append(createLevel(13, 11));
-	levels_->append(createLevel(19, 11));
 
-	levels_->append(createLevel(27, 5));
-	levels_->append(createLevel(33, 5));
-	levels_->append(createLevel(39, 5));
-	levels_->append(createLevel(45, 5));
+	levels_->append(createLevel(2, 11));
+	levels_->append(createLevel(8, 11));
+	levels_->append(createLevel(14, 11));
+	levels_->append(createLevel(20, 11));
 
-	levels_->append(createLevel(27, 11));
-	levels_->append(createLevel(33, 11));
-	levels_->append(createLevel(39, 11));
-	levels_->append(createLevel(45, 11));
+	levels_->append(createLevel(2, 5));
+	levels_->append(createLevel(8, 5));
+	levels_->append(createLevel(14, 5));
+	levels_->append(createLevel(20, 5));
 
-	levels_->append(createLevel(53, 5));
-	levels_->append(createLevel(59, 5));
-	levels_->append(createLevel(65, 5));
-	levels_->append(createLevel(71, 5));
+	levels_->append(createLevel(28, 11));
+	levels_->append(createLevel(34, 11));
+	levels_->append(createLevel(40, 11));
+	levels_->append(createLevel(46, 11));
 
-	levels_->append(createLevel(53, 11));
-	levels_->append(createLevel(59, 11));
-	levels_->append(createLevel(65, 11));
-	levels_->append(createLevel(71, 11));
-	
+	levels_->append(createLevel(28, 5));
+	levels_->append(createLevel(34, 5));
+	levels_->append(createLevel(40, 5));
+	levels_->append(createLevel(46, 5));
+
+	levels_->append(createLevel(54, 11));
+	levels_->append(createLevel(60, 11));
+	levels_->append(createLevel(66, 11));
+	levels_->append(createLevel(72, 11));
+
+	levels_->append(createLevel(54, 5));
+	levels_->append(createLevel(60, 5));
+	levels_->append(createLevel(66, 5));
+	levels_->append(createLevel(72, 5));
+
 
 	touchListener_ = EventListenerTouchOneByOne::create();
 	touchListener_->onTouchBegan = CC_CALLBACK_2(LevelMenuScene::TouchBegan,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener_, 100);
-	
+
 	for (int i = 0; i < levels_->size(); i++){
 		this->addChild(levels_->get(i)->getTexture(), 1);
-		
+		levels_->get(i)->getTexture()->setScale(SCALE);
 		if(!levels_->get(i)->getLock()){
 			this->addChild(levels_->get(i)->getLabel(), 2);
 		}
-		
+
 	}
 
 	this->addChild(buttonArrowLeft_->getTexture(), 1);
@@ -77,18 +78,18 @@ bool LevelMenuScene::init() {
 	scene_ = Scene::create();
 	scene_->addChild(this);
 
-    return true;
+	return true;
 }
 
 LevelMenu* LevelMenuScene::createLevel(int x, int y){
-	return new LevelMenu(new PPoint(x, y), "lock_gold_star", levels_->size(), 0, 80, 80);
+	return new LevelMenu(new PPoint(x, y), "lock_gold_star", levels_->size(), 0, 80 * SCALE, 80 * SCALE);
 }
 
 bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
 
 	int x = touch->getLocation().x;
 	int y = touch->getLocation().y;
-	
+
 	rectangle_ = new PRectangle(x, y, 20, 20);
 
 	if (buttonArrowLeft_->getRect()->intersects(rectangle_) && page_ > 0){
@@ -116,18 +117,18 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
 				this->addChild(levels_->get(i)->getLabel(), 2);
 			}	
 		}
-		
+
 	}
 
 	for (int i = 0; i < levels_->size(); i++){
-		if (levels_->get(i)->getRect()->intersects(rectangle_)){
+		if (!levels_->get(i)->getLock() && levels_->get(i)->getRect()->intersects(rectangle_)){
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create(parseLevel(i + 1))->getScene());
+			Director::getInstance()->pushScene(WorldScene::create(parseLevel(i + 1), i + 1)->getScene());
 		}
 	}
 
-    return true;
+	return true;
 }
 
 string LevelMenuScene::parseLevel(int number){
@@ -143,10 +144,12 @@ string LevelMenuScene::parseLevel(int number){
 }
 
 void LevelMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
-	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+
+	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)) {
 		getEventDispatcher()->removeEventListener(touchListener_);
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
 		Director::getInstance()->pushScene(MainMenuScene::create()->getScene());
 	}
+
 }

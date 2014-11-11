@@ -1,23 +1,23 @@
 #include "Model\LevelMenu.h"
+#include "View\LevelMenuScene.h"
 
 LevelMenu::LevelMenu(PPoint* position, string texture, int level, int score, int width, int height) :
 WorldObject(position, texture, width, height) {
 	this->level_ = level;
-	if (level <8){
-		score = 400;
-	} else if (level> 8 && level < 16){
-		score = 23700;
-	}
-	else {
-		this->score_ = score;
-	}
+	this->score_ = score;
+
 	offsetX_ = 0;
+	if(level == 0) {
+		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(level + 1).c_str(), 1);
+	} else {
+		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(level + 1).c_str(), 0);
+	}
 	
-	if (score > 10000) setTexture("three_gold_star");
-	if (score < 10000) setTexture("two_gold_star");
-	if (score < 1000) setTexture("one_gold_star");
-	if (score < 100) setTexture("silver_stars");
-	if (score == 0) setTexture("lock");
+	if (score_ > 10000) setTexture("three_gold_star");
+	if (score_ < 10000) setTexture("two_gold_star");
+	if (score_ < 1000) setTexture("one_gold_star");
+	if (score_ < 100) setTexture("silver_stars");
+	if (score_ == 0) setTexture("lock");
 	spX_ = sprite_->getPositionX();
 
 		stringstream ss;
@@ -28,7 +28,7 @@ WorldObject(position, texture, width, height) {
 }
 
 bool LevelMenu::getLock(){
-	return (score_ == 0) ? true : false; 
+	return score_ <= 0 ? true : false; 
 }
 
 LabelTTF* LevelMenu::getLabel(){

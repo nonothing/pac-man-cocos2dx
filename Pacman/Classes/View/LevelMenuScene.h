@@ -20,7 +20,7 @@ public:
     virtual bool init();  
     virtual bool TouchBegan(Touch* touch, Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
-	string parseLevel(int number);
+	static string parseLevel(int number);
 
 	LevelMenu* createLevel(int x, int y);
 };

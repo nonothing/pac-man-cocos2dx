@@ -30,5 +30,6 @@ public:
 	void TouchMoved(int x, int y);
 	void TouchEnded(int x, int y);
 	World* getWorld(){ return world; }
+	void clearWorld();
 };
 #endif /* WORLD_CONTROLLER_H_ */

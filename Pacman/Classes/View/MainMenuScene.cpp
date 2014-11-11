@@ -54,7 +54,7 @@ bool MainMenuScene::init() {
 }
 
 void MainMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event){
-	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)) {
 		Director::getInstance()->end();
 	}
 }
@@ -77,7 +77,7 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 		case 1:
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create("lvl_01.txt")->getScene());
+			Director::getInstance()->pushScene(WorldScene::create("lvl_01.txt", 1)->getScene());
 			break;
 		case 2:
 			getEventDispatcher()->removeEventListener(touchListener_);
