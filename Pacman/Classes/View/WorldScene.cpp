@@ -60,8 +60,8 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	this->addChild(worldController_->getLabelScore(), 1);
 	_worldLayer->addChild(world_->getPlayer()->getTexture(),2);
 
-	for(int i=0; i < world_->spirits->size(); i++){
-		_worldLayer->addChild(world_->spirits->get(i)->getTexture(),2);
+	for(int i=0; i < world_->spirits_->size(); i++){
+		_worldLayer->addChild(world_->spirits_->get(i)->getTexture(),2);
 	}
 
     this->setKeyboardEnabled(true);
@@ -69,6 +69,7 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	this->schedule(schedule_selector(WorldScene::updateWorld),0.07f);
 	this->schedule(schedule_selector(WorldScene::timerTask),1.0f);
 	this->schedule(schedule_selector(WorldScene::speedTask),0.03f);
+	this->schedule(schedule_selector(WorldScene::generateFruit), 15.0f);
 
 	 scene_ = Scene::create();
 	 scene_->addChild(this);
@@ -91,6 +92,10 @@ void WorldScene::updatePlayer(float dt){
 
 void WorldScene::updateWorld(float dt){
 	worldController_->updateWorld(dt);
+}
+
+void WorldScene::generateFruit(float dt) {
+	worldController_->generateFruit(dt);
 }
 
 bool WorldScene::TouchBegan(Touch *touch, Event *event){
@@ -142,3 +147,5 @@ void WorldScene::updatePosition() {
 
 	_worldLayer->setPosition(-_positionX, -_positionY);
 }
+
+

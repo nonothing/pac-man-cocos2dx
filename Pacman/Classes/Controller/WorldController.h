@@ -22,6 +22,7 @@ public:
 	void updatePlayer(float dt);
 	void timerTask(float dt);
 	void speedTask(float dt);
+	void generateFruit(float dt);
 	void setRecord(int score){record = score;}
 	void setDirection(Direction d){ direction = d;}
 	LabelTTF* getLabelScore(){return labelScore;}

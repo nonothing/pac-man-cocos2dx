@@ -97,7 +97,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* l
     }
 
     void Spirit::findDirection(World* world, PPoint* point, Spirit* spirit) {
-        potencialMap(point, spirit, world->bricks);
+        potencialMap(point, spirit, world->bricks_);
         if (getCountStep() >= (30 / SPEED_)) {
             int ** map = getMap();
 			

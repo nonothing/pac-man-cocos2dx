@@ -10,12 +10,12 @@ World::World(Level* level){
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	player_ = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
 	player_->setDirection(LEFT);
-	spirits = new List<Spirit*>();
-	spirits->append(new Blinky(level->pointBlinky, level));
-	spirits->append(new Clyde(level->pointClyde, level));
-	spirits->append(new Inky(level->pointInky, level));
-	spirits->append(new Pinky(level->pointPinky, level));
-	bricks = level->bricks;
+	spirits_ = new List<Spirit*>();
+	spirits_->append(new Blinky(level->pointBlinky, level));
+	spirits_->append(new Clyde(level->pointClyde, level));
+	spirits_->append(new Inky(level->pointInky, level));
+	spirits_->append(new Pinky(level->pointPinky, level));
+	bricks_ = level->bricks;
 	score_ = 0;
 	countPoint_ = generationPoint();
 	leftSpirit=3;
@@ -28,8 +28,8 @@ World::World(Level* level){
 
 World::~World(){
 	delete player_;
-	delete bricks;
-	delete spirits;
+	delete bricks_;
+	delete spirits_;
 }
 
 void World::tryToPlayerGo(int direction){
@@ -46,6 +46,7 @@ void World::tryToPlayerGo(int direction){
 	}
 	eatBonus();
 	eatPoint();
+	eatFruit();
 }
 
 Player* World::getPlayer(){
@@ -54,9 +55,9 @@ Player* World::getPlayer(){
 
 int World::generationPoint(){
 	int result=0;
-	for(int i=0; i < bricks->size(); i++){
-		if(bricks->get(i)->getTextureName() == "background"){
-			bricks->get(i)->setTexture("point");
+	for(int i=0; i < bricks_->size(); i++){
+		if(bricks_->get(i)->getTextureName() == "background"){
+			bricks_->get(i)->setTexture("point");
 			result++;
 		}
 	}
@@ -64,8 +65,38 @@ int World::generationPoint(){
 	return result;
 }
 
+void World::generationFruit() {
+	std::vector<int> emptyBrick;
+	for(int i=0; i < bricks_->size(); i++){
+		if(bricks_->get(i)->getTextureName() == "background"){
+			emptyBrick.push_back(i);
+		}
+		if(isFruit(bricks_->get(i)->getTextureName())) {
+			bricks_->get(i)->setTexture("background");
+			return;
+		}
+	}
+	if(emptyBrick.size() > bricks_->size() / 10) {
+		int randomNumber = rand() % emptyBrick.size();
+		int randomFruit = rand() % 6;
+		std::string textureName;
+
+		switch (randomFruit) {
+		case 0:   textureName = "banana";		break;
+		case 1:   textureName = "apple";		break;
+		case 2:   textureName = "apple_red";	break;
+		case 3:   textureName = "vinograd";		break;
+		case 4:   textureName = "orange";		break;
+		case 5:   textureName = "cocos";		break;
+		default:  textureName = "background";	break;
+		}
+
+		bricks_->get(emptyBrick.at(randomNumber))->setTexture(textureName);
+	}
+}
+
 bool World::eatPoint(){
-	  if (player_->eatPoint(bricks)) {
+	  if (player_->eatPoint(bricks_)) {
 		  	  	  countPoint_--;
 		  	  	  score_ += 50;
 				  if(isSound_){
@@ -77,7 +108,7 @@ bool World::eatPoint(){
 }
 
 bool World::eatBonus(){
-        if (player_->eatBonus(bricks)) {
+        if (player_->eatBonus(bricks_)) {
             score_ += 500;
             defenceNPC();
 			isDefenceSpirit_ = true;
@@ -91,28 +122,28 @@ bool World::eatBonus(){
 
 
 void World::defenceNPC(){
-	for(int i=0; i < spirits->size(); i++){
-	            if (spirits->get(i)->getState() == ATTACK) {
-	            	spirits->get(i)->setState(DEFENCE);
+	for(int i=0; i < spirits_->size(); i++){
+	            if (spirits_->get(i)->getState() == ATTACK) {
+	            	spirits_->get(i)->setState(DEFENCE);
 	            }
 	        }
 }
 
 void World::attackNPC(){
-	for(int i=0; i < spirits->size(); i++){
-		if (spirits->get(i)->getState() == DEFENCE) {
-			spirits->get(i)->setState(ATTACK);
+	for(int i=0; i < spirits_->size(); i++){
+		if (spirits_->get(i)->getState() == DEFENCE) {
+			spirits_->get(i)->setState(ATTACK);
           }
       }
       player_->setState(DEFENCE);
 }
 
 bool World::deadSpirit(){
-	for(int i=0; i < spirits->size(); i++){
-            if ((spirits->get(i)->getBounds()->intersects(player_->getBounds()))) {
-                if (player_->getState() == ATTACK && spirits->get(i)->getState() != DEAD){
+	for(int i=0; i < spirits_->size(); i++){
+            if ((spirits_->get(i)->getBounds()->intersects(player_->getBounds()))) {
+                if (player_->getState() == ATTACK && spirits_->get(i)->getState() != DEAD){
                     score_ += 1000;
-                    spirits->get(i)->setState(DEAD);
+                    spirits_->get(i)->setState(DEAD);
 					if(isSound_){
 						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatspirit.wav");	
 					}
@@ -124,9 +155,9 @@ bool World::deadSpirit(){
 }
 
 bool World::deadPlayer(){
-	for(int i=0; i < spirits->size(); i++){
-	            if ((spirits->get(i)->getBounds()->intersects(player_->getBounds()))) {
-	                if (spirits->get(i)->getState() == ATTACK){
+	for(int i=0; i < spirits_->size(); i++){
+	            if ((spirits_->get(i)->getBounds()->intersects(player_->getBounds()))) {
+	                if (spirits_->get(i)->getState() == ATTACK){
 	                    player_->setState(DEAD);
 	                    player_->setLife(player_->getLife() - 1);
 	                    return true;
@@ -137,21 +168,25 @@ bool World::deadPlayer(){
 }
 
 bool World::eatFruit(){
-//        if(fruit->getBounds()->intersects(player->getBounds()) && fruit->getTexture()!= none){
-//            fruit->setTexture(Texture->none);
-//            score += 500;
-//            return true;
-//        }
-            return false;
-    }
+	if (player_->eatFruit(bricks_)) {
+		score_ += 500;
+
+		if(isSound_){
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
+		}
+		return true;
+	}
+	return false;
+}
 
  bool World::collidesWithLevel(PRectangle* rect) {
-	 for(int i=0; i < bricks->size(); i++){
-            if (bricks->get(i)->getBounds()->intersects(rect)
-            		&& bricks->get(i)->getTextureName() != "background"
-            		&& bricks->get(i)->getTextureName() != "point"
-					&& bricks->get(i)->getTextureName() != "bonus"
-                    && bricks->get(i)->getTextureName() != "none"
+	 for(int i=0; i < bricks_->size(); i++){
+            if (bricks_->get(i)->getBounds()->intersects(rect)
+            		&& bricks_->get(i)->getTextureName() != "background"
+            		&& bricks_->get(i)->getTextureName() != "point"
+					&& bricks_->get(i)->getTextureName() != "bonus"
+                    && bricks_->get(i)->getTextureName() != "none"
+					&& !isFruit(bricks_->get(i)->getTextureName())
                     ) {
                 return true;
             }
@@ -160,8 +195,8 @@ bool World::eatFruit(){
     }
 
  int World::collidesWithRefresh(PRectangle* rect){
-	 for(int i=0; i < bricks->size(); i++){
-	            if (bricks->get(i)->getBounds()->intersects(rect) && bricks->get(i)->getTextureName() == "none") {
+	 for(int i=0; i < bricks_->size(); i++){
+	            if (bricks_->get(i)->getBounds()->intersects(rect) && bricks_->get(i)->getTextureName() == "none") {
 	                return ATTACK;
 	            }
 	        }
@@ -176,10 +211,10 @@ bool World::eatFruit(){
  }
 
  void World::createSpirit(){
-	 for(int i=0; i < spirits->size(); i++){
-					spirits->get(i)->setDirection(DOWN);
-	 	            spirits->get(i)->setPositionPoint(spirits->get(i)->getStartPoint());
-	 	            spirits->get(i)->setCountStep(0);
+	 for(int i=0; i < spirits_->size(); i++){
+					spirits_->get(i)->setDirection(DOWN);
+	 	            spirits_->get(i)->setPositionPoint(spirits_->get(i)->getStartPoint());
+	 	            spirits_->get(i)->setCountStep(0);
 	 }
  }
 
@@ -189,4 +224,8 @@ bool World::isVictory() {
     
 bool World::isGameOver() {
 	return player_->getLife() > 0? false:true;
+}
+
+bool World::isFruit(string textureName) {
+	return textureName == "banana" || textureName == "apple" || textureName == "apple_red" || textureName == "vinograd" || textureName == "orange" || textureName == "cocos";
 }

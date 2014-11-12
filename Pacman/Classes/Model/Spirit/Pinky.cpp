@@ -22,7 +22,7 @@ Pinky::Pinky(PPoint* point, Level* level) :
     }
 
 PPoint* Pinky::findPathFourStep(World* world) {
-	potencialMap(world->getPlayer()->getPosition(), this, world->bricks);
+	potencialMap(world->getPlayer()->getPosition(), this, world->bricks_);
 
 	PPoint* point = new PPoint(0, 0);
 	int** map = getMap();

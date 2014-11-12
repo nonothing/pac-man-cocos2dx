@@ -20,23 +20,21 @@ class World {
   std::string levelName_;
 
  public:
-  World();
-  World(Level* level);
-  ~World();
-  CC_SYNTHESIZE(int, currentLevel_, CurrentLevel);
-//     void startPointSpirit(Level level) ;
-//     void nextLevel(Level level, int record);
-	 List<Brick*>* bricks;
-	 List<Spirit*>* spirits;
+	World();
+	World(Level* level);
+	 ~World();
+	 CC_SYNTHESIZE(int, currentLevel_, CurrentLevel);
+	 List<Brick*>* bricks_;
+	 List<Spirit*>* spirits_;
 
 	 bool isDefence(){return isDefenceSpirit_;}
 	 void setDefenceSpirit(bool is){ isDefenceSpirit_ = is;}
      void startPointPlayer();
      void createSpirit() ;
-     void generateFruit();
      bool collidesWithLevel(PRectangle* rect) ;
      int collidesWithRefresh(PRectangle* rect);
      int generationPoint();
+	 void generationFruit();
      void newGame();
      bool eatFruit();
      bool eatPoint();
@@ -57,8 +55,7 @@ class World {
      int leftSpirit;
 	 void setScore(int score){this->score_ = score;};
 	 std::string getLevelName(){ return levelName_; }
-	 
-//     Fruit getFruit();
+	 bool isFruit(string textureName);
     
 };
 #endif /* World_H_ */

@@ -18,6 +18,7 @@ Player(PPoint* position , string texture ,int width, int height);
 };
     bool eatPoint(List<Brick*>* bricks);
     bool eatBonus(List<Brick*>* bricks);
+	bool eatFruit(List<Brick*>* bricks);
 
     void animate();
 

@@ -20,3 +20,17 @@ bool Brick::tryToEat(PRectangle* rectangle) {
 	}
 	return false;
 }
+
+bool Brick::tryToFruit(PRectangle* rectangle) {
+	if (bounds_->intersects(rectangle) 
+		&&( getTextureName() == "banana"
+		|| getTextureName() == "apple"
+		|| getTextureName() == "apple_red"
+		|| getTextureName() == "vinograd"
+		|| getTextureName() == "orange"
+		|| getTextureName() == "cocos")) {
+		setTexture("background");
+		return true;
+	}
+	return false;
+}

@@ -13,6 +13,7 @@ public:
 	Brick(PPoint* position , string texture ,int width, int height);
     bool tryToEat(PRectangle* rectangle);
     bool tryToBonus(PRectangle* rectangle);
+	bool tryToFruit(PRectangle* rectangle);
 };
 
 

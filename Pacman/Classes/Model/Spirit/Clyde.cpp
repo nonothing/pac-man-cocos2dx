@@ -21,7 +21,7 @@
     }
 
      void Clyde::AIattack(World* world) {
-        potencialMap(world->getPlayer()->getPosition(), this, world->bricks);
+        potencialMap(world->getPlayer()->getPosition(), this, world->bricks_);
 
         int** map = getMap();
         int step = map[getPointX()][getPointY()];

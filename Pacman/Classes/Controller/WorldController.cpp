@@ -17,10 +17,10 @@ void WorldController::init(World* world){
 
 void WorldController::updateWorld(float dt){
 	if(!isPause){
-		for(int i=0; i < world->spirits->size(); i++){	
-			if(world->spirits->get(i)->getState() == DEFENCE)
-				world->spirits->get(i)->setDefence(isDefenceSpirit);
-			world->spirits->get(i)->go(world);
+		for(int i=0; i < world->spirits_->size(); i++){	
+			if(world->spirits_->get(i)->getState() == DEFENCE)
+				world->spirits_->get(i)->setDefence(isDefenceSpirit);
+			world->spirits_->get(i)->go(world);
 		}
 		world->deadPlayer();
 		world->deadSpirit();
@@ -115,9 +115,9 @@ void WorldController::timerTask(float dt){
 
 void WorldController::speedTask(float dt){
 	if (!isPause) {
-		for(int i=0; i < world->spirits->size(); i++){	
-			if(world->spirits->get(i)->getState() == DEAD)
-				world->spirits->get(i)->go(world);
+		for(int i=0; i < world->spirits_->size(); i++){	
+			if(world->spirits_->get(i)->getState() == DEAD)
+				world->spirits_->get(i)->go(world);
 		}
 	}
 }
@@ -127,6 +127,12 @@ void WorldController::onPause(){
 		isPause = false;
 	} else {
 		isPause = true;
+	}
+}
+
+void WorldController::generateFruit(float dt) {
+	if (!isPause) {
+		world->generationFruit();
 	}
 }
 

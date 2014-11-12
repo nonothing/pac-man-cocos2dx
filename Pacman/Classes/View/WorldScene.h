@@ -37,6 +37,7 @@ public:
 	void updateWorld(float dt);
 	void timerTask(float dt);
 	void speedTask(float dt);
+	void generateFruit(float dt);
 	
 };
 #endif // __HELLOWORLD_SCENE_H__

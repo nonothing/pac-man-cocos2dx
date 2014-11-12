@@ -23,6 +23,15 @@ bool Player::eatBonus(List<Brick*>* bricks) {
    return false;
 }
 
+bool Player::eatFruit(List<Brick*>* bricks) {
+	for(int i=0; i < bricks->size(); i++){
+		if(bricks->get(i)->tryToFruit(bounds_)){
+			return true;
+		}
+	}
+	return false;
+}
+
 void Player::animate() {
         bool change =
                 (getPosition()->getX() % 15 == 0 && (direction_ == LEFT || direction_ == RIGHT))
@@ -62,3 +71,5 @@ void Player::animate() {
             }
         }
     }
+
+
