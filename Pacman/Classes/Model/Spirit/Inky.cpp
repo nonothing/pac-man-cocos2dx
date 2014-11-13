@@ -8,7 +8,7 @@ Inky::Inky(PPoint* point, Level* level) :
    void Inky::ai(World* world) {
         switch (getState()) {
         case ATTACK:
-            findDirection(world, doubleVectorBetweenTwoPoints(findPathTwoStep(world), world->spirits->get(0)->getPosition() ), this);
+            findDirection(world, doubleVectorBetweenTwoPoints(findPathTwoStep(world), world->spirits_->get(0)->getPosition() ), this);
             break;
         case DEFENCE:
             findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
@@ -67,7 +67,7 @@ Inky::Inky(PPoint* point, Level* level) :
 
 
      PPoint* Inky::findPathTwoStep(World* world) {
-        potencialMap(world->getPlayer()->getPosition(), this, world->bricks);
+        potencialMap(world->getPlayer()->getPosition(), this, world->bricks_);
 
         int** map = getMap();
         int min = 0;

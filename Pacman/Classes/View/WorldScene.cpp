@@ -2,6 +2,9 @@
 #include "Model\ReadLevel.h"
 #include "SimpleAudioEngine.h"
 #include "MainMenuScene.h"
+#include "Controller/SoundController.h"
+
+using namespace NSoundController;
 
 WorldScene* WorldScene::create(std::string levelName, int currentLevel) {
 	WorldScene* scene = new WorldScene();
@@ -29,8 +32,7 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey(levelName.c_str(), 0));
 	
 	if(isSound_){
-		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/sirensound.wav");
-		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/sirensound.wav", true);
+		SoundController::preloadingAndPlayMusic(ES_SIREN_SOUND, true);
 	}
 	
 	worldController_->setDirection(LEFT);

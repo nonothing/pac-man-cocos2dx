@@ -93,6 +93,9 @@
     <ClCompile Include="..\Classes\View\AbstractScene.cpp">
       <Filter>Classes\View</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
+      <Filter>Classes\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\View\AbstractScene.h">
       <Filter>Classes\View</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SoundController.h">
+      <Filter>Classes\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,9 @@
 #include "MainMenuScene.h"
 #include "View\WorldScene.h"
 #include "View\LevelMenuScene.h"
-#include "SimpleAudioEngine.h"
+#include "Controller\SoundController.h"
+
+using namespace NSoundController;
 
 MainMenuScene* MainMenuScene::create() {
 	MainMenuScene* scene = new MainMenuScene();
@@ -17,13 +19,13 @@ bool MainMenuScene::init() {
     if (!Layer::init()) {
         return false;
     }
+	SoundController::init();
 
 	menuController_ = new MenuController();
 	menuController_->init();
 	isSound_ =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	if(isSound_){
-		CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
-		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
+		SoundController::preloadingAndPlayMusic(ES_PACMAN_SOUNG, true);
 	}
 
 	touchListener_ = EventListenerTouchOneByOne::create();
@@ -96,8 +98,7 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 				isSound_ = true;
 				menuController_->getButtonSound()->setString("Sound on");
 				menuController_->getButtonSound()->setPosition(Point(350, 200));
-				CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/pacman_song2.wav");
-				CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/pacman_song2.wav", true);
+				SoundController::preloadingAndPlayMusic(ES_PACMAN_SOUNG, true);
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
 				CCUserDefault::sharedUserDefault()->flush();
 			}

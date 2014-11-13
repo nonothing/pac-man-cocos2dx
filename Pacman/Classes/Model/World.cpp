@@ -3,8 +3,9 @@
 #include "model/Spirit/Clyde.h"
 #include "model/Spirit/Inky.h"
 #include "model/Spirit/Pinky.h"
-#include "SimpleAudioEngine.h"
+#include "Controller/SoundController.h"
 
+using namespace NSoundController;
 
 World::World(Level* level){
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
@@ -19,10 +20,11 @@ World::World(Level* level){
 	score_ = 0;
 	countPoint_ = generationPoint();
 	leftSpirit=3;
-	if(isSound_){
-		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/pacman_coinin.wav");
-		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatfruit.wav");	
-		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/eatspirit.wav");	
+
+	if(isSound_) {
+		SoundController::preloadEffect(ES_PACMAN_COINING);
+		SoundController::preloadEffect(ES_EAT_FRUIT);
+		SoundController::preloadEffect(ES_EAT_SPIRIT);
 	}
 }
 
@@ -100,7 +102,7 @@ bool World::eatPoint(){
 		  	  	  countPoint_--;
 		  	  	  score_ += 50;
 				  if(isSound_){
-					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/pacman_coinin.wav");
+					SoundController::playEffect(ES_PACMAN_COINING);
 				  }
 	            return true;
 	        }
@@ -113,7 +115,7 @@ bool World::eatBonus(){
             defenceNPC();
 			isDefenceSpirit_ = true;
 			if(isSound_){
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
+				SoundController::playEffect(ES_EAT_FRUIT);	
 			}
             return true;
         }
@@ -145,7 +147,7 @@ bool World::deadSpirit(){
                     score_ += 1000;
                     spirits_->get(i)->setState(DEAD);
 					if(isSound_){
-						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatspirit.wav");	
+						SoundController::playEffect(ES_EAT_FRUIT);
 					}
                     return true;
                 }
@@ -172,7 +174,7 @@ bool World::eatFruit(){
 		score_ += 500;
 
 		if(isSound_){
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/eatfruit.wav");	
+			SoundController::playEffect(ES_EAT_FRUIT);
 		}
 		return true;
 	}

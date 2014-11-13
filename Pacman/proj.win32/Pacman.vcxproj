@@ -137,6 +137,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Controller\MenuController.cpp" />
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\WorldController.cpp" />
     <ClCompile Include="..\Classes\Model\Brick.cpp" />
     <ClCompile Include="..\Classes\Model\LevelMenu.cpp" />
@@ -162,6 +163,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Controller\MenuController.h" />
+    <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\WorldController.h" />
     <ClInclude Include="..\Classes\Model\Brick.h" />
     <ClInclude Include="..\Classes\Model\Direction.h" />
