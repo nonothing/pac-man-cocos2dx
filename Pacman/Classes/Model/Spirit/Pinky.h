@@ -7,7 +7,8 @@
 class Pinky: public Spirit {
 
 private:
-	PPoint* findPathFourStep(World* world);
+	PPoint* findPathFourStep(Player* player);
+	Level* level_;
 public:
 	Pinky();
 	Pinky(PPoint* point, Level* level);

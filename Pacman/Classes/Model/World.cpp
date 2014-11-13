@@ -12,14 +12,13 @@ World::World(Level* level){
 	player_ = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
 	player_->setDirection(LEFT);
 	spirits_ = new List<Spirit*>();
-	spirits_->append(new Blinky(level->pointBlinky, level));
-	spirits_->append(new Clyde(level->pointClyde, level));
-	spirits_->append(new Inky(level->pointInky, level));
-	spirits_->append(new Pinky(level->pointPinky, level));
-	bricks_ = level->bricks;
+	spirits_->append(new Blinky(level->getPointBlinky(), level));
+	spirits_->append(new Clyde(level->getPointClyde(), level));
+	spirits_->append(new Inky(level->getPointInky(), level));
+	spirits_->append(new Pinky(level->getPointPinky(), level));
+	bricks_ = level->getBricks();
 	score_ = 0;
 	countPoint_ = generationPoint();
-	leftSpirit=3;
 
 	if(isSound_) {
 		SoundController::preloadEffect(ES_PACMAN_COINING);
@@ -78,7 +77,7 @@ void World::generationFruit() {
 			return;
 		}
 	}
-	if(emptyBrick.size() > bricks_->size() / 10) {
+	if((int)emptyBrick.size() > bricks_->size() / 10) {
 		int randomNumber = rand() % emptyBrick.size();
 		int randomFruit = rand() % 6;
 		std::string textureName;
@@ -230,4 +229,12 @@ bool World::isGameOver() {
 
 bool World::isFruit(string textureName) {
 	return textureName == "banana" || textureName == "apple" || textureName == "apple_red" || textureName == "vinograd" || textureName == "orange" || textureName == "cocos";
+}
+
+List<Spirit*>* World::getSpirits() const {
+	return spirits_;
+}
+
+List<Brick*>* World::getBricks() const {
+	return bricks_;
 }

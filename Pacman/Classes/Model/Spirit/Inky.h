@@ -10,10 +10,11 @@ private:
 	 static const  int Y = 1;
 	 static const int X = 0;
 	 PPoint* doubleVectorBetweenTwoPoints(PPoint* point1, PPoint* point2);
-	 PPoint* findPathTwoStep(World* world);
+	 PPoint* findPathTwoStep(Player* player);
 	 int aMatrix[3];
      int bMatrix[3][3];
 	 int point[3];
+	 Level* level_;
 public:
 	Inky();
 	Inky(PPoint* point, Level* level);

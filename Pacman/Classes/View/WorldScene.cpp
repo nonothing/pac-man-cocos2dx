@@ -21,11 +21,11 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
     }
 
 	worldController_ = new WorldController();
-	_size = Director::getInstance()->getWinSize();
-	_worldLayer = Layer::create();
-	this->addChild(_worldLayer);
-	_positionX = 0;
-	_positionY = 0;
+	size_ = Director::getInstance()->getWinSize();
+	worldLayer_ = Layer::create();
+	this->addChild(worldLayer_);
+	positionX_ = 0;
+	positionY_ = 0;
 
 
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
@@ -40,7 +40,7 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 
 	readLevel_ = new ReadLevel();
 	readLevel_->readFile(levelName);
-	int size = readLevel_->getLevel()->bricks->size();
+	int size = readLevel_->getLevel()->getBricks()->size();
 
 	world_ = new World(readLevel_->getLevel());
 	world_->setCurrentLevel(currentLevel);
@@ -55,15 +55,15 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	setTouchMode(kCCTouchesOneByOne);
  
 	for(int i=0; i < size; i++){
-		_worldLayer->addChild(readLevel_->getLevel()->bricks->get(i)->getTexture(), 0);
+		worldLayer_->addChild(readLevel_->getLevel()->getBricks()->get(i)->getTexture(), 0);
 	}
 
 	this->addChild(worldController_->getLabelRecord(), 1);
 	this->addChild(worldController_->getLabelScore(), 1);
-	_worldLayer->addChild(world_->getPlayer()->getTexture(),2);
+	worldLayer_->addChild(world_->getPlayer()->getTexture(),2);
 
-	for(int i=0; i < world_->spirits_->size(); i++){
-		_worldLayer->addChild(world_->spirits_->get(i)->getTexture(),2);
+	for(int i=0; i < world_->getSpirits()->size(); i++){
+		worldLayer_->addChild(world_->getSpirits()->get(i)->getTexture(),2);
 	}
 
     this->setKeyboardEnabled(true);
@@ -122,32 +122,32 @@ void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event) {
 
 void WorldScene::updatePosition() {
 
-	float bufferWidth = _size.width * 0.3;
-	float bufferHeight = _size.height * 0.3;
+	float bufferWidth = size_.width * 0.3;
+	float bufferHeight = size_.height * 0.3;
 	float playerX = world_->getPlayer()->getTexture()->getPositionX();
 	float playerY = world_->getPlayer()->getTexture()->getPositionY();
-	float levelWidth = readLevel_->getLevel()->_width * 30;
-	float levelHeight = readLevel_->getLevel()->_height * 30;
+	float levelWidth = readLevel_->getLevel()->getWidth() * 30;
+	float levelHeight = readLevel_->getLevel()->getHeight() * 30;
 
-	if(playerX > (_size.width - bufferWidth) +  _positionX)	{
-		_positionX += 5;
-	} else if(playerX < bufferWidth +  _positionX)	{
-		_positionX -= 5;
+	if(playerX > (size_.width - bufferWidth) +  positionX_)	{
+		positionX_ += 5;
+	} else if(playerX < bufferWidth +  positionX_)	{
+		positionX_ -= 5;
 	}
 
-	if(playerY > (_size.height - bufferHeight) +  _positionY) {
-		_positionY += 5;
-	} else if(playerY < bufferHeight +  _positionY)	{
-		_positionY -= 5;
+	if(playerY > (size_.height - bufferHeight) +  positionY_) {
+		positionY_ += 5;
+	} else if(playerY < bufferHeight +  positionY_)	{
+		positionY_ -= 5;
 	}
 
-	if(_positionX < 0) _positionX = 0;
-	if(_positionX > levelWidth-_size.width) _positionX = levelWidth-_size.width;
+	if(positionX_ < 0) positionX_ = 0;
+	if(positionX_ > levelWidth-size_.width) positionX_ = levelWidth-size_.width;
 
-	if(_positionY < 0) _positionY = 0;
-	if(_positionY > levelHeight-_size.height) _positionY = levelHeight-_size.height;
+	if(positionY_ < 0) positionY_ = 0;
+	if(positionY_ > levelHeight-size_.height) positionY_ = levelHeight-size_.height;
 
-	_worldLayer->setPosition(-_positionX, -_positionY);
+	worldLayer_->setPosition(-positionX_, -positionY_);
 }
 
 

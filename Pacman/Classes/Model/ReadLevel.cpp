@@ -73,19 +73,19 @@ void ReadLevel::readFile(std:: string fileName){
 			bricks->append(new Brick(new PPoint(x, y), "bonus",30,30));
 			break;
 		case 90:
-			level_->pointBlinky = new PPoint(x, y);
+			level_->setPointBlinky(new PPoint(x, y));
 			bricks->append(new Brick(new PPoint(x, y), "none",30,30));
 			break;
 		case 91:
-			level_->pointPinky = new PPoint(x, y);
+			level_->setPointPinky(new PPoint(x, y));
 			bricks->append(new Brick(new PPoint(x, y), "none",30,30));
 			break;
 		case 92:
-			level_->pointClyde = new PPoint(x, y);
+			level_->setPointClyde(new PPoint(x, y));
 			bricks->append(new Brick(new PPoint(x, y), "none",30,30));
 			break;
 		case 93:
-			level_->pointInky = new PPoint(x, y);
+			level_->setPointInky(new PPoint(x, y));
 			bricks->append(new Brick(new PPoint(x, y), "none",30,30));
 			break;
 		case 99:
@@ -102,7 +102,7 @@ void ReadLevel::readFile(std:: string fileName){
 			y++;
 		}
 	}
-	level_->bricks = bricks;
-	level_->_width = maxW;
-	level_->_height = y;
+	level_->setBricks(bricks);
+	level_->setWidth(maxW);
+	level_->setHeight(y);
 }

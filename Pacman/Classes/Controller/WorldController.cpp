@@ -17,10 +17,10 @@ void WorldController::init(World* world){
 
 void WorldController::updateWorld(float dt){
 	if(!isPause){
-		for(int i=0; i < world->spirits_->size(); i++){	
-			if(world->spirits_->get(i)->getState() == DEFENCE)
-				world->spirits_->get(i)->setDefence(isDefenceSpirit);
-			world->spirits_->get(i)->go(world);
+		for(int i=0; i < world->getSpirits()->size(); i++){	
+			if(world->getSpirits()->get(i)->getState() == DEFENCE)
+				world->getSpirits()->get(i)->setDefence(isDefenceSpirit);
+			world->getSpirits()->get(i)->go(world);
 		}
 	
 		if(world->deadPlayer()) {
@@ -104,7 +104,7 @@ ostringstream convertScore;
 
 void WorldController::timerTask(float dt){
 	if(!isPause){
-		if(world->isDefence()){
+		if(world->getDefenceSpirit()){
 			seconds++;
                     if (seconds >= 8 && seconds % 2 == 0) {
                         isDefenceSpirit = true;
@@ -125,9 +125,9 @@ void WorldController::timerTask(float dt){
 
 void WorldController::speedTask(float dt){
 	if (!isPause) {
-		for(int i=0; i < world->spirits_->size(); i++){	
-			if(world->spirits_->get(i)->getState() == DEAD)
-				world->spirits_->get(i)->go(world);
+		for(int i=0; i < world->getSpirits()->size(); i++){	
+			if(world->getSpirits()->get(i)->getState() == DEAD)
+				world->getSpirits()->get(i)->go(world);
 		}
 	}
 }

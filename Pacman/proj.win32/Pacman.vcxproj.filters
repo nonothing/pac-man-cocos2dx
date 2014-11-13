@@ -96,6 +96,9 @@
     <ClCompile Include="..\Classes\Controller\SoundController.cpp">
       <Filter>Classes\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\Level.cpp">
+      <Filter>Classes\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

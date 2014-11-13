@@ -6,7 +6,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* l
 		level_ = level;
 		setState(ATTACK);
 		setCountStep(0);
-		createMap(level_->_width, level_->_height);
+		createMap(level_->getWidth(), level_->getHeight());
 	}
 
      void Spirit::refresh(World* world) {
@@ -39,8 +39,8 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* l
     }
 
 	 void Spirit::clearMap(){
-		for (int row = 0; row < level_->_width; row++) {
-		  for (int column = 0; column < level_->_height; column++) {
+		for (int row = 0; row < level_->getWidth(); row++) {
+		  for (int column = 0; column < level_->getHeight(); column++) {
 			  map[row][column] = 0;
 		  }
 		}
@@ -97,7 +97,7 @@ Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* l
     }
 
     void Spirit::findDirection(World* world, PPoint* point, Spirit* spirit) {
-        potencialMap(point, spirit, world->bricks_);
+        potencialMap(point, spirit, world->getBricks());
         if (getCountStep() >= (30 / SPEED_)) {
             int ** map = getMap();
 			

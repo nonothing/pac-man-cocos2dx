@@ -15,10 +15,10 @@ private:
 	ReadLevel* readLevel_; 
 	World* world_;
 
-	Layer* _worldLayer;
-	Size _size;
-	float _positionX;
-	float _positionY;
+	Layer* worldLayer_;
+	Size size_;
+	float positionX_;
+	float positionY_;
 	void updatePosition();
 
 public:

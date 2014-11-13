@@ -140,6 +140,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\WorldController.cpp" />
     <ClCompile Include="..\Classes\Model\Brick.cpp" />
+    <ClCompile Include="..\Classes\Model\Level.cpp" />
     <ClCompile Include="..\Classes\Model\LevelMenu.cpp" />
     <ClCompile Include="..\Classes\Model\PButton.cpp" />
     <ClCompile Include="..\Classes\Model\Player.cpp" />
