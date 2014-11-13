@@ -22,31 +22,41 @@ void WorldController::updateWorld(float dt){
 				world->spirits_->get(i)->setDefence(isDefenceSpirit);
 			world->spirits_->get(i)->go(world);
 		}
-		world->deadPlayer();
+	
+		if(world->deadPlayer()) {
+			onPause();
+			respawn();
+		}
+
 		world->deadSpirit();
-		 if (world->isGameOver() || world->isVictory()) {
-            onPause();
-        }
-		if(world->isVictory()){
+	
+		if(world->isVictory()) {
+			onPause();
 			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
 			CCUserDefault::sharedUserDefault()->flush();
 			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1)->getScene());
-			clearWorld();
+			newWorld();
+		}
+
+		if(world->isGameOver()) {
+			onPause();
+			newWorld();
 		}
 		 
-		if (world->getPlayer()->getState() == DEAD) {
-			clearWorld();
-        }
 	}
 
 }
 
-void WorldController::clearWorld() {
-	world->createSpirit();
-	world->startPointPlayer();
+void WorldController::newWorld() {
+	respawn();
 	world->getPlayer()->setLife(3);
 	world->generationPoint();
 	world->setScore(0);
+}
+
+void WorldController::respawn() {
+	world->createSpirit();
+	world->startPointPlayer();
 	isPause = false;
 }
 
@@ -135,5 +145,3 @@ void WorldController::generateFruit(float dt) {
 		world->generationFruit();
 	}
 }
-
-
