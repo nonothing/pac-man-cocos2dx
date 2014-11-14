@@ -18,6 +18,7 @@ World::World(Level* level){
 	spirits_->append(new Pinky(level->getPointPinky(), level));
 	bricks_ = level->getBricks();
 	score_ = 0;
+	isDefenceSpirit_ = false;
 	countPoint_ = generationPoint();
 
 	if(isSound_) {

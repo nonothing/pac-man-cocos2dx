@@ -31,6 +31,7 @@ public:
 	void go(World* world);
 	void move(World* world);
 	void findDirection(World* world, PPoint* point, Spirit* spirit);
+	void changeDirection(int dir);
 	int getCountStep();
 	void setCountStep(int countStep);
 	void setDefence(bool isDefence);
@@ -38,8 +39,9 @@ public:
 
 private:
 	Level* level_;
-	int countStep;
-	bool leftDefence;
+	int countStep_;
+	bool leftDefence_;
+	int countCollision_;
 	void refresh(World* world);
 	void onLoadImageAttack();
 	void onLoadImageDead();
