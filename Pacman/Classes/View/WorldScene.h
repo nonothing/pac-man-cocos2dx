@@ -6,12 +6,13 @@
 #include "Model\World.h"
 #include "Model\Direction.h"
 #include "Controller\WorldController.h"
-
+#include "Controller\SoundController.h"
 
 class WorldScene : public AbstractScene {
 
 private:
 	WorldController* worldController_;
+	SoundController* soundController_;
 	ReadLevel* readLevel_; 
 	World* world_;
 
@@ -26,8 +27,8 @@ public:
 	CC_SYNTHESIZE(bool, isPause_, Pause);
 	CC_SYNTHESIZE(bool, isDefenceSpirit_, DefenceSpirit);
 
-    static WorldScene* create(std::string levelName, int currentLevel);
-    virtual bool init(std::string levelName, int currentLevel);  
+    static WorldScene* create(std::string levelName, int currentLevel, SoundController* soundController);
+    virtual bool init(std::string levelName, int currentLevel, SoundController* soundController);  
 	virtual bool TouchBegan(Touch* touch, Event* event);
 	virtual void TouchMoved(Touch* touch, Event* event);
 	virtual void TouchEnded(Touch* touch, Event* event);

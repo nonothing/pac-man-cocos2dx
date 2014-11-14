@@ -1,31 +1,31 @@
 #include "MainMenuScene.h"
 #include "View\WorldScene.h"
 #include "View\LevelMenuScene.h"
-#include "Controller\SoundController.h"
 
-using namespace NSoundController;
 
-MainMenuScene* MainMenuScene::create() {
+
+MainMenuScene* MainMenuScene::create(SoundController* soundController) {
 	MainMenuScene* scene = new MainMenuScene();
-	if(scene && scene->init()){
+	if(scene && scene->init(soundController)){
 		return (MainMenuScene*)scene->autorelease();
 	}
 	CC_SAFE_DELETE(scene);
 	return scene;
 }
 
-bool MainMenuScene::init() {
+bool MainMenuScene::init(SoundController* soundController) {
 
     if (!Layer::init()) {
         return false;
     }
-	SoundController::init();
 
+	soundController_ = soundController;
+	
 	menuController_ = new MenuController();
 	menuController_->init();
 	isSound_ =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	if(isSound_){
-		SoundController::preloadingAndPlayMusic(ES_PACMAN_SOUNG, true);
+		soundController_->preloadingAndPlayMusic(SoundController::ES_PACMAN_SOUNG, true);
 	}
 
 	touchListener_ = EventListenerTouchOneByOne::create();
@@ -79,7 +79,7 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 		case 1:
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create("lvl_01.txt", 1)->getScene());
+			Director::getInstance()->pushScene(WorldScene::create("lvl_01.txt", 1, soundController_)->getScene());
 			break;
 		case 2:
 			getEventDispatcher()->removeEventListener(touchListener_);
@@ -98,7 +98,7 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 				isSound_ = true;
 				menuController_->getButtonSound()->setString("Sound on");
 				menuController_->getButtonSound()->setPosition(Point(350, 200));
-				SoundController::preloadingAndPlayMusic(ES_PACMAN_SOUNG, true);
+				soundController_->preloadingAndPlayMusic(SoundController::ES_PACMAN_SOUNG, true);
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
 				CCUserDefault::sharedUserDefault()->flush();
 			}

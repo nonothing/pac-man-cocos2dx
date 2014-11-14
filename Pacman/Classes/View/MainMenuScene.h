@@ -3,17 +3,18 @@
 
 #include "View\AbstractScene.h"
 #include "Controller\MenuController.h"
+#include "Controller\SoundController.h"
 
 class MainMenuScene : public AbstractScene {
 
 private:
 	EventListenerTouchOneByOne* touchListener_;
 	MenuController* menuController_;
-
+	SoundController* soundController_;
 public:
 	CC_SYNTHESIZE(bool, isSound_,Sound);
-    static MainMenuScene* create();
-    virtual bool init();  
+    static MainMenuScene* create(SoundController* soundController);
+    virtual bool init(SoundController* soundController);  
     virtual bool TouchBegan(Touch* touch, Event* event);
 	virtual void TouchMoved(Touch* touch, Event* event);
 	virtual void TouchEnded(Touch* touch, Event* event);

@@ -6,6 +6,7 @@
 #include "Model\LevelMenu.h"
 #include "Model\Rectangle.h"
 #include "Model\PButton.h"
+#include "Controller\SoundController.h"
 
 class LevelMenuScene :public AbstractScene {
 	EventListenerTouchOneByOne* touchListener_;
@@ -14,6 +15,7 @@ class LevelMenuScene :public AbstractScene {
 	PButton* buttonArrowLeft_;
 	PButton* buttonArrowRight_;
 	int page_;
+	SoundController* soundController_;
 
 public:
     static LevelMenuScene* create();

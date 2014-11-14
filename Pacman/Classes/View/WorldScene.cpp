@@ -2,24 +2,21 @@
 #include "Model\ReadLevel.h"
 #include "SimpleAudioEngine.h"
 #include "MainMenuScene.h"
-#include "Controller/SoundController.h"
 
-using namespace NSoundController;
-
-WorldScene* WorldScene::create(std::string levelName, int currentLevel) {
+WorldScene* WorldScene::create(std::string levelName, int currentLevel, SoundController* soundController) {
 	WorldScene* scene = new WorldScene();
-	if(scene && scene->init(levelName, currentLevel)){
+	if(scene && scene->init(levelName, currentLevel, soundController)){
 		return (WorldScene*)scene->autorelease();
 	}
 	CC_SAFE_DELETE(scene);
 	return scene;
 }
 
-bool WorldScene::init(std::string levelName, int currentLevel) {
+bool WorldScene::init(std::string levelName, int currentLevel, SoundController* soundController) {
     if ( !Layer::init() ) {
         return false;
     }
-
+	soundController_ = soundController;
 	worldController_ = new WorldController();
 	size_ = Director::getInstance()->getWinSize();
 	worldLayer_ = Layer::create();
@@ -32,7 +29,7 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey(levelName.c_str(), 0));
 	
 	if(isSound_){
-		SoundController::preloadingAndPlayMusic(ES_SIREN_SOUND, true);
+		soundController_->preloadingAndPlayMusic(SoundController::ES_SIREN_SOUND, true);
 	}
 	
 	worldController_->setDirection(LEFT);
@@ -42,9 +39,9 @@ bool WorldScene::init(std::string levelName, int currentLevel) {
 	readLevel_->readFile(levelName);
 	int size = readLevel_->getLevel()->getBricks()->size();
 
-	world_ = new World(readLevel_->getLevel());
+	world_ = new World(readLevel_->getLevel(), soundController_);
 	world_->setCurrentLevel(currentLevel);
-	worldController_->init(world_);
+	worldController_->init(world_, soundController_);
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
 	touchListener->onTouchMoved = CC_CALLBACK_2(WorldScene::TouchMoved, this);
@@ -116,7 +113,7 @@ void WorldScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event) {
 	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)) {
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
-		Director::getInstance()->pushScene(MainMenuScene::create()->getScene());
+		Director::getInstance()->pushScene(MainMenuScene::create(soundController_)->getScene());
 	}
 }
 

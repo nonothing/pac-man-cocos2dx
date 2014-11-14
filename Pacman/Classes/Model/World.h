@@ -7,6 +7,7 @@
 #include "Model\List.h"
 #include "model/Spirit/Spirit.h"
 #include "Level.h"
+#include "Controller/SoundController.h"
 
 class Spirit;
 class World {
@@ -18,10 +19,11 @@ class World {
   std::string levelName_;
   List<Brick*>* bricks_;
   List<Spirit*>* spirits_;
+  SoundController* soundController_;
 
  public:
 	 World();
-	 World(Level* level);
+	 World(Level* level, SoundController* soundController);
 	 ~World();
 	 CC_SYNTHESIZE(int, currentLevel_, CurrentLevel);
 	 CC_SYNTHESIZE(bool, isDefenceSpirit_, DefenceSpirit);

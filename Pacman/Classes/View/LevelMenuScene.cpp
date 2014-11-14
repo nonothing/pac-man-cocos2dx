@@ -124,7 +124,7 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
 		if (!levels_->get(i)->getLock() && levels_->get(i)->getRect()->intersects(rectangle_)){
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create(parseLevel(i + 1), i + 1)->getScene());
+			Director::getInstance()->pushScene(WorldScene::create(parseLevel(i + 1), i + 1, soundController_)->getScene());
 		}
 	}
 
@@ -149,7 +149,7 @@ void LevelMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event)
 		getEventDispatcher()->removeEventListener(touchListener_);
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
-		Director::getInstance()->pushScene(MainMenuScene::create()->getScene());
+		Director::getInstance()->pushScene(MainMenuScene::create(soundController_)->getScene());
 	}
 
 }

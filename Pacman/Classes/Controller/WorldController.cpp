@@ -2,7 +2,9 @@
 #include "View\LevelMenuScene.h"
 #include "View\WorldScene.h"
 
-void WorldController::init(World* world){
+void WorldController::init(World* world, SoundController* soundController){
+
+	soundController_ = soundController;
 	seconds = 0;
 	record = 0;
 	this->world = world;
@@ -34,7 +36,7 @@ void WorldController::updateWorld(float dt){
 			onPause();
 			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
 			CCUserDefault::sharedUserDefault()->flush();
-			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1)->getScene());
+			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1, soundController_)->getScene());
 			newWorld();
 		}
 

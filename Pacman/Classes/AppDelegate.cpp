@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "View\MainMenuScene.h"
 #include "SimpleAudioEngine.h"
+#include "Controller/SoundController.h"
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {}
@@ -22,8 +23,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
+	SoundController* soundController = new SoundController();
+	soundController->init();
+
     // create a scene. it's an autorelease object
-	MainMenuScene* mainMenu = MainMenuScene::create();
+	MainMenuScene* mainMenu = MainMenuScene::create(soundController);
 	
     // run
 	Director::getInstance()->pushScene(mainMenu->getScene());

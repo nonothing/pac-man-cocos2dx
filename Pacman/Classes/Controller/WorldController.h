@@ -1,11 +1,14 @@
 #ifndef WORLD_CONTROLLER_H_
 #define WORLD_CONTROLLER_H_
 #include "Model\World.h"
+#include "Controller\SoundController.h"
 #define FONT_EMULOGIC "fonts/emulogic.ttf"
 using namespace std;
 
 class WorldController{
+private:
 	World* world;
+	SoundController* soundController_;
 	bool isPause;
 	bool isDefenceSpirit;
 	int seconds;
@@ -16,7 +19,7 @@ class WorldController{
 	int touchX;
 	int touchY;
 public:
-	void init(World* world);
+	void init(World* world, SoundController* soundController);
 	void onPause();
 	void updateWorld(float dt);
 	void updatePlayer(float dt);

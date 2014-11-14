@@ -1,17 +1,12 @@
 #include "Controller\SoundController.h"
-#define  DIR "audio/"
-#define  EXE ".wav"
-
-static std::vector<std::string> soundNames;
-using namespace NSoundController;
 
 void SoundController::init() {
 	if(soundNames.empty()) {
-		soundNames.push_back(DIR"eatfruit"EXE);//	ES_EAT_FRUIT
-		soundNames.push_back(DIR"eatspirit"EXE);//	ES_EAT_SPIRIT,
-		soundNames.push_back(DIR"sirensound"EXE);//	ES_SIREN_SOUND,
-		soundNames.push_back(DIR"pacman_song2"EXE);//	ES_PACMAN_SOUNG,
-		soundNames.push_back(DIR"pacman_coinin"EXE);//	ES_PACMAN_COINING,
+		soundNames.push_back("audio/eatfruit.wav");//	ES_EAT_FRUIT
+		soundNames.push_back("audio/eatspirit.wav");//	ES_EAT_SPIRIT,
+		soundNames.push_back("audio/sirensound.wav");//	ES_SIREN_SOUND,
+		soundNames.push_back("audio/pacman_song2.wav");//	ES_PACMAN_SOUNG,
+		soundNames.push_back("audio/pacman_coinin.wav");//	ES_PACMAN_COINING,
 	}
 }
 
