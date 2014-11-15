@@ -1,6 +1,6 @@
 #include "Model\PButton.h"
 
-PButton::PButton(PPoint* position, string texture, int width, int height) :
+PButton::PButton(PPoint* position, ETexture texture, int width, int height) :
 		WorldObject(position, texture, width, height) {
 
 }

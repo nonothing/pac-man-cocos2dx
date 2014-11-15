@@ -20,8 +20,8 @@ bool LevelMenuScene::init() {
 
 	page_ = 0;
 
-	buttonArrowLeft_ = new PButton(new PPoint(1, 1), "arrow_left", 65, 50);
-	buttonArrowRight_ = new PButton(new PPoint(23, 1), "arrow_right", 65, 50);
+	buttonArrowLeft_ = new PButton(new PPoint(1, 1), EArrow_left, 65, 50);
+	buttonArrowRight_ = new PButton(new PPoint(23, 1), EArrow_right, 65, 50);
 
 	rectangle_ = new PRectangle(0, 0, 2, 2);
 	levels_ = new List<LevelMenu*>();
@@ -82,7 +82,7 @@ bool LevelMenuScene::init() {
 }
 
 LevelMenu* LevelMenuScene::createLevel(int x, int y){
-	return new LevelMenu(new PPoint(x, y), "lock_gold_star", levels_->size(), 0, 80 * SCALE, 80 * SCALE);
+	return new LevelMenu(new PPoint(x, y), ELockGoldStar, levels_->size(), 0, 80 * SCALE, 80 * SCALE);
 }
 
 bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {

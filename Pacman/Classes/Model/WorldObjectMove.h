@@ -13,7 +13,7 @@ protected:
 	int state_;
 
 public:
-	WorldObjectMove(PPoint* point, string texture, int width, int height);
+	WorldObjectMove(PPoint* point, ETexture texture, int width, int height);
 	virtual ~WorldObjectMove(){};
 	void onMove(int direction);
 	int getSpeed();

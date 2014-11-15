@@ -1,7 +1,7 @@
 #include "model/Spirit/Blinky.h"
 
 Blinky::Blinky(PPoint* point, Level* level) :
-		Spirit(point, "blinkyUp", 30, 30, level) {
+		Spirit(point, EBlinkyUp, 30, 30, level) {
 	START_POINT = new PPoint(point->getX(), point->getY());
 	DEFENCE_POINT = new PPoint(21, 1);
 }
@@ -22,19 +22,19 @@ void Blinky::ai(World* world) {
 	move(world);
 }
 
-string Blinky::left() {
-	return "blinkyLeft";
+ETexture Blinky::left() {
+	return EBlinkyLeft;
 }
 
-string Blinky::right() {
-	return "blinkyRight";
+ETexture Blinky::right() {
+	return EBlinkyRight;
 }
 
-string Blinky::down() {
-	return "blinkyDown";
+ETexture Blinky::down() {
+	return EBlinkyDown;
 }
 
-string Blinky::up() {
-	return "blinkyUp";
+ETexture Blinky::up() {
+	return EBlinkyUp;
 }
 

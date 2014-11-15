@@ -1,21 +1,21 @@
 #include "Model\Brick.h"
 
-Brick::Brick(PPoint* position, string texture, int width, int height) :
+Brick::Brick(PPoint* position, ETexture texture, int width, int height) :
 		WorldObject(position, texture, width, height) {
 
 }
 
 bool Brick::tryToBonus(PRectangle* rectangle){
-	  if (bounds_->intersects(rectangle) && getTextureName() == "bonus") {
-	            setTexture("background");
+	  if (bounds_->intersects(rectangle) && getTextureName() == EBonus) {
+	            setTexture(EBackground);
 	            return true;
 	        }
 	  return false;
 }
 
 bool Brick::tryToEat(PRectangle* rectangle) {
-	if (bounds_->intersects(rectangle) && getTextureName() == "point") {
-		setTexture("background");
+	if (bounds_->intersects(rectangle) && getTextureName() == EPoint) {
+		setTexture(EBackground);
 		return true;
 	}
 	return false;
@@ -23,13 +23,8 @@ bool Brick::tryToEat(PRectangle* rectangle) {
 
 bool Brick::tryToFruit(PRectangle* rectangle) {
 	if (bounds_->intersects(rectangle) 
-		&&( getTextureName() == "banana"
-		|| getTextureName() == "apple"
-		|| getTextureName() == "apple_red"
-		|| getTextureName() == "vinograd"
-		|| getTextureName() == "orange"
-		|| getTextureName() == "cocos")) {
-		setTexture("background");
+		&&( getTextureName() >= EBanana &&  getTextureName() <= ECocos)) {
+		setTexture(EBackground);
 		return true;
 	}
 	return false;

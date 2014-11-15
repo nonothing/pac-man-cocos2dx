@@ -1,7 +1,7 @@
 #include "model/Spirit/Spirit.h"
 #include "model/World.h"
 
-Spirit::Spirit(PPoint* position, string texture, int width, int height, Level* level) :
+Spirit::Spirit(PPoint* position, ETexture texture, int width, int height, Level* level) :
 		WorldObjectMove(position, texture, width, height) {
 		level_ = level;
 		setState(ATTACK);
@@ -50,25 +50,25 @@ void Spirit::clearMap(){
 void Spirit::onLoadImageDead() {
 	switch (direction_) {
 	case LEFT:
-		setTexture("orbLeft");
+		setTexture(EOrbLeft);
 		break;
 	case RIGHT:
-		setTexture("orbRight");
+		setTexture(EOrbRight);
 		break;
 	case UP:
-		setTexture("orbUp");
+		setTexture(EOrbUp);
 		break;
 	case DOWN:
-		setTexture("orbDown");
+		setTexture(EOrbDown);
 		break;
 	}
 }
 
 void Spirit::onLoadImageDefence(bool isWhite) {
 	if (isWhite) {
-		setTexture("spiritDefenceWhite");
+		setTexture(ESpiritDefenceWhite);
 	} else {
-		setTexture("spiritDefence");
+		setTexture(EspiritDefence);
 	}
 }
 
@@ -214,10 +214,7 @@ void Spirit::inverseMap(List<Brick*>* bricks) {
 	int row = 0;
 	int column = 0;
 	for(int i=0; i < bricks->size(); i++){
-		if(bricks->get(i)->getTextureName() == "background"
-			|| bricks->get(i)->getTextureName() == "point"
-			|| bricks->get(i)->getTextureName() == "none"
-			|| bricks->get(i)->getTextureName() == "bonus") {
+		if(bricks->get(i)->getTextureName() <= ECocos) {
 				map[row][column] = 0;
 		} else {
 			map[row][column] = WALL;

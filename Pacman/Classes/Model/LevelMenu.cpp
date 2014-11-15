@@ -1,7 +1,7 @@
 #include "Model\LevelMenu.h"
 #include "View\LevelMenuScene.h"
 
-LevelMenu::LevelMenu(PPoint* position, string texture, int level, int score, int width, int height) :
+LevelMenu::LevelMenu(PPoint* position, ETexture texture, int level, int score, int width, int height) :
 WorldObject(position, texture, width, height) {
 	this->level_ = level;
 	this->score_ = score;
@@ -13,11 +13,11 @@ WorldObject(position, texture, width, height) {
 		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(level + 1).c_str(), 0);
 	}
 	
-	if (score_ > 10000) setTexture("three_gold_star");
-	if (score_ < 10000) setTexture("two_gold_star");
-	if (score_ < 1000) setTexture("one_gold_star");
-	if (score_ < 100) setTexture("silver_stars");
-	if (score_ == 0) setTexture("lock");
+	if (score_ > 10000) setTexture(EThreeGoldStar);
+	if (score_ < 10000) setTexture(ETwoGoldStar);
+	if (score_ < 1000) setTexture(EOneGoldStar);
+	if (score_ < 100) setTexture(ESilverStars);
+	if (score_ == 0) setTexture(Elock);
 	spX_ = sprite_->getPositionX();
 
 		stringstream ss;
@@ -48,5 +48,5 @@ void LevelMenu::setOffsetX(int x){
 void LevelMenu::createLabel(){
 		label_ = LabelTTF::create(levelName_, "fonts/Mistral.ttf", 50);
 		label_->setColor(Color3B(210, 160, 30));
-		label_->setPosition(Point(getSpriteX()+10,getSpriteY()-10));
+		label_->setPosition(Point(getSpriteX() + 10, getSpriteY() - 10));
 }

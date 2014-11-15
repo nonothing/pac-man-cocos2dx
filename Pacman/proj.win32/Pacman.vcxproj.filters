@@ -185,6 +185,9 @@
     <ClInclude Include="..\Classes\Controller\SoundController.h">
       <Filter>Classes\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Model\ETexture.h">
+      <Filter>Classes\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

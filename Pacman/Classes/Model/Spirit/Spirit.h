@@ -22,12 +22,12 @@ public:
 		  delete map[i];
 		delete map;
 	};
-	Spirit(PPoint* position , string texture ,int width, int height, Level* level);
+	Spirit(PPoint* position , ETexture texture ,int width, int height, Level* level);
 	virtual void ai(World* world){};
-	virtual string left(){return NULL;}
-	virtual string right(){return NULL;}
-	virtual string down(){return NULL;}
-	virtual string up(){return NULL;}
+	virtual ETexture left() = 0;
+	virtual ETexture right() = 0;
+	virtual ETexture down() = 0;
+	virtual ETexture up() = 0;
 	void go(World* world);
 	void move(World* world);
 	void findDirection(World* world, PPoint* point, Spirit* spirit);

@@ -1,6 +1,6 @@
 #include "model/Spirit/Clyde.h"
 
-     Clyde::Clyde(PPoint* point, Level* level): Spirit(point, "clydeUp",30,30, level) {
+     Clyde::Clyde(PPoint* point, Level* level): Spirit(point, EClydeUp,30,30, level) {
         START_POINT = new PPoint(point->getX(), point->getY());
 		DEFENCE_POINT = new PPoint(2, 13);
     }
@@ -33,19 +33,19 @@
         }
     }
 
-     string Clyde::left() {
-        return "clydeLeft";
+     ETexture Clyde::left() {
+        return EClydeLeft;
     }
 
-     string Clyde::right() {
-        return "clydeRight";
+     ETexture Clyde::right() {
+        return EClydeRight;
     }
 
-     string Clyde::down() {
-        return "clydeDown";
+     ETexture Clyde::down() {
+        return EClydeDown;
     }
 
-     string Clyde::up() {
-        return "clydeUp";
+     ETexture Clyde::up() {
+        return EClydeUp;
     }
 

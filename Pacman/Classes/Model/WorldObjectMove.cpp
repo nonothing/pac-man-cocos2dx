@@ -1,6 +1,6 @@
 #include "WorldObjectMove.h"
 
-WorldObjectMove::WorldObjectMove(PPoint* point, string texture, int width, int height) :WorldObject(point,texture,width, height){
+WorldObjectMove::WorldObjectMove(PPoint* point, ETexture texture, int width, int height) :WorldObject(point,texture,width, height){
 	SPEED_ =5;
     direction_ = UP;
  }

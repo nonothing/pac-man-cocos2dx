@@ -7,7 +7,7 @@
 
 World::World(Level* level, SoundController* soundController){
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	player_ = new Player(new PPoint(12, 9),"pacmanUpOpen",30,30);
+	player_ = new Player(new PPoint(12, 9), EPacmanUpOpen, 30, 30);
 	player_->setDirection(LEFT);
 	spirits_ = new List<Spirit*>();
 	spirits_->append(new Blinky(level->getPointBlinky(), level));
@@ -56,8 +56,8 @@ Player* World::getPlayer(){
 int World::generationPoint(){
 	int result=0;
 	for(int i=0; i < bricks_->size(); i++){
-		if(bricks_->get(i)->getTextureName() == "background"){
-			bricks_->get(i)->setTexture("point");
+		if(bricks_->get(i)->getTextureName() == EBackground){
+			bricks_->get(i)->setTexture(EPoint);
 			result++;
 		}
 	}
@@ -68,27 +68,27 @@ int World::generationPoint(){
 void World::generationFruit() {
 	std::vector<int> emptyBrick;
 	for(int i=0; i < bricks_->size(); i++){
-		if(bricks_->get(i)->getTextureName() == "background"){
+		if(bricks_->get(i)->getTextureName() == EBackground){
 			emptyBrick.push_back(i);
 		}
 		if(isFruit(bricks_->get(i)->getTextureName())) {
-			bricks_->get(i)->setTexture("background");
+			bricks_->get(i)->setTexture(EBackground);
 			return;
 		}
 	}
 	if((int)emptyBrick.size() > bricks_->size() / 10) {
 		int randomNumber = rand() % emptyBrick.size();
 		int randomFruit = rand() % 6;
-		std::string textureName;
+		ETexture textureName;
 
 		switch (randomFruit) {
-		case 0:   textureName = "banana";		break;
-		case 1:   textureName = "apple";		break;
-		case 2:   textureName = "apple_red";	break;
-		case 3:   textureName = "vinograd";		break;
-		case 4:   textureName = "orange";		break;
-		case 5:   textureName = "cocos";		break;
-		default:  textureName = "background";	break;
+		case 0:   textureName = EBanana;		break;
+		case 1:   textureName = EApple;		break;
+		case 2:   textureName = EAppleRed;	break;
+		case 3:   textureName = EVinograd;		break;
+		case 4:   textureName = EOrange;		break;
+		case 5:   textureName = ECocos;		break;
+		default:  textureName = EBackground;	break;
 		}
 
 		bricks_->get(emptyBrick.at(randomNumber))->setTexture(textureName);
@@ -181,13 +181,7 @@ bool World::eatFruit(){
 
  bool World::collidesWithLevel(PRectangle* rect) {
 	 for(int i=0; i < bricks_->size(); i++){
-            if (bricks_->get(i)->getBounds()->intersects(rect)
-            		&& bricks_->get(i)->getTextureName() != "background"
-            		&& bricks_->get(i)->getTextureName() != "point"
-					&& bricks_->get(i)->getTextureName() != "bonus"
-                    && bricks_->get(i)->getTextureName() != "none"
-					&& !isFruit(bricks_->get(i)->getTextureName())
-                    ) {
+            if (bricks_->get(i)->getBounds()->intersects(rect) && bricks_->get(i)->getTextureName() > ECocos)  {
                 return true;
             }
         }
@@ -196,7 +190,7 @@ bool World::eatFruit(){
 
  int World::collidesWithRefresh(PRectangle* rect){
 	 for(int i=0; i < bricks_->size(); i++){
-	            if (bricks_->get(i)->getBounds()->intersects(rect) && bricks_->get(i)->getTextureName() == "none") {
+	            if (bricks_->get(i)->getBounds()->intersects(rect) && bricks_->get(i)->getTextureName() == ENone) {
 	                return ATTACK;
 	            }
 	        }
@@ -226,8 +220,8 @@ bool World::isGameOver() {
 	return player_->getLife() > 0? false:true;
 }
 
-bool World::isFruit(string textureName) {
-	return textureName == "banana" || textureName == "apple" || textureName == "apple_red" || textureName == "vinograd" || textureName == "orange" || textureName == "cocos";
+bool World::isFruit(ETexture textureName) {
+	return textureName >= EBanana && textureName <= ECocos;
 }
 
 List<Spirit*>* World::getSpirits() const {

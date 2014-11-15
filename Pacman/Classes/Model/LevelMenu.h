@@ -17,7 +17,7 @@ private:
 	void createLabel();
 public:
 	LevelMenu(){};
-	LevelMenu(PPoint* position, string texture,int level, int score, int width, int height);
+	LevelMenu(PPoint* position, ETexture texture,int level, int score, int width, int height);
 
 	CC_SYNTHESIZE(int, level_, Level);
 	CC_SYNTHESIZE(int, score_, Score);

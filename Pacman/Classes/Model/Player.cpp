@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(PPoint* position , string texture ,int width, int height) :WorldObjectMove(position,texture,width,height){
+Player::Player(PPoint* position , ETexture texture ,int width, int height) :WorldObjectMove(position,texture,width,height){
 		life_ = 3;
 		state_ = DEFENCE;
 	}
@@ -44,30 +44,30 @@ void Player::animate() {
 
         if (direction_ == LEFT) {
             if (isOpen_) {
-                setTexture("pacmanLeftOpen");
+                setTexture(EPacmanLeftOpen);
             } else {
-                setTexture("pacmanLeftClose");
+                setTexture(EPacmanLeftClose);
             }
         }
         if (direction_ == RIGHT) {
             if (isOpen_) {
-                setTexture("pacmanRightOpen");
+                setTexture(EPacmanRightOpen);
             } else {
-                setTexture("pacmanRightClose");
+                setTexture(EPacmanRightClose);
             }
         }
         if (direction_ == UP) {
             if (isOpen_) {
-                setTexture("pacmanUpOpen");
+                setTexture(EPacmanUpOpen);
             } else {
-                setTexture("pacmanUpClose");
+                setTexture(EPacmanUpClose);
             }
         }
         if (direction_ == DOWN) {
             if (isOpen_) {
-                setTexture("pacmanDownOpen");
+                setTexture(EPacmanDownOpen);
             } else {
-                setTexture("pacmanDownClose");
+                setTexture(EPacmanDownClose);
             }
         }
     }

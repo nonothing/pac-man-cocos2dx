@@ -10,7 +10,7 @@ using namespace std;
 class Brick :public WorldObject{
 public:
 	Brick(){};
-	Brick(PPoint* position , string texture ,int width, int height);
+	Brick(PPoint* position , ETexture texture ,int width, int height);
     bool tryToEat(PRectangle* rectangle);
     bool tryToBonus(PRectangle* rectangle);
 	bool tryToFruit(PRectangle* rectangle);

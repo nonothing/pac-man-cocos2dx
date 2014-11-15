@@ -13,7 +13,7 @@ private:
 public:
 
 	CC_SYNTHESIZE(int, life_, Life);
-Player(PPoint* position , string texture ,int width, int height);
+Player(PPoint* position , ETexture texture ,int width, int height);
 ~Player(){
 };
     bool eatPoint(List<Brick*>* bricks);

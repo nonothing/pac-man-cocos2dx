@@ -13,10 +13,10 @@ public:
 	Pinky();
 	Pinky(PPoint* point, Level* level);
 	void ai(World* world);
-	string left();
-	string right();
-	string down();
-	string up();
+	ETexture left();
+	ETexture right();
+	ETexture down();
+	ETexture up();
 
 };
 

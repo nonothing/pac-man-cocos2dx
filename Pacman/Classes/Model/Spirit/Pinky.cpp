@@ -1,26 +1,26 @@
 #include "Pinky.h"
 
 Pinky::Pinky(PPoint* point, Level* level) :
-		Spirit(point, "pinkyUp", 30, 30, level) {
+		Spirit(point, EPinkyUp, 30, 30, level) {
 	START_POINT = new PPoint(point->getX(), point->getY());
 	DEFENCE_POINT =  new PPoint(1, 2);
 	level_ = level;
 }
-   void Pinky::ai(World* world) {
-        switch (getState()) {
-        case ATTACK:
-            findDirection(world, findPathFourStep(world->getPlayer()), this);
-            break;
-        case DEFENCE:
-            findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
-            break;
-        case DEAD:
-            findDirection(world, START_POINT->multiply(getWidth()), this);
-            break;
-        }
+void Pinky::ai(World* world) {
+	switch (getState()) {
+	case ATTACK:
+		findDirection(world, findPathFourStep(world->getPlayer()), this);
+		break;
+	case DEFENCE:
+		findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
+		break;
+	case DEAD:
+		findDirection(world, START_POINT->multiply(getWidth()), this);
+		break;
+	}
 
-        move(world);
-    }
+	move(world);
+}
 
 PPoint* Pinky::findPathFourStep(Player* player) {
 	potencialMap(player->getPosition(), this, level_->getBricks());
@@ -68,19 +68,19 @@ PPoint* Pinky::findPathFourStep(Player* player) {
 	return point;
 }
 
-    string Pinky::left() {
-        return "pinkyLeft";
-    }
+ETexture Pinky::left() {
+    return EPinkyLeft;
+}
 
-    string Pinky::right() {
-        return "pinkyRight";
-    }
+ETexture Pinky::right() {
+    return EPinkyRight;
+}
 
-    string Pinky::down() {
-        return "pinkyDown";
-    }
+ETexture Pinky::down() {
+    return EPinkyDown;
+}
 
-    string Pinky::up() {
-        return "pinkyUp";
-    }
+ETexture Pinky::up() {
+    return EPinkyUp;
+}
 

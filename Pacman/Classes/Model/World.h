@@ -50,7 +50,7 @@ class World {
      bool isGameOver();
 	 Player* getPlayer();
 	 std::string getLevelName(){ return levelName_; }
-	 bool isFruit(string textureName);
+	 bool isFruit(ETexture textureName);
     
 };
 #endif /* World_H_ */

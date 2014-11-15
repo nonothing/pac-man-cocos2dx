@@ -10,7 +10,7 @@ using namespace std;
 class PButton :public WorldObject{
 public:
 	PButton(){};
-	PButton(PPoint* position, string texture, int width, int height);
+	PButton(PPoint* position, ETexture texture, int width, int height);
 	PRectangle* getRect();
 };
 
