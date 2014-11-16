@@ -23,8 +23,9 @@ public:
     virtual bool TouchBegan(Touch* touch, Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 	static string parseLevel(int number);
+	void nextPage(PButton* button, int limitation);
 
-	LevelMenu* createLevel(int x, int y);
+	LevelMenu* createLevel(int x, int y, int level);
 };
 
 #endif // __LEVELMENU_SCENE_H__

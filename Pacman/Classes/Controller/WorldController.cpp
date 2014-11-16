@@ -6,7 +6,10 @@ void WorldController::init(World* world, SoundController* soundController){
 
 	soundController_ = soundController;
 	seconds = 0;
-	record = 0;
+
+	record = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
+	CCUserDefault::sharedUserDefault()->setIntegerForKey("LAST_LEVEL", world->getCurrentLevel());
+	CCUserDefault::sharedUserDefault()->flush();
 	this->world = world;
 	labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
     labelRecord->setPosition(Point(100, 436));
@@ -34,6 +37,7 @@ void WorldController::updateWorld(float dt){
 	
 		if(world->isVictory()) {
 			onPause();
+			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), record);
 			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
 			CCUserDefault::sharedUserDefault()->flush();
 			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1, soundController_)->getScene());
@@ -54,6 +58,7 @@ void WorldController::newWorld() {
 	world->getPlayer()->setLife(3);
 	world->generationPoint();
 	world->setScore(0);
+	record = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
 }
 
 void WorldController::respawn() {
@@ -92,8 +97,6 @@ ostringstream convertScore;
 
 	if(world->getScore() > record){
 		record = world->getScore();
-		CCUserDefault::sharedUserDefault()->setIntegerForKey(world->getLevelName().c_str(), record);
-		CCUserDefault::sharedUserDefault()->flush();
 	}
 	ostringstream convertRecord;  
 	convertRecord<<record;

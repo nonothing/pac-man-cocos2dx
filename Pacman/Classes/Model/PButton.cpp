@@ -8,3 +8,11 @@ PButton::PButton(PPoint* position, ETexture texture, int width, int height) :
 PRectangle* PButton::getRect(){
 	return new PRectangle(getSpriteX(), getSpriteY(), 80, 80);
 }
+
+void PButton::show(int currentPage,int pageMinMax) {
+	if(currentPage == pageMinMax) {
+		getTexture()->setVisible(false);
+	} else {
+		getTexture()->setVisible(true);
+	}
+}

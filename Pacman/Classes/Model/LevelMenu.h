@@ -13,7 +13,7 @@ private:
 	int spX_;
 	int offsetX_;
 	LabelTTF* label_;
-	string levelName_;
+	string numberLevel_;
 	void createLabel();
 public:
 	LevelMenu(){};
@@ -21,6 +21,7 @@ public:
 
 	CC_SYNTHESIZE(int, level_, Level);
 	CC_SYNTHESIZE(int, score_, Score);
+	CC_SYNTHESIZE(string, name_, Name);
 
 	bool getLock();
 	PRectangle* getRect();

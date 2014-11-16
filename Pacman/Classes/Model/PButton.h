@@ -7,11 +7,12 @@
 
 using namespace std;
 
-class PButton :public WorldObject{
+class PButton :public WorldObject {
 public:
 	PButton(){};
 	PButton(PPoint* position, ETexture texture, int width, int height);
 	PRectangle* getRect();
+	void show(int currentPage,int pageMinMax);
 };
 
 

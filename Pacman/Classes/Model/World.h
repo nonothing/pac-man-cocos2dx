@@ -16,7 +16,6 @@ class World {
   Player* player_;
   bool isSound_;
   int countPoint_;
-  std::string levelName_;
   List<Brick*>* bricks_;
   List<Spirit*>* spirits_;
   SoundController* soundController_;
@@ -49,7 +48,6 @@ class World {
      bool isVictory();
      bool isGameOver();
 	 Player* getPlayer();
-	 std::string getLevelName(){ return levelName_; }
 	 bool isFruit(ETexture textureName);
     
 };

@@ -1,7 +1,9 @@
 #include "LevelMenuScene.h"
 #include "View\MainMenuScene.h"
 #include "View\WorldScene.h"
+
 #define SCALE 1.5f
+#define LAST_PAGE	2
 
 LevelMenuScene* LevelMenuScene::create() {
 	LevelMenuScene* scene = new LevelMenuScene();
@@ -26,36 +28,15 @@ bool LevelMenuScene::init() {
 	rectangle_ = new PRectangle(0, 0, 2, 2);
 	levels_ = new List<LevelMenu*>();
 
-	levels_->append(createLevel(2, 11));
-	levels_->append(createLevel(8, 11));
-	levels_->append(createLevel(14, 11));
-	levels_->append(createLevel(20, 11));
-
-	levels_->append(createLevel(2, 5));
-	levels_->append(createLevel(8, 5));
-	levels_->append(createLevel(14, 5));
-	levels_->append(createLevel(20, 5));
-
-	levels_->append(createLevel(28, 11));
-	levels_->append(createLevel(34, 11));
-	levels_->append(createLevel(40, 11));
-	levels_->append(createLevel(46, 11));
-
-	levels_->append(createLevel(28, 5));
-	levels_->append(createLevel(34, 5));
-	levels_->append(createLevel(40, 5));
-	levels_->append(createLevel(46, 5));
-
-	levels_->append(createLevel(54, 11));
-	levels_->append(createLevel(60, 11));
-	levels_->append(createLevel(66, 11));
-	levels_->append(createLevel(72, 11));
-
-	levels_->append(createLevel(54, 5));
-	levels_->append(createLevel(60, 5));
-	levels_->append(createLevel(66, 5));
-	levels_->append(createLevel(72, 5));
-
+	int offset = 0;
+	for (int i = 0; i <= LAST_PAGE; i++) {
+		offset += 2;
+		for (int j=0; j < 4; j++) {
+			levels_->append(createLevel(offset, 11, (i * 8) + j));
+			levels_->append(createLevel(offset, 5, (i * 8) + j + 4));
+			offset +=6;
+		}
+	}
 
 	touchListener_ = EventListenerTouchOneByOne::create();
 	touchListener_->onTouchBegan = CC_CALLBACK_2(LevelMenuScene::TouchBegan,this);
@@ -69,9 +50,9 @@ bool LevelMenuScene::init() {
 		}
 
 	}
-
-	this->addChild(buttonArrowLeft_->getTexture(), 1);
+	buttonArrowLeft_->getTexture()->setVisible(false);
 	this->addChild(buttonArrowRight_->getTexture(), 1);
+	this->addChild(buttonArrowLeft_->getTexture(), 1);
 	setTouchMode(kCCTouchesOneByOne);
 	this->setKeyboardEnabled(true);
 
@@ -81,8 +62,8 @@ bool LevelMenuScene::init() {
 	return true;
 }
 
-LevelMenu* LevelMenuScene::createLevel(int x, int y){
-	return new LevelMenu(new PPoint(x, y), ELockGoldStar, levels_->size(), 0, 80 * SCALE, 80 * SCALE);
+LevelMenu* LevelMenuScene::createLevel(int x, int y, int level){
+	return new LevelMenu(new PPoint(x, y), ELockGoldStar, level, 0, 80 * SCALE, 80 * SCALE);
 }
 
 bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
@@ -92,39 +73,17 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
 
 	rectangle_ = new PRectangle(x, y, 20, 20);
 
-	if (buttonArrowLeft_->getRect()->intersects(rectangle_) && page_ > 0){
-		page_--;
-		for (int i = 0; i < levels_->size(); i++){
-			if(!levels_->get(i)->getLock()){
-				this->removeChild(levels_->get(i)->getLabel());
-			}
-			levels_->get(i)->setOffsetX(780);
-			if(!levels_->get(i)->getLock()){
-				this->addChild(levels_->get(i)->getLabel(), 2);
-			}	
-		}
-	}
-
-	if (buttonArrowRight_->getRect()->intersects(rectangle_) && page_ < 2){
-		page_++;
-
-		for (int i = 0; i < levels_->size(); i++){
-			if(!levels_->get(i)->getLock()){
-				this->removeChild(levels_->get(i)->getLabel());
-			}
-			levels_->get(i)->setOffsetX(-780);
-			if(!levels_->get(i)->getLock()){
-				this->addChild(levels_->get(i)->getLabel(), 2);
-			}	
-		}
-
-	}
+	nextPage(buttonArrowLeft_, 0);
+	nextPage(buttonArrowRight_, LAST_PAGE);
+	
+	buttonArrowLeft_->show(page_, 0);
+	buttonArrowRight_->show(page_, LAST_PAGE);
 
 	for (int i = 0; i < levels_->size(); i++){
 		if (!levels_->get(i)->getLock() && levels_->get(i)->getRect()->intersects(rectangle_)){
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create(parseLevel(i + 1), i + 1, soundController_)->getScene());
+			Director::getInstance()->pushScene(WorldScene::create(levels_->get(i)->getName(), i, soundController_)->getScene());
 		}
 	}
 
@@ -152,4 +111,25 @@ void LevelMenuScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event)
 		Director::getInstance()->pushScene(MainMenuScene::create(soundController_)->getScene());
 	}
 
+}
+
+void LevelMenuScene::nextPage(PButton* button, int limitation) {
+	int side = -1;
+	int offset = 780;
+	if(limitation != 0) {
+		offset = -offset;
+		side = 1;
+	} 
+	if (button->getTexture()->isVisible() && button->getRect()->intersects(rectangle_)){
+		page_ += side;
+		for (int i = 0; i < levels_->size(); i++){
+			if(!levels_->get(i)->getLock()){
+				this->removeChild(levels_->get(i)->getLabel());
+			}
+			levels_->get(i)->setOffsetX(offset);
+			if(!levels_->get(i)->getLock()){
+				this->addChild(levels_->get(i)->getLabel(), 2);
+			}	
+		}
+	}
 }

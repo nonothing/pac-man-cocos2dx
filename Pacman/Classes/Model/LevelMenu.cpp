@@ -5,12 +5,12 @@ LevelMenu::LevelMenu(PPoint* position, ETexture texture, int level, int score, i
 WorldObject(position, texture, width, height) {
 	this->level_ = level;
 	this->score_ = score;
-
+	name_ = LevelMenuScene::parseLevel(level + 1);
 	offsetX_ = 0;
 	if(level == 0) {
-		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(level + 1).c_str(), 1);
+		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(name_.c_str(), 1);
 	} else {
-		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(level + 1).c_str(), 0);
+		score_ = CCUserDefault::sharedUserDefault()->getIntegerForKey(name_.c_str(), 0);
 	}
 	
 	if (score_ > 10000) setTexture(EThreeGoldStar);
@@ -22,7 +22,7 @@ WorldObject(position, texture, width, height) {
 
 		stringstream ss;
 		ss << level+1;
-		levelName_ = ss.str();
+		numberLevel_ = ss.str();
 		createLabel();
 		
 }
@@ -46,7 +46,7 @@ void LevelMenu::setOffsetX(int x){
 }
 
 void LevelMenu::createLabel(){
-		label_ = LabelTTF::create(levelName_, "fonts/Mistral.ttf", 50);
+		label_ = LabelTTF::create(numberLevel_, "fonts/Mistral.ttf", 50);
 		label_->setColor(Color3B(210, 160, 30));
 		label_->setPosition(Point(getSpriteX() + 10, getSpriteY() - 10));
 }

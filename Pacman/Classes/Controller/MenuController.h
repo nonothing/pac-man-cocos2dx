@@ -5,20 +5,14 @@
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
-class MenuController{
-
-	LabelTTF* buttonPlay;
-	LabelTTF* buttonLevel;
-	LabelTTF* buttonSound;
-	LabelTTF* buttonExit;
-	bool isSound;
+class MenuController {
 
 public:
+	CC_SYNTHESIZE_READONLY(LabelTTF*, buttonPlay_, ButtonPlay);
+	CC_SYNTHESIZE_READONLY(LabelTTF*, buttonLevel_, ButtonLevel);
+	CC_SYNTHESIZE_READONLY(LabelTTF*, buttonSound_, ButtonSound);
+	CC_SYNTHESIZE_READONLY(LabelTTF*, buttonExit_, ButtonExit);
 	int selectMenuItem(int y, bool isTouch);
 	void init();
-	LabelTTF* getButtonPlay(){return buttonPlay;}
-	LabelTTF* getButtonLevel(){return buttonLevel;}
-	LabelTTF* getButtonSound(){return buttonSound;}
-	LabelTTF* getButtonExit(){return buttonExit;}
 };
 #endif /* MENU_CONTROLLER_H_ */
