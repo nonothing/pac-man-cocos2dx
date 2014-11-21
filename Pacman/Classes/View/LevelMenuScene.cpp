@@ -3,7 +3,8 @@
 #include "View\WorldScene.h"
 
 #define SCALE 1.5f
-#define LAST_PAGE	2
+#define LAST_PAGE	3
+#define MAX_LEVEL   29
 
 LevelMenuScene* LevelMenuScene::create() {
 	LevelMenuScene* scene = new LevelMenuScene();
@@ -32,8 +33,17 @@ bool LevelMenuScene::init() {
 	for (int i = 0; i <= LAST_PAGE; i++) {
 		offset += 2;
 		for (int j=0; j < 4; j++) {
-			levels_->append(createLevel(offset, 11, (i * 8) + j));
-			levels_->append(createLevel(offset, 5, (i * 8) + j + 4));
+			int levelUp = (i * 8) + j;
+			int levelDown = (i * 8) + j + 4;
+			
+			if(levelUp < MAX_LEVEL){
+				levels_->append(createLevel(offset, 11, levelUp));
+			}
+			
+			if(levelDown < MAX_LEVEL) {
+				levels_->append(createLevel(offset, 5, levelDown));
+			}
+			
 			offset +=6;
 		}
 	}

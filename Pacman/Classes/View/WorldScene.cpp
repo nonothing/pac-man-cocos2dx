@@ -64,7 +64,7 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 	}
 
     this->setKeyboardEnabled(true);
-    this->schedule(schedule_selector(WorldScene::updatePlayer),0.05f);
+    this->schedule(schedule_selector(WorldScene::updatePlayer),0.06f);
 	this->schedule(schedule_selector(WorldScene::updateWorld),0.07f);
 	this->schedule(schedule_selector(WorldScene::timerTask),1.0f);
 	this->schedule(schedule_selector(WorldScene::speedTask),0.03f);
