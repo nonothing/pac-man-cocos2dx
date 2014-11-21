@@ -20,9 +20,9 @@ World::World(Level* level, SoundController* soundController){
 	countPoint_ = generationPoint();
 
 	if(isSound_) {
-		soundController_->preloadEffect(SoundController::ES_PACMAN_COINING);
-		soundController_->preloadEffect(SoundController::ES_EAT_FRUIT);
-		soundController_->preloadEffect(SoundController::ES_EAT_SPIRIT);
+		soundController_->preloadEffect(ESounds::ES_PACMAN_COINING);
+		soundController_->preloadEffect(ESounds::ES_EAT_FRUIT);
+		soundController_->preloadEffect(ESounds::ES_EAT_SPIRIT);
 	}
 }
 
@@ -100,7 +100,7 @@ bool World::eatPoint(){
 		  	  	  countPoint_--;
 		  	  	  score_ += 50;
 				  if(isSound_){
-					soundController_->playEffect(SoundController::ES_PACMAN_COINING);
+					soundController_->playEffect(ESounds::ES_PACMAN_COINING);
 				  }
 	            return true;
 	        }
@@ -113,7 +113,7 @@ bool World::eatBonus(){
             defenceNPC();
 			isDefenceSpirit_ = true;
 			if(isSound_){
-				soundController_->playEffect(SoundController::ES_EAT_FRUIT);	
+				soundController_->playEffect(ESounds::ES_EAT_FRUIT);	
 			}
             return true;
         }
@@ -145,7 +145,7 @@ bool World::deadSpirit(){
                     score_ += 1000;
                     spirits_->get(i)->setState(DEAD);
 					if(isSound_){
-						soundController_->playEffect(SoundController::ES_EAT_FRUIT);
+						soundController_->playEffect(ESounds::ES_EAT_FRUIT);
 					}
                     return true;
                 }
@@ -172,7 +172,7 @@ bool World::eatFruit(){
 		score_ += 500;
 
 		if(isSound_){
-			soundController_->playEffect(SoundController::ES_EAT_FRUIT);
+			soundController_->playEffect(ESounds::ES_EAT_FRUIT);
 		}
 		return true;
 	}

@@ -23,7 +23,7 @@ bool MainMenuScene::init(SoundController* soundController) {
 	menuController_->init();
 	isSound_ =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
 	if(isSound_){
-		soundController_->preloadingAndPlayMusic(SoundController::ES_PACMAN_SOUNG, true);
+		soundController_->preloadingAndPlayMusic(ESounds::ES_PACMAN_SOUNG, true);
 	}
 
 	touchListener_ = EventListenerTouchOneByOne::create();
@@ -96,7 +96,7 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 				isSound_ = true;
 				menuController_->getButtonSound()->setString("Sound on");
 				menuController_->getButtonSound()->setPosition(Point(350, 200));
-				soundController_->preloadingAndPlayMusic(SoundController::ES_PACMAN_SOUNG, true);
+				soundController_->preloadingAndPlayMusic(ESounds::ES_PACMAN_SOUNG, true);
 				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
 				CCUserDefault::sharedUserDefault()->flush();
 			}

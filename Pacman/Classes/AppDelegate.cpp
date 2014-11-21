@@ -24,7 +24,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
 	SoundController* soundController = new SoundController();
-	soundController->init();
 
     // create a scene. it's an autorelease object
 	MainMenuScene* mainMenu = MainMenuScene::create(soundController);

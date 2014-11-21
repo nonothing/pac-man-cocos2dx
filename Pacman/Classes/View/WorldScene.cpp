@@ -29,7 +29,7 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey(levelName.c_str(), 0));
 	
 	if(isSound_){
-		soundController_->preloadingAndPlayMusic(SoundController::ES_SIREN_SOUND, true);
+		soundController_->preloadingAndPlayMusic(ESounds::ES_SIREN_SOUND, true);
 	}
 	
 	worldController_->setDirection(LEFT);
