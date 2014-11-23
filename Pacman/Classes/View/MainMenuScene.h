@@ -1,9 +1,9 @@
 #ifndef __MAINMENU_SCENE_H__
 #define __MAINMENU_SCENE_H__
 
-#include "View\AbstractScene.h"
-#include "Controller\MenuController.h"
-#include "Controller\SoundController.h"
+#include "View/AbstractScene.h"
+#include "Controller/MenuController.h"
+#include "Controller/SoundController.h"
 
 class MainMenuScene : public AbstractScene {
 

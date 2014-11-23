@@ -1,6 +1,6 @@
-#include "Controller\WorldController.h"
-#include "View\LevelMenuScene.h"
-#include "View\WorldScene.h"
+#include "Controller/WorldController.h"
+#include "View/LevelMenuScene.h"
+#include "View/WorldScene.h"
 
 void WorldController::init(World* world, SoundController* soundController){
 

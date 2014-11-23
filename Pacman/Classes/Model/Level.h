@@ -1,8 +1,8 @@
 #ifndef Level_H_
 #define Level_H_
 
-#include "Model\Brick.h"
-#include "Model\List.h"
+#include "Model/Brick.h"
+#include "Model/List.h"
 
 class Level {
 

@@ -1,12 +1,12 @@
 #ifndef __WORLD_SCENE_H__
 #define __WORLD_SCENE_H__
 
-#include "View\AbstractScene.h"
-#include "Model\ReadLevel.h"
-#include "Model\World.h"
-#include "Model\Direction.h"
-#include "Controller\WorldController.h"
-#include "Controller\SoundController.h"
+#include "View/AbstractScene.h"
+#include "Model/ReadLevel.h"
+#include "Model/World.h"
+#include "Model/Direction.h"
+#include "Controller/WorldController.h"
+#include "Controller/SoundController.h"
 
 class WorldScene : public AbstractScene {
 

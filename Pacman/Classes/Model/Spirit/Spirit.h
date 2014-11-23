@@ -1,12 +1,12 @@
 #ifndef Spirit_H_
 #define Spirit_H_
 
-#include "Model\Point.h"
-#include "Model\WorldObjectMove.h"
-#include "Model\List.h"
-#include "Model\Brick.h"
-#include "Model\World.h"
-#include "Model\Level.h"
+#include "Model/Point.h"
+#include "Model/WorldObjectMove.h"
+#include "Model/List.h"
+#include "Model/Brick.h"
+#include "Model/World.h"
+#include "Model/Level.h"
 
 using namespace std;
 class World;

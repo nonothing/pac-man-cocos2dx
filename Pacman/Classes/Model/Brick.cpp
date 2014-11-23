@@ -1,4 +1,4 @@
-#include "Model\Brick.h"
+#include "Model/Brick.h"
 
 Brick::Brick(PPoint* position, ETexture texture, int width, int height) :
 		WorldObject(position, texture, width, height) {

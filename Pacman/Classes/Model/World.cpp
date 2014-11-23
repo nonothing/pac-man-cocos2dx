@@ -3,7 +3,7 @@
 #include "model/Spirit/Clyde.h"
 #include "model/Spirit/Inky.h"
 #include "model/Spirit/Pinky.h"
-#include "Controller\SoundController.h"
+#include "Controller/SoundController.h"
 
 World::World(Level* level, SoundController* soundController){
 	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);

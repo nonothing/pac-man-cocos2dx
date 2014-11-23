@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>3964EDE5-980F-4D4F-B5BC-5D59B75F9DA6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Pacman</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C4CD05501FB1A0FD607C43C4D872FD8A86B9521A</key>
+		<string>https://github.com/nonothing/pac-man-cocos2dx.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Pacman/proj.ios_mac/Pacman.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C4CD05501FB1A0FD607C43C4D872FD8A86B9521A</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/nonothing/pac-man-cocos2dx.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C4CD05501FB1A0FD607C43C4D872FD8A86B9521A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C4CD05501FB1A0FD607C43C4D872FD8A86B9521A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>pac-man-cocos2dx</string>
+		</dict>
+	</array>
+</dict>
+</plist>

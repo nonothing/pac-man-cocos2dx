@@ -1,8 +1,8 @@
 #ifndef Inky_H_
 #define Inky_H_
 
-#include "model/Spirit/Spirit.h"
-#include "model/Point.h"
+#include "Spirit.h"
+#include "Model/Point.h"
 using namespace std;
 class Inky: public Spirit {
 

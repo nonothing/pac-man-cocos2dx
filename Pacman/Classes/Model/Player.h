@@ -2,7 +2,7 @@
 #define Player_H_
 #include "WorldObjectMove.h"
 #include "Brick.h"
-#include  "Model\list.h"
+#include  "Model/list.h"
 
 using namespace std;
 

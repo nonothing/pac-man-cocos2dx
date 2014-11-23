@@ -1,5 +1,5 @@
-#include "Model\LevelMenu.h"
-#include "View\LevelMenuScene.h"
+#include "Model/LevelMenu.h"
+#include "View/LevelMenuScene.h"
 
 LevelMenu::LevelMenu(PPoint* position, ETexture texture, int level, int score, int width, int height) :
 WorldObject(position, texture, width, height) {

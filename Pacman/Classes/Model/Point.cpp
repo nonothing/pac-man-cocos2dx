@@ -1,4 +1,4 @@
-#include "Model\Point.h"
+#include "Model/Point.h"
 
 PPoint::PPoint(int x, int y) {
 	this->x = x;

@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Point.h"
 #include "Brick.h"
-#include "Model\List.h"
+#include "Model/List.h"
 #include "model/Spirit/Spirit.h"
 #include "Level.h"
 #include "Controller/SoundController.h"

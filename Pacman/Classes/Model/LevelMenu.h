@@ -1,9 +1,9 @@
 #ifndef LEVEL_MENU_H_
 #define LEVEL_MENU_H_
 
-#include "Model\Rectangle.h"
-#include "Model\Point.h"
-#include "Model\WorldObject.h"
+#include "Model/Rectangle.h"
+#include "Model/Point.h"
+#include "Model/WorldObject.h"
 
 using namespace std;
 

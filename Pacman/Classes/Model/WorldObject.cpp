@@ -1,5 +1,5 @@
-#include "Model\WorldObject.h"
-#include "View\WorldScene.h"
+#include "Model/WorldObject.h"
+#include "View/WorldScene.h"
 
 using namespace std;
 

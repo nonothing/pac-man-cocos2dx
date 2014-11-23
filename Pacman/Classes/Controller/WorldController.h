@@ -1,7 +1,7 @@
 #ifndef WORLD_CONTROLLER_H_
 #define WORLD_CONTROLLER_H_
-#include "Model\World.h"
-#include "Controller\SoundController.h"
+#include "Model/World.h"
+#include "Controller/SoundController.h"
 #define FONT_EMULOGIC "fonts/emulogic.ttf"
 using namespace std;
 

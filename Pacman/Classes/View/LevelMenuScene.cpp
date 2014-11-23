@@ -1,6 +1,6 @@
 #include "LevelMenuScene.h"
-#include "View\MainMenuScene.h"
-#include "View\WorldScene.h"
+#include "View/MainMenuScene.h"
+#include "View/WorldScene.h"
 
 #define SCALE 1.5f
 #define LAST_PAGE	3

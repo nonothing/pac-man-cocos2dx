@@ -1,4 +1,4 @@
-#include "Controller\SoundController.h"
+#include "Controller/SoundController.h"
 
 static char soundNames [ES_LAST][60]= {
 	"audio/eatfruit.wav",//	ES_EAT_FRUIT

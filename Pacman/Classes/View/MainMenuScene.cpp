@@ -1,6 +1,6 @@
 #include "MainMenuScene.h"
-#include "View\WorldScene.h"
-#include "View\LevelMenuScene.h"
+#include "View/WorldScene.h"
+#include "View/LevelMenuScene.h"
 
 MainMenuScene* MainMenuScene::create(SoundController* soundController) {
 	MainMenuScene* scene = new MainMenuScene();

@@ -1,4 +1,4 @@
-#include "Model\Rectangle.h"
+#include "Model/Rectangle.h"
 
 PRectangle::PRectangle(int x, int y, int width, int height){
 	 this->x = x;

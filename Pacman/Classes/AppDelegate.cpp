@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "View\MainMenuScene.h"
+#include "View/MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "Controller/SoundController.h"
 USING_NS_CC;
@@ -12,7 +12,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLView::create("Pacman");
+        glview = GLViewImpl::create("Pacman");
         director->setOpenGLView(glview);
     }
 
