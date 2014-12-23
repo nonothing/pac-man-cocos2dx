@@ -4,7 +4,7 @@
 
 #define SCALE 1.5f
 #define LAST_PAGE	3
-#define MAX_LEVEL   29
+#define MAX_LEVEL   30
 
 LevelMenuScene* LevelMenuScene::create() {
 	LevelMenuScene* scene = new LevelMenuScene();
