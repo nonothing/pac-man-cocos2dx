@@ -14,7 +14,7 @@ void MenuController::init(){
 	buttonSound_ = LabelTTF::create("sound on", FONT_EMULOGIC, FONT_SIZE);
 	buttonSound_->setColor(Color3B::YELLOW);
 	buttonSound_->setPosition(Point(350, 200));
-	if(!CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false)){
+	if(!UserDefault::getInstance()->getBoolForKey("SOUND", false)){
 		buttonSound_->setString("Sound off");
 		buttonSound_->setPosition(Point(363, 200));
 	} 

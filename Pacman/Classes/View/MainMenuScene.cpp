@@ -21,7 +21,7 @@ bool MainMenuScene::init(SoundController* soundController) {
 	
 	menuController_ = new MenuController();
 	menuController_->init();
-	isSound_ =  CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
+	isSound_ =  UserDefault::getInstance()->getBoolForKey("SOUND", false);
 	if(isSound_){
 		soundController_->preloadingAndPlayMusic(ESounds::ES_PACMAN_SOUNG, true);
 	}
@@ -32,9 +32,12 @@ bool MainMenuScene::init(SoundController* soundController) {
 	touchListener_->onTouchEnded = CC_CALLBACK_2(MainMenuScene::TouchEnded,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener_, 100);
 
+	keyboardListener_ = EventListenerKeyboard::create();
+	keyboardListener_->onKeyReleased = CC_CALLBACK_2(MainMenuScene::onKeyReleased, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener_, this);
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
-	setTouchMode(kCCTouchesOneByOne);
     
     auto labelName = LabelTTF::create("PAC-MAN", "fonts/emulogic.ttf", 56);
 	labelName->setColor(Color3B::YELLOW);
@@ -45,8 +48,6 @@ bool MainMenuScene::init(SoundController* soundController) {
 	this->addChild(menuController_->getButtonSound(), 1);
 	this->addChild(menuController_->getButtonExit(), 1);
   
-	this->setKeyboardEnabled(true);
-
 	scene_ = Scene::create();
 	scene_->addChild(this);
 
@@ -64,7 +65,7 @@ bool MainMenuScene::TouchBegan(Touch *touch, Event *event) {
     return true;
 }
 
-void MainMenuScene::TouchMoved(Touch* touch, CCEvent* event) {
+void MainMenuScene::TouchMoved(Touch* touch, Event* event) {
 	setMenu(menuController_->selectMenuItem(touch->getLocation().y, true));
 }
 
@@ -90,15 +91,15 @@ void MainMenuScene::TouchEnded(Touch* touch, Event* event) {
 				menuController_->getButtonSound()->setPosition(Point(363, 200));
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 				CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
-				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND", false);
-				CCUserDefault::sharedUserDefault()->flush();
+				UserDefault::getInstance()->setBoolForKey("SOUND", false);
+				UserDefault::getInstance()->flush();
 			} else {
 				isSound_ = true;
 				menuController_->getButtonSound()->setString("Sound on");
 				menuController_->getButtonSound()->setPosition(Point(350, 200));
 				soundController_->preloadingAndPlayMusic(ESounds::ES_PACMAN_SOUNG, true);
-				CCUserDefault::sharedUserDefault()->setBoolForKey("SOUND",true);
-				CCUserDefault::sharedUserDefault()->flush();
+				UserDefault::getInstance()->setBoolForKey("SOUND",true);
+				UserDefault::getInstance()->flush();
 			}
 			break;
 		case 4:

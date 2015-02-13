@@ -9,6 +9,8 @@ class MainMenuScene : public AbstractScene {
 
 private:
 	EventListenerTouchOneByOne* touchListener_;
+	EventListenerKeyboard* keyboardListener_;
+
 	MenuController* menuController_;
 	SoundController* soundController_;
 public:

@@ -25,8 +25,8 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 	positionY_ = 0;
 
 
-	isSound_ = CCUserDefault::sharedUserDefault()->getBoolForKey("SOUND", false);
-	worldController_->setRecord(CCUserDefault::sharedUserDefault()->getIntegerForKey(levelName.c_str(), 0));
+	isSound_ = UserDefault::getInstance()->getBoolForKey("SOUND", false);
+	worldController_->setRecord(UserDefault::getInstance()->getIntegerForKey(levelName.c_str(), 0));
 	
 	if(isSound_){
 		soundController_->preloadingAndPlayMusic(ESounds::ES_SIREN_SOUND, true);
@@ -42,14 +42,16 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 	world_ = new World(readLevel_->getLevel(), soundController_);
 	world_->setCurrentLevel(currentLevel);
 	worldController_->init(world_, soundController_);
-	auto touchListener = EventListenerTouchOneByOne::create();
-	touchListener->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
-	touchListener->onTouchMoved = CC_CALLBACK_2(WorldScene::TouchMoved, this);
-	touchListener->onTouchEnded = CC_CALLBACK_2(WorldScene::TouchEnded,this);
-	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
 
+	touchListener_ = EventListenerTouchOneByOne::create();
+	touchListener_->onTouchBegan = CC_CALLBACK_2(WorldScene::TouchBegan,this);
+	touchListener_->onTouchMoved = CC_CALLBACK_2(WorldScene::TouchMoved, this);
+	touchListener_->onTouchEnded = CC_CALLBACK_2(WorldScene::TouchEnded,this);
+	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener_, 100);
 
-	setTouchMode(kCCTouchesOneByOne);
+	keyboardListener_ = EventListenerKeyboard::create();
+	keyboardListener_->onKeyReleased = CC_CALLBACK_2(WorldScene::onKeyReleased, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener_, this);
  
 	for(int i=0; i < size; i++){
 		worldLayer_->addChild(readLevel_->getLevel()->getBricks()->get(i)->getTexture(), 0);
@@ -63,15 +65,14 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 		worldLayer_->addChild(world_->getSpirits()->get(i)->getTexture(),2);
 	}
 
-    this->setKeyboardEnabled(true);
     this->schedule(schedule_selector(WorldScene::updatePlayer),0.06f);
 	this->schedule(schedule_selector(WorldScene::updateWorld),0.07f);
 	this->schedule(schedule_selector(WorldScene::timerTask),1.0f);
 	this->schedule(schedule_selector(WorldScene::speedTask),0.03f);
 	this->schedule(schedule_selector(WorldScene::generateFruit), 15.0f);
 
-	 scene_ = Scene::create();
-	 scene_->addChild(this);
+	scene_ = Scene::create();
+	scene_->addChild(this);
 
     return true;
 }
@@ -102,7 +103,7 @@ bool WorldScene::TouchBegan(Touch *touch, Event *event){
     return true;
 }
 
- void WorldScene::TouchMoved(Touch* touch, CCEvent* event){
+ void WorldScene::TouchMoved(Touch* touch, Event* event){
 	 worldController_->TouchMoved(touch->getLocation().x,touch->getLocation().y);
 }
  void WorldScene::TouchEnded(Touch* touch, Event* event){

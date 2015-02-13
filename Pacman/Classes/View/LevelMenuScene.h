@@ -9,7 +9,10 @@
 #include "Controller/SoundController.h"
 
 class LevelMenuScene :public AbstractScene {
+
 	EventListenerTouchOneByOne* touchListener_;
+	EventListenerKeyboard* keyboardListener_;
+
 	List<LevelMenu*>* levels_;
 	PRectangle* rectangle_;
 	PButton* buttonArrowLeft_;

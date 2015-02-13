@@ -52,6 +52,10 @@ bool LevelMenuScene::init() {
 	touchListener_->onTouchBegan = CC_CALLBACK_2(LevelMenuScene::TouchBegan,this);
 	getEventDispatcher()->addEventListenerWithFixedPriority(touchListener_, 100);
 
+	keyboardListener_ = EventListenerKeyboard::create();
+	keyboardListener_->onKeyReleased = CC_CALLBACK_2(LevelMenuScene::onKeyReleased, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener_, this);
+
 	for (int i = 0; i < levels_->size(); i++){
 		this->addChild(levels_->get(i)->getTexture(), 1);
 		levels_->get(i)->getTexture()->setScale(SCALE);
@@ -63,8 +67,6 @@ bool LevelMenuScene::init() {
 	buttonArrowLeft_->getTexture()->setVisible(false);
 	this->addChild(buttonArrowRight_->getTexture(), 1);
 	this->addChild(buttonArrowLeft_->getTexture(), 1);
-	setTouchMode(kCCTouchesOneByOne);
-	this->setKeyboardEnabled(true);
 
 	scene_ = Scene::create();
 	scene_->addChild(this);

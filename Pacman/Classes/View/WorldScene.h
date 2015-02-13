@@ -13,6 +13,9 @@ class WorldScene : public AbstractScene {
 private:
 	WorldController* worldController_;
 	SoundController* soundController_;
+
+	EventListenerTouchOneByOne* touchListener_;
+	EventListenerKeyboard*		keyboardListener_;
 	ReadLevel* readLevel_; 
 	World* world_;
 

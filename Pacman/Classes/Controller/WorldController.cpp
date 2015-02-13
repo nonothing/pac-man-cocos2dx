@@ -7,9 +7,9 @@ void WorldController::init(World* world, SoundController* soundController){
 	soundController_ = soundController;
 	seconds = 0;
 
-	record = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
-	CCUserDefault::sharedUserDefault()->setIntegerForKey("LAST_LEVEL", world->getCurrentLevel());
-	CCUserDefault::sharedUserDefault()->flush();
+	record = UserDefault::getInstance()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
+	UserDefault::getInstance()->setIntegerForKey("LAST_LEVEL", world->getCurrentLevel());
+	UserDefault::getInstance()->flush();
 	this->world = world;
 	labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
     labelRecord->setPosition(Point(100, 436));
@@ -37,9 +37,9 @@ void WorldController::updateWorld(float dt){
 	
 		if(world->isVictory()) {
 			onPause();
-			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), record);
-			CCUserDefault::sharedUserDefault()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
-			CCUserDefault::sharedUserDefault()->flush();
+			UserDefault::getInstance()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), record);
+			UserDefault::getInstance()->setIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1).c_str(), 1);
+			UserDefault::getInstance()->flush();
 			Director::getInstance()->pushScene(WorldScene::create(LevelMenuScene::parseLevel(world->getCurrentLevel() + 1), world->getCurrentLevel() + 1, soundController_)->getScene());
 			newWorld();
 		}
@@ -58,7 +58,7 @@ void WorldController::newWorld() {
 	world->getPlayer()->setLife(3);
 	world->generationPoint();
 	world->setScore(0);
-	record = CCUserDefault::sharedUserDefault()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
+	record = UserDefault::getInstance()->getIntegerForKey(LevelMenuScene::parseLevel(world->getCurrentLevel()).c_str(), 0);
 }
 
 void WorldController::respawn() {
