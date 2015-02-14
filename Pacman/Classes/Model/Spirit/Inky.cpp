@@ -7,19 +7,19 @@ Inky::Inky(PPoint* point, Level* level) :
 	level_ = level;
 }
 
-void Inky::ai(World* world) {
+void Inky::ai(BricksVec bricks, Player* player, PPoint* point) {
     switch (getState()) {
     case ATTACK:
-        findDirection(world, doubleVectorBetweenTwoPoints(findPathTwoStep(world->getPlayer()), world->getSpirits()->get(0)->getPosition() ), this);
+        findDirection(bricks, doubleVectorBetweenTwoPoints(findPathTwoStep(player), point));
         break;
     case DEFENCE:
-        findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
+        findDirection(bricks, DEFENCE_POINT->multiply(getWidth()));
         break;
     case DEAD:
-        findDirection(world, START_POINT->multiply(getWidth()), this);
+        findDirection(bricks, START_POINT->multiply(getWidth()));
         break;
     }
-    move(world);
+    move(bricks);
 }
 
 PPoint* Inky::doubleVectorBetweenTwoPoints(PPoint* point1, PPoint* point2) {
@@ -69,7 +69,7 @@ PPoint* Inky::doubleVectorBetweenTwoPoints(PPoint* point1, PPoint* point2) {
 
 
 PPoint* Inky::findPathTwoStep(Player* player) {
-    potencialMap(player->getPosition(), this, level_->getBricks());
+    potencialMap(player->getPosition(), level_->getBricks());
 
     int** map = getMap();
     int min = 0;

@@ -27,7 +27,6 @@ bool LevelMenuScene::init() {
 	buttonArrowRight_ = new PButton(new PPoint(23, 1), EArrow_right, 65, 50);
 
 	rectangle_ = new PRectangle(0, 0, 2, 2);
-	levels_ = new List<LevelMenu*>();
 
 	int offset = 0;
 	for (int i = 0; i <= LAST_PAGE; i++) {
@@ -37,11 +36,11 @@ bool LevelMenuScene::init() {
 			int levelDown = (i * 8) + j + 4;
 			
 			if(levelUp < MAX_LEVEL){
-				levels_->append(createLevel(offset, 11, levelUp));
+				levels_.push_back(createLevel(offset, 11, levelUp));
 			}
 			
 			if(levelDown < MAX_LEVEL) {
-				levels_->append(createLevel(offset, 5, levelDown));
+				levels_.push_back(createLevel(offset, 5, levelDown));
 			}
 			
 			offset +=6;
@@ -56,11 +55,11 @@ bool LevelMenuScene::init() {
 	keyboardListener_->onKeyReleased = CC_CALLBACK_2(LevelMenuScene::onKeyReleased, this);
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener_, this);
 
-	for (int i = 0; i < levels_->size(); i++){
-		this->addChild(levels_->get(i)->getTexture(), 1);
-		levels_->get(i)->getTexture()->setScale(SCALE);
-		if(!levels_->get(i)->getLock()){
-			this->addChild(levels_->get(i)->getLabel(), 2);
+	for (auto level: levels_) {
+		this->addChild(level->getTexture(), 1);
+		level->getTexture()->setScale(SCALE);
+		if(!level->getLock()){
+			this->addChild(level->getLabel(), 2);
 		}
 
 	}
@@ -91,11 +90,11 @@ bool LevelMenuScene::TouchBegan(Touch *touch, Event *event) {
 	buttonArrowLeft_->show(page_, 0);
 	buttonArrowRight_->show(page_, LAST_PAGE);
 
-	for (int i = 0; i < levels_->size(); i++){
-		if (!levels_->get(i)->getLock() && levels_->get(i)->getRect()->intersects(rectangle_)){
+	for (int i = 0; i < levels_.size(); i++){
+		if (!levels_.at(i)->getLock() && levels_.at(i)->getRect()->intersects(rectangle_)){
 			getEventDispatcher()->removeEventListener(touchListener_);
 			CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			Director::getInstance()->pushScene(WorldScene::create(levels_->get(i)->getName(), i, soundController_)->getScene());
+			Director::getInstance()->pushScene(WorldScene::create(levels_.at(i)->getName(), i, soundController_)->getScene());
 		}
 	}
 
@@ -134,13 +133,13 @@ void LevelMenuScene::nextPage(PButton* button, int limitation) {
 	} 
 	if (button->getTexture()->isVisible() && button->getRect()->intersects(rectangle_)){
 		page_ += side;
-		for (int i = 0; i < levels_->size(); i++){
-			if(!levels_->get(i)->getLock()){
-				this->removeChild(levels_->get(i)->getLabel());
+		for (auto level: levels_){
+			if(!level->getLock()){
+				this->removeChild(level->getLabel());
 			}
-			levels_->get(i)->setOffsetX(offset);
-			if(!levels_->get(i)->getLock()){
-				this->addChild(levels_->get(i)->getLabel(), 2);
+			level->setOffsetX(offset);
+			if(!level->getLock()){
+				this->addChild(level->getLabel(), 2);
 			}	
 		}
 	}

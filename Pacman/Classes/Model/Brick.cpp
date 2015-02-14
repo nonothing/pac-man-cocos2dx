@@ -5,7 +5,7 @@ Brick::Brick(PPoint* position, ETexture texture, int width, int height) :
 
 }
 
-bool Brick::tryToBonus(PRectangle* rectangle){
+bool Brick::tryToBonus(PRectangle* rectangle) {
 	  if (bounds_->intersects(rectangle) && getTextureName() == EBonus) {
 	            setTexture(EBackground);
 	            return true;

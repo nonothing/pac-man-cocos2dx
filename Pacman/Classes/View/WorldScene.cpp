@@ -37,7 +37,7 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 
 	readLevel_ = new ReadLevel();
 	readLevel_->readFile(levelName);
-	int size = readLevel_->getLevel()->getBricks()->size();
+	int size = readLevel_->getLevel()->getBricks().size();
 
 	world_ = new World(readLevel_->getLevel(), soundController_);
 	world_->setCurrentLevel(currentLevel);
@@ -53,16 +53,16 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 	keyboardListener_->onKeyReleased = CC_CALLBACK_2(WorldScene::onKeyReleased, this);
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener_, this);
  
-	for(int i=0; i < size; i++){
-		worldLayer_->addChild(readLevel_->getLevel()->getBricks()->get(i)->getTexture(), 0);
+	for(auto brick: readLevel_->getLevel()->getBricks()){
+		worldLayer_->addChild(brick->getTexture(), 0);
 	}
 
 	this->addChild(worldController_->getLabelRecord(), 1);
 	this->addChild(worldController_->getLabelScore(), 1);
-	worldLayer_->addChild(world_->getPlayer()->getTexture(),2);
+	worldLayer_->addChild(world_->getPlayer()->getTexture(), 2);
 
-	for(int i=0; i < world_->getSpirits()->size(); i++){
-		worldLayer_->addChild(world_->getSpirits()->get(i)->getTexture(),2);
+	for(auto spirit: world_->getSpirits()){
+		worldLayer_->addChild(spirit->getTexture(), 2);
 	}
 
     this->schedule(schedule_selector(WorldScene::updatePlayer),0.06f);

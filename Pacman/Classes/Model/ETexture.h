@@ -40,10 +40,10 @@ enum ETexture {
 	EPacmanLeftClose,
 	EPacmanRightOpen,
 	EPacmanRightClose,
-	EPacmanDownClose,
 	EPacmanDownOpen,
-	EPacmanUpClose,
+	EPacmanDownClose,
 	EPacmanUpOpen,
+	EPacmanUpClose,
 
 	EOrbLeft,
 	EOrbRight,

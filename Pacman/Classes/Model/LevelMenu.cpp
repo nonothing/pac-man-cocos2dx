@@ -7,11 +7,8 @@ WorldObject(position, texture, width, height) {
 	this->score_ = score;
 	name_ = LevelMenuScene::parseLevel(level + 1);
 	offsetX_ = 0;
-	if(level == 0) {
-		score_ = UserDefault::getInstance()->getIntegerForKey(name_.c_str(), 1);
-	} else {
-		score_ = UserDefault::getInstance()->getIntegerForKey(name_.c_str(), 0);
-	}
+
+	score_ = UserDefault::getInstance()->getIntegerForKey(name_.c_str(), level == 0 ? 1 : 0);
 	
 	if (score_ > 10000) setTexture(EThreeGoldStar);
 	if (score_ < 10000) setTexture(ETwoGoldStar);

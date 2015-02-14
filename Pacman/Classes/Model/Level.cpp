@@ -32,10 +32,10 @@ PPoint* Level::getPointInky() const {
 	return pointInky_;
 }
 
-List<Brick*>* Level::getBricks() const {
+BricksVec Level::getBricks() const {
 	return bricks_;
 }
 
-void Level::setBricks(List<Brick*>* bricks) {
+void Level::setBricks(BricksVec bricks) {
 	bricks_ = bricks;
 }

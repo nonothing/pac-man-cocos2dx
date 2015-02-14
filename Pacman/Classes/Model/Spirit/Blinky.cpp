@@ -6,20 +6,20 @@ Blinky::Blinky(PPoint* point, Level* level) :
 	DEFENCE_POINT = new PPoint(21, 1);
 }
 
-void Blinky::ai(World* world) {
+void Blinky::ai(BricksVec bricks, Player* player, PPoint* point) {
 	switch (getState()) {
 	case ATTACK:
-		findDirection(world, world->getPlayer()->getPosition(), this);
+		findDirection(bricks, player->getPosition());
 		break;
 	case DEFENCE:
-		findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
+		findDirection(bricks, DEFENCE_POINT->multiply(getWidth()));
 		break;
 	case DEAD:
-		findDirection(world, START_POINT->multiply(getWidth()), this);
+		findDirection(bricks, START_POINT->multiply(getWidth()));
 		break;
 	}
 
-	move(world);
+	move(bricks);
 }
 
 ETexture Blinky::left() {

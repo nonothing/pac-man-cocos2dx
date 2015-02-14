@@ -12,7 +12,7 @@ private:
 public:
 	Pinky();
 	Pinky(PPoint* point, Level* level);
-	void ai(World* world);
+	void ai(BricksVec bricks, Player* player = NULL, PPoint* point = NULL);
 	ETexture left();
 	ETexture right();
 	ETexture down();

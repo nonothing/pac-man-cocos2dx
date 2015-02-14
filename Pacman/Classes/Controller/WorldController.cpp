@@ -2,6 +2,9 @@
 #include "View/LevelMenuScene.h"
 #include "View/WorldScene.h"
 
+#define MIN_OFFSET 20
+#define MAX_OFFSET 60
+
 void WorldController::init(World* world, SoundController* soundController){
 
 	soundController_ = soundController;
@@ -22,10 +25,10 @@ void WorldController::init(World* world, SoundController* soundController){
 
 void WorldController::updateWorld(float dt){
 	if(!isPause){
-		for(int i=0; i < world->getSpirits()->size(); i++){	
-			if(world->getSpirits()->get(i)->getState() == DEFENCE)
-				world->getSpirits()->get(i)->setDefence(isDefenceSpirit);
-			world->getSpirits()->get(i)->go(world);
+		for(int i=0; i < world->getSpirits().size(); i++){	
+			if(world->getSpirits().at(i)->getState() == DEFENCE)
+				world->getSpirits().at(i)->setDefence(isDefenceSpirit);
+			world->getSpirits().at(i)->go(world->getBricks(), world->getPlayer(), world->getSpirits().at(0)->getPosition());
 		}
 	
 		if(world->deadPlayer()) {
@@ -68,30 +71,29 @@ void WorldController::respawn() {
 }
 
  void WorldController::TouchMoved(int x, int y){
-	 if (touchX > x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
-			setDirection(LEFT);
-		if (touchX < x && abs(x - touchX) > 20 && abs(y - touchY) < 60)
-			setDirection(RIGHT);
-		if (touchY > y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
-			setDirection(DOWN);
-		if (touchY < y && abs(y - touchY) > 20 && abs(x - touchX) < 60)
-			setDirection(UP);
+	 if (touchX > x && abs(x - touchX) > MIN_OFFSET && abs(y - touchY) < MAX_OFFSET)
+		 setDirection(LEFT);
+	 if (touchX < x && abs(x - touchX) > MIN_OFFSET && abs(y - touchY) < MAX_OFFSET)
+		 setDirection(RIGHT);
+	 if (touchY > y && abs(y - touchY) > MIN_OFFSET && abs(x - touchX) < MAX_OFFSET)
+		 setDirection(DOWN);
+	 if (touchY < y && abs(y - touchY) > MIN_OFFSET && abs(x - touchX) < MAX_OFFSET)
+		 setDirection(UP);
 }
 
  void WorldController::TouchEnded(int x, int y){
-
-	 if (touchX > x && abs(y - touchY) < 60)
-			setDirection(LEFT);
-		if (touchX < x && abs(y - touchY) < 60)
-			setDirection(RIGHT);
-		if (touchY > y && abs(x - touchX) < 60)
-			setDirection(DOWN);
-		if (touchY < y && abs(x - touchX) < 60)
-			setDirection(UP);
+	 if (touchX > x && abs(y - touchY) < MAX_OFFSET)
+		 setDirection(LEFT);
+	 if (touchX < x && abs(y - touchY) < MAX_OFFSET)
+		 setDirection(RIGHT);
+	 if (touchY > y && abs(x - touchX) < MAX_OFFSET)
+		 setDirection(DOWN);
+	 if (touchY < y && abs(x - touchX) < MAX_OFFSET)
+		 setDirection(UP);
 }
 
 void WorldController::updatePlayer(float dt){
-ostringstream convertScore;   
+	ostringstream convertScore;   
     convertScore << world->getScore();    
 	labelScore->setString("You: " + convertScore.str() );
 
@@ -108,41 +110,33 @@ ostringstream convertScore;
 }
 
 void WorldController::timerTask(float dt){
-	if(!isPause){
-		if(world->getDefenceSpirit()){
+	if(!isPause) {
+		if(world->getDefenceSpirit()) {
 			seconds++;
-                    if (seconds >= 8 && seconds % 2 == 0) {
-                        isDefenceSpirit = true;
-                    } else {
-                        isDefenceSpirit = false;
-                    }
+			isDefenceSpirit = seconds >= 8 && seconds % 2 == 0;
 
-                    if (seconds == 12) {
-                        world->attackNPC();
-						isDefenceSpirit = false;
-                        seconds = 0;
-						world->setDefenceSpirit(false);
-                    }
+			if (seconds == 12) {
+				world->attackNPC();
+				isDefenceSpirit = false;
+				seconds = 0;
+				world->setDefenceSpirit(false);
+			}
 		}
-			
 	}
 }
 
 void WorldController::speedTask(float dt){
 	if (!isPause) {
-		for(int i=0; i < world->getSpirits()->size(); i++){	
-			if(world->getSpirits()->get(i)->getState() == DEAD)
-				world->getSpirits()->get(i)->go(world);
+		for(auto spirit: world->getSpirits()) {
+			if(spirit->getState() == DEAD) {
+				spirit->go(world->getBricks());
+			}
 		}
 	}
 }
 
 void WorldController::onPause(){
-	if(isPause){
-		isPause = false;
-	} else {
-		isPause = true;
-	}
+	isPause = !isPause;
 }
 
 void WorldController::generateFruit(float dt) {

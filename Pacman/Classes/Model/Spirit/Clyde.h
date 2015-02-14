@@ -10,8 +10,8 @@ class Clyde: public Spirit {
 public:
 	Clyde();
 	Clyde(PPoint* point, Level* level);
-	void ai(World* world);
-	void AIattack(World* world);
+	void ai(BricksVec bricks, Player* player = NULL, PPoint* point = NULL);
+	void AIattack(Player* player, BricksVec bricks);
 	ETexture left();
 	ETexture right();
 	ETexture down();

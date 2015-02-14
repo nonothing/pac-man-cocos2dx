@@ -22,7 +22,7 @@ int PRectangle::getWidht(){
 	return width;
 }
 
-bool PRectangle::intersects(PRectangle* r) {
+bool PRectangle::intersects(PRectangle* r) const {
         int tw = this->width;
         int th = this->height;
         int rw = r->width;

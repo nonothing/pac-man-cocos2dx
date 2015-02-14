@@ -3,6 +3,7 @@
 
 #include "Spirit.h"
 #include "Model/Point.h"
+
 using namespace std;
 class Inky: public Spirit {
 
@@ -18,7 +19,7 @@ private:
 public:
 	Inky();
 	Inky(PPoint* point, Level* level);
-	void ai(World* world);
+	void ai(BricksVec bricks, Player* player = NULL, PPoint* point = NULL);
 	ETexture left();
 	ETexture right();
 	ETexture down();

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+
+
 class Brick :public WorldObject{
 public:
 	Brick(){};
@@ -16,5 +18,6 @@ public:
 	bool tryToFruit(PRectangle* rectangle);
 };
 
+typedef vector<Brick*> BricksVec;
 
 #endif /* BRICK_H_ */

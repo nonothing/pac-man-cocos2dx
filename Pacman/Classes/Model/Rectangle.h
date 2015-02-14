@@ -9,7 +9,7 @@ private:
 
 public:
     PRectangle(int x, int y, int width, int height);
-    bool intersects(PRectangle* r);
+    bool intersects(PRectangle* r) const;
     int getY();
     int getX();
     int getWidht();

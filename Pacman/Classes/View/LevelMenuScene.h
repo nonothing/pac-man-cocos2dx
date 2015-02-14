@@ -2,7 +2,6 @@
 #define __LEVELMENU_SCENE_H__
 
 #include "View/AbstractScene.h"
-#include "Model/List.h"
 #include "Model/LevelMenu.h"
 #include "Model/Rectangle.h"
 #include "Model/PButton.h"
@@ -13,7 +12,7 @@ class LevelMenuScene :public AbstractScene {
 	EventListenerTouchOneByOne* touchListener_;
 	EventListenerKeyboard* keyboardListener_;
 
-	List<LevelMenu*>* levels_;
+	vector<LevelMenu*> levels_;
 	PRectangle* rectangle_;
 	PButton* buttonArrowLeft_;
 	PButton* buttonArrowRight_;

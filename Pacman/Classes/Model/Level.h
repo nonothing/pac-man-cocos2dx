@@ -2,7 +2,6 @@
 #define Level_H_
 
 #include "Model/Brick.h"
-#include "Model/List.h"
 
 class Level {
 
@@ -11,15 +10,15 @@ private:
 	PPoint* pointInky_;
 	PPoint* pointPinky_;
 	PPoint* pointClyde_;
-	List<Brick*>* bricks_;
+	BricksVec bricks_;
 
 public:
 	  
 	CC_SYNTHESIZE(int, width_, Width);
 	CC_SYNTHESIZE(int, height_, Height);
 
-	List<Brick*>* getBricks() const;
-	void setBricks(List<Brick*>* bricks);
+	BricksVec getBricks() const;
+	void setBricks(BricksVec bricks);
 	  
 
 	void setPointBlinky(PPoint* point);
@@ -36,7 +35,10 @@ public:
 
 
 	~Level(){
-		delete bricks_;
+		for(auto brick: bricks_) {
+			delete brick;
+		}
+		bricks_.clear();
 		delete pointBlinky_;
 		delete pointInky_;
 		delete pointPinky_;

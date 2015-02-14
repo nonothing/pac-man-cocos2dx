@@ -6,24 +6,24 @@ Pinky::Pinky(PPoint* point, Level* level) :
 	DEFENCE_POINT =  new PPoint(1, 2);
 	level_ = level;
 }
-void Pinky::ai(World* world) {
+void Pinky::ai(BricksVec bricks, Player* player, PPoint* point) {
 	switch (getState()) {
 	case ATTACK:
-		findDirection(world, findPathFourStep(world->getPlayer()), this);
+		findDirection(bricks, findPathFourStep(player));
 		break;
 	case DEFENCE:
-		findDirection(world, DEFENCE_POINT->multiply(getWidth()), this);
+		findDirection(bricks, DEFENCE_POINT->multiply(getWidth()));
 		break;
 	case DEAD:
-		findDirection(world, START_POINT->multiply(getWidth()), this);
+		findDirection(bricks, START_POINT->multiply(getWidth()));
 		break;
 	}
 
-	move(world);
+	move(bricks);
 }
 
 PPoint* Pinky::findPathFourStep(Player* player) {
-	potencialMap(player->getPosition(), this, level_->getBricks());
+	potencialMap(player->getPosition(), level_->getBricks());
 
 	PPoint* point = new PPoint(0, 0);
 	int** map = getMap();

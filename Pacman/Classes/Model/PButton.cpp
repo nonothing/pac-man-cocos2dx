@@ -10,9 +10,5 @@ PRectangle* PButton::getRect(){
 }
 
 void PButton::show(int currentPage,int pageMinMax) {
-	if(currentPage == pageMinMax) {
-		getTexture()->setVisible(false);
-	} else {
-		getTexture()->setVisible(true);
-	}
+	getTexture()->setVisible(currentPage != pageMinMax);
 }

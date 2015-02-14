@@ -10,15 +10,23 @@ Spirit::Spirit(PPoint* position, ETexture texture, int width, int height, Level*
 		countCollision_ = 0;
 	}
 
-void Spirit::refresh(World* world) {
+void Spirit::refresh(BricksVec bricks) {
 	if (getState() == DEAD) {
-		setState( world->collidesWithRefresh(getBounds()));
+		setState(collidesWithRefresh(getBounds(), bricks));
 	}
 }
 
-void Spirit::go(World* world) {
+int Spirit::collidesWithRefresh(PRectangle* rect, BricksVec bricks) {
+	return find_if(bricks.begin(), bricks.end(), [rect](Brick* brick){return brick->getBounds()->intersects(rect) && brick->getTextureName() == ENone;}) != bricks.end() ? ATTACK : DEAD; 
+}
+
+bool Spirit::collidesWithLevel(PRectangle* rect, BricksVec bricks) {
+	return find_if(bricks.begin(), bricks.end(), [rect](Brick* brick){return brick->getBounds()->intersects(rect) && brick->getTextureName() > ECocos;}) != bricks.end(); 
+}
+
+void Spirit::go(BricksVec bricks, Player* player, PPoint* point) {
 	clearMap();
-	ai(world);
+	ai(bricks, player, point);
 	sprite_->setPosition(position_->getX() + 15,position_->getY() + 15);
 }
 
@@ -65,11 +73,7 @@ void Spirit::onLoadImageDead() {
 }
 
 void Spirit::onLoadImageDefence(bool isWhite) {
-	if (isWhite) {
-		setTexture(ESpiritDefenceWhite);
-	} else {
-		setTexture(EspiritDefence);
-	}
+	setTexture(isWhite ? ESpiritDefenceWhite : EspiritDefence);
 }
 
 void Spirit::onLoadImage() {
@@ -86,12 +90,12 @@ void Spirit::onLoadImage() {
 	}
 }
 
-void Spirit::move(World* world) {
+void Spirit::move(BricksVec bricks) {
 	onLoadImage();
-	refresh(world);
+	refresh(bricks);
 	onMove(direction_);
 
-	if (!world->collidesWithLevel(getBounds())) {
+	if (!collidesWithLevel(getBounds(), bricks)) {
 		setPosition(getBounds());
 		countCollision_ = 0;
 	} else {
@@ -104,27 +108,19 @@ void Spirit::move(World* world) {
 	countStep_++;
 }
 
-void Spirit::findDirection(World* world, PPoint* point, Spirit* spirit) {
-	potencialMap(point, spirit, world->getBricks());
+void Spirit::findDirection(BricksVec bricks, PPoint* point) {
+	potencialMap(point, bricks);
 	if (getCountStep() >= (30 / SPEED_)) {
-		int ** map = getMap();
-
-		int step = map[getPointX()][getPointY()];
-
-		if (map[getPointX() - 1][getPointY()] < step + 1) {
-			setDirection(LEFT);
+		for(int i=1 ; i <= 4; i++) {
+			moveTo(getMap(), (Direction)i);
 		}
-		if (map[getPointX() + 1][getPointY()] < step + 1) {
-			setDirection(RIGHT);
-		}
-		if (map[getPointX()][getPointY() - 1] < step + 1) {
-			setDirection(DOWN);
-		}
-		if (map[getPointX()][getPointY() + 1] < step + 1) {
-			setDirection(UP);
-		}
-
 		setCountStep(0);
+	}
+}
+
+void Spirit::moveTo(int** map, Direction dir) {
+	if (map[getPointX() + getHorizontalOffset(dir)][getPointY() + getVerticalOffset(dir)] < map[getPointX()][getPointY()] + 1) {
+		setDirection(dir);
 	}
 }
 
@@ -148,15 +144,15 @@ void Spirit::createMap(int width, int height) {
 		map[i] = new int[height];
 }
 
-void Spirit::potencialMap(PPoint* point, Spirit* spirit, List<Brick*>* bricks) {
+void Spirit::potencialMap(PPoint* point, vector<Brick*> bricks) {
 	inverseMap(bricks);
 	int count = 0;
 	step = 2;
 
 	map[point->getX() / 30][point->getY() / 30] = 1;
 
-	if (spirit->getState() != DEAD) {
-		changeMap(spirit);
+	if (getState() != DEAD) {
+		changeMap();
 	}
 
 	while (count < 40) {
@@ -192,29 +188,29 @@ void Spirit::potencialMap(PPoint* point, Spirit* spirit, List<Brick*>* bricks) {
 
 }
 
-void Spirit::changeMap(Spirit* spirit) {
-	if (spirit->getDirection() == LEFT) {
-		map[(spirit->getPointX()) + 1][spirit->getPointY()] = WALL;
+void Spirit::changeMap() {
+	if (getDirection() == LEFT) {
+		map[(getPointX()) + 1][getPointY()] = WALL;
 	}
 
-	if (spirit->getDirection() == RIGHT) {
-		map[(spirit->getPointX()) - 1][spirit->getPointY()] = WALL;
+	if (getDirection() == RIGHT) {
+		map[(getPointX()) - 1][getPointY()] = WALL;
 	}
 
-	if (spirit->getDirection() == DOWN) {
-		map[spirit->getPointX()][(spirit->getPointY()) + 1] = WALL;
+	if (getDirection() == DOWN) {
+		map[getPointX()][(getPointY()) + 1] = WALL;
 	}
 
-	if (spirit->getDirection() == UP) {
-		map[spirit->getPointX()][(spirit->getPointY()) - 1] = WALL;
+	if (getDirection() == UP) {
+		map[getPointX()][(getPointY()) - 1] = WALL;
 	}
 }
 
-void Spirit::inverseMap(List<Brick*>* bricks) {
+void Spirit::inverseMap(BricksVec bricks) {
 	int row = 0;
 	int column = 0;
-	for(int i=0; i < bricks->size(); i++){
-		if(bricks->get(i)->getTextureName() <= ECocos) {
+	for(auto brick: bricks) {
+		if(brick->getTextureName() <= ECocos) {
 				map[row][column] = 0;
 		} else {
 			map[row][column] = WALL;
@@ -240,4 +236,11 @@ void Spirit::changeDirection(int dir) {
 	direction_ = direction;
 }
 
+int Spirit::getHorizontalOffset(Direction dir) {
+	return dir == RIGHT ? 1 : dir == LEFT ? -1 : 0;
+}
+
+int Spirit::getVerticalOffset(Direction dir) {
+	return dir == UP ? 1 : dir == DOWN ? -1 : 0;
+}
 

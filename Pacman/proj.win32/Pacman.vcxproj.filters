@@ -134,9 +134,6 @@
     <ClInclude Include="..\Classes\Model\Level.h">
       <Filter>Classes\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Model\List.h">
-      <Filter>Classes\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Model\WorldObjectMove.h">
       <Filter>Classes\Model</Filter>
     </ClInclude>
