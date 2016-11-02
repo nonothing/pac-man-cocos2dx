@@ -37,7 +37,6 @@ bool WorldScene::init(std::string levelName, int currentLevel, SoundController* 
 
 	readLevel_ = new ReadLevel();
 	readLevel_->readFile(levelName);
-	int size = readLevel_->getLevel()->getBricks().size();
 
 	world_ = new World(readLevel_->getLevel(), soundController_);
 	world_->setCurrentLevel(currentLevel);

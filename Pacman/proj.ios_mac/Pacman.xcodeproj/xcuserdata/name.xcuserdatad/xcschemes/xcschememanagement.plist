@@ -4,12 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pacman Mac.xcscheme</key>
+		<key>Pacman-desktop.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>Pacman iOS.xcscheme</key>
+		<key>Pacman-mobile.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>

@@ -14,8 +14,8 @@ private:
 	int seconds;
 	int record;
 	Direction direction;
-	CCLabelTTF* labelScore;
-	CCLabelTTF* labelRecord;
+	Label* labelScore;
+    Label* labelRecord;
 	int touchX;
 	int touchY;
 public:
@@ -28,8 +28,8 @@ public:
 	void generateFruit(float dt);
 	void setRecord(int score){record = score;}
 	void setDirection(Direction d){ direction = d;}
-	LabelTTF* getLabelScore(){return labelScore;}
-	LabelTTF* getLabelRecord(){return labelRecord;}
+	Label* getLabelScore(){return labelScore;}
+	Label* getLabelRecord(){return labelRecord;}
 	void setTouch(int x, int y){touchX = x;	touchY = y;}
 	void TouchMoved(int x, int y);
 	void TouchEnded(int x, int y);

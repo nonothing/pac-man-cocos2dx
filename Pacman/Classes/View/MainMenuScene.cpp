@@ -39,7 +39,7 @@ bool MainMenuScene::init(SoundController* soundController) {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
     
-    auto labelName = LabelTTF::create("PAC-MAN", "fonts/emulogic.ttf", 56);
+    auto labelName = Label::createWithTTF("PAC-MAN", "fonts/emulogic.ttf", 56);
 	labelName->setColor(Color3B::YELLOW);
 	labelName->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height - labelName->getContentSize().height));
     this->addChild(labelName, 1);

@@ -14,11 +14,11 @@ void WorldController::init(World* world, SoundController* soundController){
 	UserDefault::getInstance()->setIntegerForKey("LAST_LEVEL", world->getCurrentLevel());
 	UserDefault::getInstance()->flush();
 	this->world = world;
-	labelRecord = LabelTTF::create("Record: ", FONT_EMULOGIC, 14);
+	labelRecord = Label::createWithTTF("Record: ", FONT_EMULOGIC, 14);
     labelRecord->setPosition(Point(100, 436));
 	labelRecord->setColor(Color3B::YELLOW);
 
-	labelScore = LabelTTF::create("You: ", FONT_EMULOGIC , 14);
+	labelScore = Label::createWithTTF("You: ", FONT_EMULOGIC , 14);
     labelScore->setPosition(Point(610, 436));
 	labelScore->setColor(Color3B::YELLOW);
 }

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Pacman.xcodeproj">
+      location = "self:/Users/name/pac-man-cocos2dx/Pacman/proj.ios_mac/Pacman.xcodeproj">
    </FileRef>
 </Workspace>
